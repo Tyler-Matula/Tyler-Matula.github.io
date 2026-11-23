@@ -1,371 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alex Rivera | Mechanical Engineering Portfolio</title>
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --text: #0f172a;
-      --muted: #475569;
-      --accent: #1d4ed8;
-      --accent-hover: #1e40af;
-      --border: #e2e8f0;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tyler Matula | Mechanical Engineering</title>
+<meta name="description" content="Tyler Matula, mechanical engineering student at UConn. Formula SAE powertrain, SolidWorks, design work.">
+<!-- FONT: Aileron is not on Google Fonts, so it is loaded from your own repo. See the @font-face block in the CSS. -->
+<style>
+/* ============================================================
+   THEME. Deep navy and white. White is the only accent: the chapter dot,
+   the 18% figure, focus rings. Change --bg / --tint to re-colour the whole page.
+   ============================================================ */
+/* ============================================================
+   FONT: AILERON (free, by Sora Sagano; download from dotcolon.net or Fontsquirrel).
+   Put these files in a fonts/ folder next to index.html:
+   Aileron-Light, Aileron-Regular, Aileron-SemiBold, Aileron-Bold, Aileron-Heavy, Aileron-Italic
+   as .woff2 (best) or .otf. If you have Aileron installed locally it is used first.
+   Until the files are added, the page falls back to Helvetica / Arial.
+   ============================================================ */
+@font-face{font-family:Aileron;font-weight:300;font-style:normal;font-display:swap;src:local('Aileron Light'),local('Aileron-Light'),url('fonts/Aileron-Light.woff2') format('woff2'),url('fonts/Aileron-Light.otf') format('opentype')}
+@font-face{font-family:Aileron;font-weight:400;font-style:normal;font-display:swap;src:local('Aileron Regular'),local('Aileron-Regular'),url('fonts/Aileron-Regular.woff2') format('woff2'),url('fonts/Aileron-Regular.otf') format('opentype')}
+@font-face{font-family:Aileron;font-weight:600;font-style:normal;font-display:swap;src:local('Aileron SemiBold'),local('Aileron-SemiBold'),url('fonts/Aileron-SemiBold.woff2') format('woff2'),url('fonts/Aileron-SemiBold.otf') format('opentype')}
+@font-face{font-family:Aileron;font-weight:700;font-style:normal;font-display:swap;src:local('Aileron Bold'),local('Aileron-Bold'),url('fonts/Aileron-Bold.woff2') format('woff2'),url('fonts/Aileron-Bold.otf') format('opentype')}
+@font-face{font-family:Aileron;font-weight:800;font-style:normal;font-display:swap;src:local('Aileron Heavy'),local('Aileron-Heavy'),url('fonts/Aileron-Heavy.woff2') format('woff2'),url('fonts/Aileron-Heavy.otf') format('opentype')}
+@font-face{font-family:Aileron;font-weight:400;font-style:italic;font-display:swap;src:local('Aileron Italic'),local('Aileron-Italic'),url('fonts/Aileron-Italic.woff2') format('woff2'),url('fonts/Aileron-Italic.otf') format('opentype')}
+:root{
+  --bg:#050b1c; --fg:#f4f7ff; --mute:#8fa0c4; --hi:#fff; --tint:#0a2a6e; /* --tint colours all footage navy so clips from different sources match */
+  --sans:Aileron,"Helvetica Neue",Helvetica,Arial,sans-serif;   /* the one typeface for the whole page */
+  --serif:var(--sans);   /* italic accents use Aileron Italic */
+  --mono:var(--sans);   /* small uppercase labels */
+  --pad:clamp(20px,5vw,80px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font:300 clamp(17px,1.25vw,20px)/1.6 var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--hi);outline-offset:4px}
+.skip{position:fixed;left:12px;top:-60px;background:var(--hi);color:#000;padding:10px 16px;z-index:100}
+.skip:focus{top:12px}
+.mono{font:500 12px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:.95}
+.em{font:italic 400 1em var(--serif);letter-spacing:-.01em}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+/* Top bar */
+.top{position:fixed;inset:0 0 auto;z-index:50;display:flex;justify-content:space-between;padding:20px var(--pad);mix-blend-mode:difference;color:#fff;font:600 14px var(--sans)}
+.top nav{display:flex;gap:28px}
+.top a{text-decoration:none}
+.top a:hover{text-decoration:underline;text-underline-offset:5px}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
+/* Chapter indicator (bottom left): the one piece of wayfinding */
+.chap{position:fixed;left:var(--pad);bottom:22px;z-index:50;display:flex;gap:10px;align-items:center;mix-blend-mode:difference;color:#fff}
+.chap i{width:7px;height:7px;border-radius:50%;background:var(--hi)}
 
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+/* ============================================================
+   THE STAGE: one frame that persists for the whole page.
+   JS moves/resizes it to follow whichever [data-slot] is on screen,
+   and wipes in the next media layer as each new slot arrives.
+   ============================================================ */
+.stage{position:fixed;z-index:1;left:0;top:0;width:100vw;height:100vh;overflow:hidden;pointer-events:none;background:#000;will-change:left,top,width,height}
+.stage::before{content:"";position:absolute;inset:0;z-index:98;background:var(--tint);mix-blend-mode:color;opacity:.6}
+.stage::after{content:"";position:absolute;inset:0;z-index:99;background:linear-gradient(to top,rgba(3,8,24,.88),rgba(3,8,24,.3) 55%,rgba(3,8,24,.4));opacity:var(--ov,1)}
+.layer{position:absolute;inset:0}
+.layer img,.layer video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(var(--z,1));filter:saturate(.8) contrast(1.08) brightness(.85)}
+/* Fallback shown until your media loads (or if it fails): dark navy with a slow light sweep */
+.layer{background:radial-gradient(120% 90% at 30% 15%,#16367a,#050b1c 72%)}
+.layer:nth-child(even){background:radial-gradient(110% 90% at 75% 85%,#123066,#04091a 72%)}
+.layer::before{content:"";position:absolute;inset:-20%;background:linear-gradient(105deg,transparent 40%,rgba(180,205,255,.12) 50%,transparent 60%);animation:sheen 9s ease-in-out infinite alternate}
+@keyframes sheen{to{transform:translateX(30%)}}
+.layer.empty::after{content:attr(data-label);position:absolute;left:16px;top:14px;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:rgba(244,247,255,.45)}
+.slot{position:relative;overflow:hidden}
+.slot .layer{z-index:0}
 
-    /* Header */
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 48px 0 40px;
-    }
+/* ============================================================
+   CHAPTERS
+   ============================================================ */
+main{position:relative;z-index:2}
 
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+/* 0. Prologue: the slot fills the screen, the name sits on it */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:0 var(--pad) 10vh}
+.hero .slot{position:absolute;inset:0}
+.hero-text{position:relative;will-change:transform,opacity}
+.hero h1{font-size:clamp(64px,15vw,240px);margin:18px 0 22px}
+.hero p.lede{max-width:30ch;font-size:1.15em;color:rgba(244,247,255,.85)}
 
-    h1 {
-      font-size: 2.2rem;
-      letter-spacing: -0.02em;
-    }
+/* 1. About */
+.about{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--pad);padding:24vh var(--pad);align-items:center}
+.about .txt{grid-column:1/7}
+.about .slot{grid-column:8/13;aspect-ratio:4/5}
+.about h2{font:italic 400 clamp(30px,4.2vw,64px)/1.08 var(--serif);letter-spacing:-.015em;margin-bottom:34px}
+.about p{max-width:46ch;color:rgba(244,247,255,.78)}
 
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--accent);
-      font-weight: 600;
-      margin-top: 4px;
-    }
+/* 2-4. Projects: a tall section; the text and slot stay put while their content changes */
+.proj{height:200vh;position:relative}
+.proj-in{position:sticky;top:0;height:100svh;display:flex;align-items:flex-end;padding:0 var(--pad) 12vh}
+.proj .txt{position:relative;max-width:560px}
+.proj .tag{position:absolute;right:var(--pad);bottom:22px;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:rgba(244,247,255,.5)}
+.proj .slot{position:absolute;inset:0;z-index:-1}
+.proj h2{font-size:clamp(40px,6vw,96px);margin:16px 0 28px}
+.proj p.d{max-width:40ch;color:rgba(244,247,255,.8)}
+dl{margin-top:34px;display:grid;grid-template-columns:auto 1fr;gap:10px 28px;max-width:440px}
+dt{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding-top:4px}
+dd .big{font-size:2.6em;font-weight:800;letter-spacing:-.04em;line-height:1}
+dd.ph{font-family:var(--serif);font-style:italic;color:var(--mute)}
 
-    .bio {
-      max-width: 650px;
-      color: var(--muted);
-      margin-top: 14px;
-    }
+/* 5. Spec sheet: skills + education, on a wide band of the stage */
+.sheet{padding:18vh var(--pad) 22vh}
+.sheet .slot{height:38vh;margin-bottom:12vh}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad)}
+.cols h3{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:18px}
+.cols p{margin-bottom:12px}
+.cols small{display:block;color:var(--mute);font-size:.82em}
 
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
+/* 6. Contact: slot fills the screen again */
+.contact{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 9vh}
+.contact .slot{position:absolute;inset:0}
+.contact>*:not(.slot){position:relative}
+.contact h2{font-size:clamp(44px,9vw,150px);margin:14px 0 30px}
+.mail{font:600 clamp(22px,4vw,56px)/1.1 var(--sans);letter-spacing:-.03em;text-decoration:none;border-bottom:2px solid currentColor;transition:color .25s}
+.mail:hover{opacity:.6}
+.links{display:flex;gap:28px;margin-top:34px;font-weight:600}
+.links a:hover{opacity:.6}
 
-    .btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+/* Heading line-reveal (only used on headings; everything else is static) */
+.mask{display:block;overflow:hidden;padding-bottom:.08em}
+.mask>span{display:block;transform:translateY(105%);transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+.mask.in>span{transform:none}
 
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
-
-    .btn-outline {
-      border: 1px solid var(--border);
-      color: var(--text);
-      background: var(--surface);
-    }
-
-    .btn-outline:hover {
-      background: var(--bg);
-    }
-
-    /* Skills Strip */
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 24px;
-    }
-
-    .skill-tag {
-      background: #eff6ff;
-      color: #1e40af;
-      border: 1px solid #bfdbfe;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    /* Projects Grid */
-    main {
-      padding: 48px 0 64px;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 24px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-    }
-
-    .card-img {
-      width: 100%;
-      height: 200px;
-      background: #cbd5e1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #334155;
-      font-weight: 600;
-      font-size: 0.95rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .card-body {
-      padding: 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-meta {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-    }
-
-    .card-desc {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 16px;
-      flex: 1;
-    }
-
-    .card-link {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    /* Modal */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.6);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 100;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal {
-      background: var(--surface);
-      max-width: 680px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      border-radius: 10px;
-      padding: 28px;
-      position: relative;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 18px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--muted);
-    }
-
-    .modal h3 {
-      font-size: 1.5rem;
-      margin-bottom: 6px;
-    }
-
-    .modal-section {
-      margin-top: 18px;
-    }
-
-    .modal-section h4 {
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 24px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      border-top: 1px solid var(--border);
-    }
-  </style>
+/* ============================================================
+   RESPONSIVE: on narrow screens each slot becomes a normal image block above its text
+   ============================================================ */
+@media(max-width:820px){
+  .about{display:block;padding:16vh var(--pad)}
+  .about .slot{aspect-ratio:4/3;margin-top:36px}
+  .cols{grid-template-columns:1fr}
+  .top nav{gap:16px}
+}
+/* REDUCED MOTION: no moving stage; each slot just shows its own picture */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .mask>span{transform:none;transition:none}
+  .layer::before{animation:none}
+}
+</style>
 </head>
 <body>
+<a class="skip" href="#work">Skip to projects</a>
+<header class="top"><a href="#top">Tyler Matula</a>
+  <!-- NAV: href values must match section ids below -->
+  <nav aria-label="Main"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav></header>
+<div class="stage" id="stage" aria-hidden="true"></div>
+<div class="chap" aria-hidden="true"><i></i><span class="mono" id="chapLabel"></span></div>
 
-  <header>
-    <div class="container">
-      <div class="header-top">
-        <div>
-          <h1>Alex Rivera</h1>
-          <div class="subtitle">B.S. Mechanical Engineering &bull; Class of 2027</div>
-          <p class="bio">
-            Mechanical engineering student focused on electro-mechanical product design, FEA structural optimization, and rapid prototyping. Experienced in taking assemblies from initial CAD concepts to CNC-machined and 3D-printed hardware.
-          </p>
-          <div class="btn-group">
-            <a href="#" class="btn btn-primary">Download Resume (PDF)</a>
-            <a href="mailto:alex.rivera@example.com" class="btn btn-outline">Contact Me</a>
-          </div>
-        </div>
-      </div>
+<main>
+<!-- Each [data-slot] marks where the stage should be at that moment. The slots are, in order:
+     0 hero, 1 about, 2/3/4 projects, 5 spec sheet, 6 contact. The MEDIA list in the script uses the same order.
+     data-r = corner radius (px) of the stage when it reaches that slot; data-label = chapter name. -->
 
-      <div class="skills">
-        <span class="skill-tag">SolidWorks (CSWP)</span>
-        <span class="skill-tag">ANSYS Mechanical FEA</span>
-        <span class="skill-tag">GD&amp;T (ASME Y14.5)</span>
-        <span class="skill-tag">CNC Mill &amp; Lathe</span>
-        <span class="skill-tag">FDM / SLA Printing</span>
-        <span class="skill-tag">MATLAB &amp; Python</span>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-    <h2>Selected Engineering Projects</h2>
-
-    <div class="grid">
-      <!-- Project 1 -->
-      <div class="card" onclick="openModal('p1')">
-        <div class="card-img">[Insert CAD Render: Formula SAE Upright]</div>
-        <div class="card-body">
-          <div class="card-meta">FSAE Design Team &bull; SolidWorks / ANSYS</div>
-          <h3 class="card-title">Topology-Optimized Suspension Upright</h3>
-          <p class="card-desc">
-            Redesigned a rear wheel upright to reduce unsprung mass by 28% while maintaining a 2.2 factor of safety under 3G cornering loads.
-          </p>
-          <span class="card-link">View Engineering Breakdown &rarr;</span>
-        </div>
-      </div>
-
-      <!-- Project 2 -->
-      <div class="card" onclick="openModal('p2')">
-        <div class="card-img">[Insert Prototype Photo: Robotic Gripper]</div>
-        <div class="card-body">
-          <div class="card-meta">Mechatronics Lab &bull; CAD / Prototyping</div>
-          <h3 class="card-title">Compliant Parallel-Jaw Robotic Gripper</h3>
-          <p class="card-desc">
-            Designed and fabricated a linkage-driven end-effector capable of grasping fragile objects up to 2.5 kg without force sensors.
-          </p>
-          <span class="card-link">View Engineering Breakdown &rarr;</span>
-        </div>
-      </div>
-
-      <!-- Project 3 -->
-      <div class="card" onclick="openModal('p3')">
-        <div class="card-img">[Insert Thermal Plot: Heat Exchanger]</div>
-        <div class="card-body">
-          <div class="card-meta">Thermodynamics Capstone &bull; CFD / Testing</div>
-          <h3 class="card-title">Compact Cross-Flow Heat Exchanger</h3>
-          <p class="card-desc">
-            Modeled, built, and instrument-tested a brazed aluminum heat exchanger achieving 18% higher thermal efficiency than baseline.
-          </p>
-          <span class="card-link">View Engineering Breakdown &rarr;</span>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2026 Alex Rivera &bull; Built with HTML/CSS &amp; Hosted on GitHub Pages
-  </footer>
-
-  <!-- Modal Container -->
-  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
-    <div class="modal">
-      <button class="close-btn" onclick="forceClose()">&times;</button>
-      <div id="modalContent"></div>
-    </div>
+<section class="hero" id="top">
+  <div class="slot" data-slot data-r="0" data-label="Prologue"></div>
+  <div class="hero-text" id="heroText">
+    <p class="mono" style="color:rgba(244,247,255,.7)">Mechanical Engineering &middot; UConn &middot; Class of 2030</p>
+    <h1>Tyler<br>Matula</h1>
+    <p class="lede">I design parts that are lighter without being weaker. Currently on the Formula SAE powertrain team.</p>
   </div>
+</section>
 
-  <script>
-    const projects = {
-      p1: {
-        title: "Topology-Optimized Suspension Upright",
-        meta: "FSAE Design Team | 6061-T6 Aluminum | SolidWorks & ANSYS",
-        problem: "The previous year's rear suspension upright was overbuilt, adding unnecessary unsprung weight and hurting transient handling.",
-        process: "Extracted peak suspension load cases (3G bump, 2.5G braking, 2G cornering), ran topology optimization in ANSYS, and redesigned the geometry for 3-axis CNC machining.",
-        results: "Reduced component mass from 1.42 kg to 1.02 kg (-28%) with a minimum factor of safety of 2.25 across all load cases."
-      },
-      p2: {
-        title: "Compliant Parallel-Jaw Robotic Gripper",
-        meta: "Mechatronics Course | 3D-Printed PETG & TPU | Arduino",
-        problem: "Standard rigid grippers crushed delicate test objects when clamping forces were not precisely calibrated.",
-        process: "Synthesized a four-bar parallel linkage in SolidWorks and integrated flexures printed in TPU to passively distribute contact pressure.",
-        results: "Successfully lifted payloads ranging from 50 g eggs to 2.5 kg aluminum blocks using a single micro-servo."
-      },
-      p3: {
-        title: "Compact Cross-Flow Heat Exchanger",
-        meta: "Thermodynamics Project | MATLAB & Wind Tunnel Testing",
+<section class="about" id="about">
+  <div class="txt">
+    <h2><span class="mask"><span>First-year mechanical engineering student,</span></span><span class="mask"><span>happiest in CAD.</span></span></h2>
+    <!-- EDIT: about copy. Facts come from your resume. -->
+    <p>I'm in the Honors Program at the University of Connecticut and was selected as one of about 75 STEM Scholars in the Class of 2030. I joined UConn Formula SAE in September 2026, where I work within the internal combustion powertrain subsystem, and I'm a SolidWorks CSWA.</p>
+  </div>
+  <div class="slot" data-slot data-r="6" data-label="About"></div>
+</section>
+
+<!-- PROJECTS. To add one: copy a <section class="proj"> block, then add one more [data-slot] and one more MEDIA entry in the script.
+     Slots must stay in page order. -->
+<section class="proj" id="work">
+  <div class="proj-in">
+    <div class="txt">
+      <p class="mono">UConn Formula SAE &middot; IC powertrain</p>
+      <h2><span class="mask"><span>Fuel rail redesign</span></span></h2>
+      <p class="d">I reworked the fuel rail in CAD to make it lighter and to improve how it mounts, before it goes to prototype testing.</p>
+      <dl>
+        <dt>Weight</dt><dd><span class="big">&minus;18%</span></dd>
+        <dt>Tool</dt><dd>SolidWorks</dd>
+        <dt>Status</dt><dd>Heading to prototype testing</dd>
+        <dt>More</dt><dd class="ph">[Add: material, mass before and after, test results, what you'd change]</dd>
+      </dl>
+    </div>
+    <div class="slot" data-slot data-r="6" data-label="Fuel rail redesign"></div>
+    <p class="tag">Background footage: stock</p>
+  </div>
+</section>
+
+<section class="proj">
+  <div class="proj-in">
+    <div class="txt">
+      <p class="mono">[Add: team / course / year]</p>
+      <h2><span class="mask"><span>Project two</span></span></h2>
+      <p class="d">[Placeholder] Describe the problem, your part in it, and the result.</p>
+      <dl><dt>Tool</dt><dd class="ph">[Add]</dd><dt>Result</dt><dd class="ph">[Add]</dd></dl>
+    </div>
+    <div class="slot" data-slot data-r="6" data-label="Project two"></div>
+    <p class="tag">Background footage: stock</p>
+  </div>
+</section>
+
+<section class="proj">
+  <div class="proj-in">
+    <div class="txt">
+      <p class="mono">[Add: team / course / year]</p>
+      <h2><span class="mask"><span>Project three</span></span></h2>
+      <p class="d">[Placeholder] A design lab project or personal build would fit here.</p>
+      <dl><dt>Tool</dt><dd class="ph">[Add]</dd><dt>Result</dt><dd class="ph">[Add]</dd></dl>
+    </div>
+    <div class="slot" data-slot data-r="6" data-label="Project three"></div>
+    <p class="tag">Background footage: stock</p>
+  </div>
+</section>
+
+<section class="sheet" id="sheet">
+  <div class="slot" data-slot data-r="0" data-label="Specifications"></div>
+  <div class="cols">
+    <div><h3>Education</h3>
+      <p>University of Connecticut<small>B.S. Mechanical Engineering, anticipated May 2030. GPA 3.899. Honors Program.</small></p>
+      <p>Coursework<small>Computing for Engineers, Calculus II, Physics for Engineers, Design Lab I &amp; II</small></p></div>
+    <div><h3>Tools</h3>
+      <p>SolidWorks<small>CSWA certified</small></p>
+      <p>Python</p>
+      <p>Adobe Photoshop, Illustrator, Premiere Pro</p>
+      <p>Google Workspace</p></div>
+    <div><h3>Involvement</h3>
+      <p>UConn Formula SAE<small>IC powertrain, since Sept 2026</small></p>
+      <p>ASME<small>Design and manufacturing workshops, since Sept 2026</small></p>
+      <p>Recognition<small>UConn Early College Experience STEM Scholarship (2026), RIT Computing Innovation Award (2025), CT General Assembly Official Citation (2026), ECSU Statistics Student Award (2026)</small></p></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="slot" data-slot data-r="0" data-label="Contact"></div>
+  <p class="mono" style="color:rgba(244,247,255,.7)">Storrs, Connecticut</p>
+  <h2><span class="mask"><span>Get in touch.</span></span></h2>
+  <!-- EDIT: contact links -->
+  <a class="mail" href="mailto:tyler.matula@uconn.edu">tyler.matula@uconn.edu</a>
+  <div class="links"><a href="https://linkedin.com/in/tyler-matula">LinkedIn</a><a href="#">Resume (PDF)</a></div>
+</section>
+</main>
+
+<script>
+/* ============================================================
+   MEDIA: one entry per [data-slot], in the same order.
+   src   = image URL or file in your repo (e.g. "media/fuelrail.jpg"). Empty = brushed-metal fallback.
+   video = optional MP4 URL (muted, looping; skipped for reduced-motion, pauses off-screen).
+   pos   = CSS object-position for cropping.
+   Best practice: download clips (Pexels / Pixabay, both free for this use), compress to 1080p H.264 under ~15 MB,
+   put them in a media/ folder next to index.html, and use paths like 'media/hero.mp4'.
+   ============================================================ */
+const MEDIA = [
+  {src:'', video:'', pos:'center', label:'Hero: slow CNC milling, close up'},
+  {src:'', video:'', pos:'center', label:'About: lathe or workshop detail'},
+  {src:'', video:'', pos:'center', label:'Fuel rail: engine or metal machining'},
+  {src:'', video:'', pos:'center', label:'Project two: robotics or assembly'},
+  {src:'', video:'', pos:'center', label:'Project three: laser cutting sparks'},
+  {src:'', video:'', pos:'center', label:'Wide band: macro gears or bearings'},
+  {src:'', video:'', pos:'center', label:'Contact: dark factory or test cell'},
+];
+
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $$ = s => [...document.querySelectorAll(s)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = t => t * t * (3 - 2 * t);
+const stage = document.getElementById('stage');
+const slots = $$('[data-slot]');
+
+/* Build one layer per slot. Failed media simply leaves the fallback visible. */
+const layers = MEDIA.slice(0, slots.length).map((m, i) => {
+  const el = document.createElement('div');
+  el.className = 'layer empty'; el.dataset.label = m.label; el.style.zIndex = i;
+  const ok = () => el.classList.remove('empty');
+  if(m.src){
+    const img = new Image(); img.alt = ''; img.decoding = 'async'; if(i) img.loading = 'lazy';
+    img.style.objectPosition = m.pos; img.onload = ok; img.onerror = () => img.remove(); img.src = m.src; el.append(img);
+  }
+  if(m.video && !REDUCED){
+    const v = document.createElement('video');
+    Object.assign(v, {muted:true, loop:true, playsInline:true, preload:'none'}); v.setAttribute('muted', '');
+    v.style.objectPosition = m.pos; v.onerror = () => v.remove(); v.oncanplay = ok; el.append(v); el._v = v; el._src = m.video; if(i === 0) v.src = m.video;
+  }
+  return el;
+});
+
+if(REDUCED){
+  /* Static mode: every slot gets its own layer, no fixed stage. */
+  stage.style.display = 'none';
+  layers.forEach((l, i) => slots[i].append(l));
+}else{
+  layers.forEach(l => stage.append(l));
+}
+
+/* ---- Chapter label ---- */
+const label = document.getElementById('chapLabel'); let shown = -1;
+function setChapter(i){ if(i !== shown){ shown = i; label.textContent = String(i + 1).padStart(2, '0') + ' / ' + slots[i].dataset.label; } }
+
+/* ---- Scroll loop ----
+   Start at slot 0's rectangle. For each later slot, ease toward its rectangle as it rises into view,
+   and wipe its layer in from the bottom at the same rate. Tweak the two numbers in `t` to change timing:
+   .95 = when it starts (fraction of screen height), .7 = how long it takes. */
+const heroText = document.getElementById('heroText');
+let ticking = false;
+function frame(){
+  ticking = false;
+  const vh = innerHeight, y = scrollY;
+  if(!REDUCED){
+    const r0 = slots[0].getBoundingClientRect();
+    let x = r0.left, top = r0.top, w = r0.width, h = r0.height, rad = 0, act = 0; const es = [1];
+    for(let i = 1; i < slots.length; i++){
+      const r = slots[i].getBoundingClientRect();
+      const e = ease(clamp((vh * .95 - r.top) / (vh * .7)));
+      es[i] = e;
+      x += (r.left - x) * e; top += (r.top - top) * e; w += (r.width - w) * e; h += (r.height - h) * e;
+      rad += (+slots[i].dataset.r - rad) * e;
+      layers[i].style.clipPath = e >= 1 ? 'none' : `inset(${((1 - e) * 100).toFixed(2)}% 0 0 0)`;
+      layers[i].style.setProperty('--z', (1.12 - .12 * e).toFixed(3));   /* slow push-in as each clip arrives */
+      if(e > .5) act = i;
+    }
+    const st = stage.style;
+    st.left = x + 'px'; st.top = top + 'px'; st.width = w + 'px'; st.height = h + 'px';
+    st.borderRadius = rad + 'px'; st.setProperty('--ov', clamp(w * h / (innerWidth * vh)).toFixed(3));
+    layers.forEach((l, i) => {              /* load a clip when its slot nears; play only while visible */
+      const v = l._v; if(!v) return;
+      if(es[i] > 0 && !v.getAttribute('src')) v.src = l._src;
+      const on = (i === 0 || es[i] > 0) && !(es[i + 1] >= 1);
+      on ? v.play().catch(() => {}) : v.pause();
+    });
+    setChapter(act);
+    heroText.style.transform = `translateY(${y * .22}px)`;
+    heroText.style.opacity = clamp(1 - y / (vh * .75));
+  }else setChapter(0);
+}
+const req = () => { if(!ticking){ ticking = true; requestAnimationFrame(frame); } };
+addEventListener('scroll', req, {passive:true}); addEventListener('resize', req); frame();
+document.fonts && document.fonts.ready.then(frame);
+
+/* ---- Heading line reveals (headings only) ---- */
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.6});
+$$('.mask').forEach(m => io.observe(m));
+</script>
+</body>
+</html>
