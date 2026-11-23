@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Rivera | Mechanical Engineering Portfolio</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #1d4ed8;
+      --accent-hover: #1e40af;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0 40px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .bio {
+      max-width: 650px;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg);
+    }
+
+    /* Skills Strip */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .skill-tag {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Projects Grid */
+    main {
+      padding: 48px 0 64px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 200px;
+      background: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-meta {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .card-link {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 10px;
+      padding: 28px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .modal h3 {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .modal-section {
+      margin-top: 18px;
+    }
+
+    .modal-section h4 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div>
+          <h1>Alex Rivera</h1>
+          <div class="subtitle">B.S. Mechanical Engineering &bull; Class of 2027</div>
+          <p class="bio">
+            Mechanical engineering student focused on electro-mechanical product design, FEA structural optimization, and rapid prototyping. Experienced in taking assemblies from initial CAD concepts to CNC-machined and 3D-printed hardware.
+          </p>
+          <div class="btn-group">
+            <a href="#" class="btn btn-primary">Download Resume (PDF)</a>
+            <a href="mailto:alex.rivera@example.com" class="btn btn-outline">Contact Me</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills">
+        <span class="skill-tag">SolidWorks (CSWP)</span>
+        <span class="skill-tag">ANSYS Mechanical FEA</span>
+        <span class="skill-tag">GD&amp;T (ASME Y14.5)</span>
+        <span class="skill-tag">CNC Mill &amp; Lathe</span>
+        <span class="skill-tag">FDM / SLA Printing</span>
+        <span class="skill-tag">MATLAB &amp; Python</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Selected Engineering Projects</h2>
+
+    <div class="grid">
+      <!-- Project 1 -->
+      <div class="card" onclick="openModal('p1')">
+        <div class="card-img">[Insert CAD Render: Formula SAE Upright]</div>
+        <div class="card-body">
+          <div class="card-meta">FSAE Design Team &bull; SolidWorks / ANSYS</div>
+          <h3 class="card-title">Topology-Optimized Suspension Upright</h3>
+          <p class="card-desc">
+            Redesigned a rear wheel upright to reduce unsprung mass by 28% while maintaining a 2.2 factor of safety under 3G cornering loads.
+          </p>
+          <span class="card-link">View Engineering Breakdown &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="card" onclick="openModal('p2')">
+        <div class="card-img">[Insert Prototype Photo: Robotic Gripper]</div>
+        <div class="card-body">
+          <div class="card-meta">Mechatronics Lab &bull; CAD / Prototyping</div>
+          <h3 class="card-title">Compliant Parallel-Jaw Robotic Gripper</h3>
+          <p class="card-desc">
+            Designed and fabricated a linkage-driven end-effector capable of grasping fragile objects up to 2.5 kg without force sensors.
+          </p>
+          <span class="card-link">View Engineering Breakdown &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="card" onclick="openModal('p3')">
+        <div class="card-img">[Insert Thermal Plot: Heat Exchanger]</div>
+        <div class="card-body">
+          <div class="card-meta">Thermodynamics Capstone &bull; CFD / Testing</div>
+          <h3 class="card-title">Compact Cross-Flow Heat Exchanger</h3>
+          <p class="card-desc">
+            Modeled, built, and instrument-tested a brazed aluminum heat exchanger achieving 18% higher thermal efficiency than baseline.
+          </p>
+          <span class="card-link">View Engineering Breakdown &rarr;</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 Alex Rivera &bull; Built with HTML/CSS &amp; Hosted on GitHub Pages
+  </footer>
+
+  <!-- Modal Container -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+    <div class="modal">
+      <button class="close-btn" onclick="forceClose()">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const projects = {
+      p1: {
+        title: "Topology-Optimized Suspension Upright",
+        meta: "FSAE Design Team | 6061-T6 Aluminum | SolidWorks & ANSYS",
+        problem: "The previous year's rear suspension upright was overbuilt, adding unnecessary unsprung weight and hurting transient handling.",
+        process: "Extracted peak suspension load cases (3G bump, 2.5G braking, 2G cornering), ran topology optimization in ANSYS, and redesigned the geometry for 3-axis CNC machining.",
+        results: "Reduced component mass from 1.42 kg to 1.02 kg (-28%) with a minimum factor of safety of 2.25 across all load cases."
+      },
+      p2: {
+        title: "Compliant Parallel-Jaw Robotic Gripper",
+        meta: "Mechatronics Course | 3D-Printed PETG & TPU | Arduino",
+        problem: "Standard rigid grippers crushed delicate test objects when clamping forces were not precisely calibrated.",
+        process: "Synthesized a four-bar parallel linkage in SolidWorks and integrated flexures printed in TPU to passively distribute contact pressure.",
+        results: "Successfully lifted payloads ranging from 50 g eggs to 2.5 kg aluminum blocks using a single micro-servo."
+      },
+      p3: {
+        title: "Compact Cross-Flow Heat Exchanger",
+        meta: "Thermodynamics Project | MATLAB & Wind Tunnel Testing",
