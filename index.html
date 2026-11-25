@@ -229,7 +229,7 @@ section{position:relative;z-index:2}
 }
 .js .rv.in{opacity:1;transform:translateY(0)}
 
-/* ============ RÉSUMÉ MODAL ============ */
+/* ============ MODALS (RÉSUMÉ & REPORT VIEWER) ============ */
 .modal-backdrop{
   position:fixed;inset:0;z-index:90;
   background:rgba(0,10,34,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -259,6 +259,19 @@ section{position:relative;z-index:2}
 }
 .modal-close:hover{background:rgba(255,255,255,.16)}
 .modal-close:active{transform:scale(.95)}
+.modal-desc-box{
+  padding:14px 20px;
+  background:rgba(7,25,71,.92);
+  border-bottom:1px solid var(--line-dark);
+  display:flex;flex-direction:column;gap:4px;
+}
+.modal-desc-label{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#9ec0ff;
+}
+.modal-desc-text{
+  font-size:14px;line-height:1.5;color:#eef4ff;
+}
 .modal-body{position:relative;flex:1;background:var(--slate-dark);display:flex}
 .modal-frame{width:100%;height:100%;border:0;background:var(--white)}
 
@@ -269,6 +282,14 @@ section{position:relative;z-index:2}
 .cad-desc{
   font-size:clamp(16px,1.15vw,19px);line-height:1.55;
   color:#dce8ff;max-width:42ch;margin-top:4px;
+}
+.cad-controls-head{
+  margin-top:22px;
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#9ec0ff;
 }
 .cad-panel{display:flex;flex-direction:column;gap:14px}
 .stage{
@@ -293,6 +314,7 @@ section{position:relative;z-index:2}
 .msg[hidden]{display:none}
 
 .tabs,.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
+.cad-controls-head + .ctl{margin-top:8px}
 .tabs button,.ctl button{
   font:600 13px var(--sans);padding:8px 15px;border-radius:999px;
   border:1px solid var(--line);background:var(--white);color:var(--navy);
@@ -397,7 +419,7 @@ textarea,pre{
 }
 
 .skills,.exp{padding:14vh 0}
-.cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:32px}
+.cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:32px;align-items:stretch}
 .cols > div{
   background:var(--white);border:1px solid var(--line);
   border-radius:18px;padding:18px;display:flex;flex-direction:column;min-width:0;
@@ -429,9 +451,50 @@ textarea,pre{
   border-color:var(--blue-bright);
 }
 .cols h3{font-size:17px;margin-bottom:6px;letter-spacing:-.02em}
-.cols p{font-size:14px;line-height:1.45}
+.cols p{font-size:14px;line-height:1.45;color:inherit;font-style:normal}
+
+.reports-dl{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid var(--line-dark);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.reports-title{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#dce8ff;
+}
+.report-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.report-link{
+  font:600 12px/1 var(--sans);
+  text-decoration:none;
+  padding:6px 11px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.24);
+  background:rgba(255,255,255,.06);
+  color:var(--white);
+  cursor:pointer;
+  transition:background .2s var(--ease-smooth),border-color .2s var(--ease-smooth),transform .25s var(--ease-spring);
+}
+.report-link:hover{
+  background:rgba(77,140,255,.22);
+  border-color:var(--blue-bright);
+  transform:translateY(-1px);
+}
+
 .skill-img{
-  margin-top:14px;width:100%;aspect-ratio:16/10;border-radius:10px;
+  margin-top:auto;padding-top:14px;
+}
+.skill-img-box{
+  width:100%;aspect-ratio:16/10;border-radius:10px;
   border:1px dashed var(--line);
   background:
     var(--skill-img,none) center/cover no-repeat,
@@ -441,16 +504,16 @@ textarea,pre{
   color:var(--slate-mid);overflow:hidden;
   transition:transform .35s var(--ease-spring),border-color .28s var(--ease-smooth);
 }
-.cols > div:hover .skill-img{transform:scale(1.02)}
-.dark .skill-img{
+.cols > div:hover .skill-img-box{transform:scale(1.02)}
+.dark .skill-img-box{
   border-color:var(--line-dark);
   background:
     var(--skill-img,none) center/cover no-repeat,
     repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 8px,transparent 8px,transparent 16px);
   color:#c5d6f7;
 }
-.cols > div:hover .skill-img{border-color:rgba(77,140,255,.55)}
-.skill-img img{width:100%;height:100%;object-fit:cover;display:block}
+.cols > div:hover .skill-img-box{border-color:rgba(77,140,255,.55)}
+.skill-img-box img{width:100%;height:100%;object-fit:cover;display:block}
 
 @media(max-width:1100px){
   .cols{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
@@ -542,6 +605,21 @@ textarea,pre{
 <script type="module">
 /* ================= 1. CONFIGURATION ================= */
 const RESUME_FILE = 'resume/Tyler Matula - Résumé.pdf';
+
+const ME1100_REPORTS = [
+  {
+    title: 'ME 1100 — Report 1',
+    buttonLabel: 'Report 1',
+    file: 'reports/ME1100-Report-1.pdf',
+    desc: 'Add a short summary of Report 1 here—what topic it covers, who the audience was, and key takeaways.'
+  },
+  {
+    title: 'ME 1100 — Report 2',
+    buttonLabel: 'Report 2',
+    file: 'reports/ME1100-Report-2.pdf',
+    desc: 'Add a short summary of Report 2 here—what topic it covers, who the audience was, and key takeaways.'
+  }
+];
 
 const MODELS = [
   {
@@ -886,7 +964,7 @@ addEventListener('scroll', scheduleScrollUpdate, {passive:true});
 addEventListener('resize', scheduleScrollUpdate);
 updateScrollState();
 
-/* Mobile Navigation & Résumé Modal */
+/* Mobile Navigation, Résumé Modal & Report Modal */
 const burgerBtn = $('#burger');
 const resumeModal = $('#resumeModal');
 const resumeFrame = $('#resumeFrame');
@@ -894,15 +972,26 @@ const resumeDownload = $('#resumeDownload');
 const resumeModalDownload = $('#resumeModalDownload');
 const resumeNewTab = $('#resumeNewTab');
 const encodedResumeUrl = encodeURI(RESUME_FILE);
+
+const reportModal = $('#reportModal');
+const reportModalTitle = $('#reportModalTitle');
+const reportModalDesc = $('#reportModalDesc');
+const reportFrame = $('#reportFrame');
+const reportModalDownload = $('#reportModalDownload');
+const reportNewTab = $('#reportNewTab');
 let lastFocusedElement = null;
 
 resumeDownload.href = encodedResumeUrl;
 resumeModalDownload.href = encodedResumeUrl;
 resumeNewTab.href = encodedResumeUrl;
 
+function anyModalOpen(){
+  return resumeModal.classList.contains('open') || reportModal.classList.contains('open');
+}
+
 function setMobileMenuOpen(isOpen){
   navBar.classList.toggle('open', isOpen);
-  document.body.classList.toggle('locked', isOpen || resumeModal.classList.contains('open'));
+  document.body.classList.toggle('locked', isOpen || anyModalOpen());
   burgerBtn.setAttribute('aria-expanded', String(isOpen));
   burgerBtn.textContent = isOpen ? 'Close' : 'Menu';
   updateScrollState();
@@ -921,10 +1010,47 @@ function closeResumeModal(){
   if(!resumeModal.classList.contains('open')) return;
   resumeModal.classList.remove('open');
   resumeModal.setAttribute('aria-hidden', 'true');
-  document.body.classList.toggle('locked', navBar.classList.contains('open'));
+  document.body.classList.toggle('locked', navBar.classList.contains('open') || reportModal.classList.contains('open'));
   resumeFrame.removeAttribute('src');
   if(lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
   lastFocusedElement = null;
+}
+
+function openReportModal(report){
+  lastFocusedElement = document.activeElement;
+  const encodedUrl = encodeURI(report.file);
+  reportModalTitle.textContent = report.title;
+  reportModalDesc.textContent = report.desc || '';
+  reportModalDownload.href = encodedUrl;
+  reportModalDownload.setAttribute('download', report.file.split('/').pop() || `${report.title}.pdf`);
+  reportNewTab.href = encodedUrl;
+  reportFrame.src = `${encodedUrl}#view=FitH`;
+  reportModal.classList.add('open');
+  reportModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('locked');
+  $('#reportClose').focus();
+}
+
+function closeReportModal(){
+  if(!reportModal.classList.contains('open')) return;
+  reportModal.classList.remove('open');
+  reportModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.toggle('locked', navBar.classList.contains('open') || resumeModal.classList.contains('open'));
+  reportFrame.removeAttribute('src');
+  if(lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
+  lastFocusedElement = null;
+}
+
+const reportLinksContainer = $('#me1100ReportLinks');
+if(reportLinksContainer){
+  ME1100_REPORTS.forEach(report => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'report-link';
+    btn.textContent = report.buttonLabel || report.title;
+    btn.addEventListener('click', () => openReportModal(report));
+    reportLinksContainer.append(btn);
+  });
 }
 
 burgerBtn.addEventListener('click', () => setMobileMenuOpen(!navBar.classList.contains('open')));
@@ -934,10 +1060,15 @@ $('#resumeClose').addEventListener('click', closeResumeModal);
 resumeModal.addEventListener('click', event => {
   if(event.target === resumeModal) closeResumeModal();
 });
+$('#reportClose').addEventListener('click', closeReportModal);
+reportModal.addEventListener('click', event => {
+  if(event.target === reportModal) closeReportModal();
+});
 
 addEventListener('keydown', event => {
   if(event.key !== 'Escape') return;
-  if(resumeModal.classList.contains('open')) closeResumeModal();
+  if(reportModal.classList.contains('open')) closeReportModal();
+  else if(resumeModal.classList.contains('open')) closeResumeModal();
   else if(navBar.classList.contains('open')){
     setMobileMenuOpen(false);
     burgerBtn.focus();
@@ -1389,7 +1520,8 @@ function initPythonIde(){
       <h3 class="rv" id="cadTitle" style="font-size:clamp(28px,3.2vw,48px);margin-bottom:8px">Fuel Rail</h3>
       <p class="cad-desc" id="cadDesc"></p>
       <div class="tabs" id="cadTabs" aria-label="CAD Models"></div>
-      <div class="ctl">
+      <div class="cad-controls-head" id="cadControlsHead">Camera &amp; View Controls</div>
+      <div class="ctl" aria-labelledby="cadControlsHead">
         <button type="button" data-v="iso">Iso</button>
         <button type="button" data-v="front">Front</button>
         <button type="button" data-v="top">Top</button>
@@ -1444,28 +1576,42 @@ function initPythonIde(){
     <div class="cols">
       <div>
         <h3>Computer-aided Design</h3>
-        <p>I have experience using SolidWorks, having earned my CSWA certificiate last Febuary. I am eager to grow from the foundational part creation I displayed above into more complex work.</p>
-        <<div class="skill-img" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        <p>I have experience using CAD software SolidWorks, having earned my CSWA certificate last February. I am excited to develop my skills as I work with more complex CAD modeling.</p>
+        <div class="skill-img">
+          <div class="skill-img-box" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        </div>
       </div>
       <div>
         <h3>Programming</h3>
         <p>I am actively learning Python through CSE 1010: Intro to Computing for Engineers. The two projects showcased above were developed as assignments in that course.</p>
-        <div class="skill-img" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        <div class="skill-img">
+          <div class="skill-img-box" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        </div>
       </div>
       <div>
         <h3>AI-Driven Development</h3>
-        <p class="ph">Through ENGR 2001: AI Literacy, I learned prompt-engineering techniques to break down and assist with unfamiliar technical tasks.</p>
-        <div class="skill-img" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        <p>Through ENGR 2001: AI Literacy, I learned prompt-engineering techniques to break down and assist with unfamiliar technical tasks.</p>
+        <div class="skill-img">
+          <div class="skill-img-box" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        </div>
       </div>
       <div>
         <h3>Creative Software</h3>
-        <p>Taking dual-enrollment classes in high school, I developed skills in Adobe Photoshop, Illustrator, and Premiere Pro. In engineering, this has been particularly useful for drafting flow charts, diagrams, and visual prototypes. </p>
-        <div class="skill-img" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        <p>Taking DMD-oriented dual-enrollment classes in high school, I developed skills in Adobe Photoshop, Illustrator, and Premiere Pro. In engineering, this has been particularly useful for drafting flow charts, diagrams, and visual prototypes.</p>
+        <div class="skill-img">
+          <div class="skill-img-box" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        </div>
       </div>
       <div>
         <h3>Technical Communication</h3>
-        <p class="ph">ME 1100: Communications for Engineers has developed my ability of communicating technical information across diverse audiences. Reports can be downloaded and viewed below.</p>
-        <div class="skill-img" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        <p>ME 1100: Communications for Engineers has developed my ability of communicating technical information across diverse audiences. Reports and assignments from that class can be downloaded and viewed below.</p>
+        <div class="reports-dl" aria-label="ME 1100 Reports">
+          <span class="reports-title">View &amp; Download Reports</span>
+          <div class="report-links" id="me1100ReportLinks"></div>
+        </div>
+        <div class="skill-img">
+          <div class="skill-img-box" style="--skill-img: url('images/cswa-certificate.png')"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1516,6 +1662,27 @@ function initPythonIde(){
     </div>
     <div class="modal-body">
       <iframe class="modal-frame" id="resumeFrame" title="Résumé PDF Preview"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ME 1100 REPORT PREVIEW MODAL -->
+<div class="modal-backdrop" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-bar">
+      <span class="modal-title" id="reportModalTitle">ME 1100 Report</span>
+      <div class="modal-tools">
+        <a class="btn-ghost" id="reportNewTab" href="#" target="_blank" rel="noopener">Open in Tab</a>
+        <a class="btn-primary" id="reportModalDownload" href="#" download>Download</a>
+        <button type="button" class="modal-close" id="reportClose">Close</button>
+      </div>
+    </div>
+    <div class="modal-desc-box">
+      <span class="modal-desc-label">Report Description</span>
+      <p class="modal-desc-text" id="reportModalDesc"></p>
+    </div>
+    <div class="modal-body">
+      <iframe class="modal-frame" id="reportFrame" title="Report PDF Preview"></iframe>
     </div>
   </div>
 </div>
