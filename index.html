@@ -94,8 +94,8 @@ section{position:relative;z-index:2}
 .gray{background:var(--gray)}
 .dark{
   background:
-    radial-gradient(900px 520px at 85% 10%,rgba(29,99,220,.18),transparent 60%),
-    radial-gradient(500px 320px at 12% 85%,rgba(200,16,46,.08),transparent 65%),
+    radial-gradient(900px 520px at 85% 10%,rgba(29,99,220,.24),transparent 60%),
+    radial-gradient(500px 320px at 12% 85%,rgba(200,16,46,.1),transparent 65%),
     var(--navy);
   color:#fff;
 }
@@ -194,15 +194,15 @@ section{position:relative;z-index:2}
 .light .btn-ghost:hover,.gray .btn-ghost:hover{border-color:var(--navy);background:rgba(0,14,47,.05)}
 
 /* ============ ABOUT & RÉSUMÉ SLOT ============ */
-.about{padding:20vh 0}
-.words{font:800 clamp(30px,4.5vw,66px)/1.08 var(--sans);letter-spacing:-.03em;max-width:20em}
+.about{padding:10vh 0}
+.words{font:700 clamp(22px,2.3vw,34px)/1.32 var(--sans);letter-spacing:-.025em;max-width:34em}
 .js .words span{
   display:inline-block;opacity:.16;transform:translateY(4px);
   transition:opacity .4s var(--ease-out),transform .45s var(--ease-spring);
 }
 .js .words span.on{opacity:1;transform:none}
 
-.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-top:60px;max-width:960px;align-items:start}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-top:36px;max-width:960px;align-items:start}
 .two > p,.resume-slot{
   background:rgba(255,255,255,.68);border:1px solid var(--line);
   border-radius:20px;padding:24px;backdrop-filter:blur(8px);
@@ -306,6 +306,11 @@ section{position:relative;z-index:2}
 .cadgrid{display:grid;grid-template-columns:.82fr 1.38fr;gap:var(--pad);align-items:start}
 .stage{
   position:relative;height:min(72vh,640px);border-radius:24px;overflow:hidden;
+  background:radial-gradient(120% 100% at 50% 15%,#16326b,#040d24);
+  border:1px solid var(--line-dark);
+  box-shadow:0 24px 60px -26px rgba(0,0,0,.55);
+}
+.light .stage{
   background:radial-gradient(120% 100% at 50% 15%,#f7f9fc,#d4dce9);
   border:1px solid var(--line);
   box-shadow:0 24px 60px -26px rgba(0,14,47,.22);
@@ -314,22 +319,23 @@ section{position:relative;z-index:2}
 .stage canvas:active{cursor:grabbing}
 .msg{
   position:absolute;left:16px;right:16px;bottom:14px;
-  font-size:13px;color:var(--navy);background:rgba(255,255,255,.84);
+  font-size:13px;color:#fff;background:rgba(0,14,47,.78);
   backdrop-filter:blur(8px);padding:8px 14px;border-radius:12px;pointer-events:none;
 }
+.light .msg{color:var(--navy);background:rgba(255,255,255,.84)}
 .msg[hidden]{display:none}
 #cadNote{margin-top:10px}
 #cadNote:empty{display:none}
 
 .tabs,.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
-.tabs button,.ctl button{
+.tabs button,.ctl button,.ctl a.dl-btn{
   font:600 13px var(--sans);padding:8px 15px;border-radius:999px;
   border:1px solid var(--line);background:rgba(255,255,255,.72);color:var(--navy);
-  cursor:pointer;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;
   transition:transform .28s var(--ease-spring),background .25s var(--ease-smooth),color .25s var(--ease-smooth),border-color .25s var(--ease-smooth),box-shadow .25s var(--ease-smooth);
 }
-.tabs button:hover,.ctl button:hover{transform:translateY(-1.5px);border-color:rgba(0,14,47,.28);background:#fff}
-.tabs button:active,.ctl button:active{transform:scale(.95)}
+.tabs button:hover,.ctl button:hover,.ctl a.dl-btn:hover{transform:translateY(-1.5px);border-color:rgba(0,14,47,.28);background:#fff}
+.tabs button:active,.ctl button:active,.ctl a.dl-btn:active{transform:scale(.95)}
 .ctl button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 .tabs .on,.ctl [aria-pressed=true]{
@@ -342,21 +348,15 @@ section{position:relative;z-index:2}
 }
 .ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
 
-.dark .tabs button,.dark .ctl button{
+.dark .tabs button,.dark .ctl button,.dark .ctl a.dl-btn{
   background:rgba(255,255,255,.07);border-color:var(--line-dark);color:#e6efff;
 }
-.dark .tabs button:hover,.dark .ctl button:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32)}
+.dark .tabs button:hover,.dark .ctl button:hover,.dark .ctl a.dl-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32)}
 .dark .tabs .on,.dark .ctl [aria-pressed=true]{
   background:#fff;color:var(--navy);border-color:#fff;
 }
 .dark .ctl .primary{background:var(--blue);color:#fff;border-color:var(--blue)}
 .dark .ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
-
-.ex{
-  display:flex;flex-direction:column;gap:8px;margin-top:24px;
-  font:600 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;
-}
-.ex input{width:100%;accent-color:var(--blue);cursor:pointer;height:6px}
 
 /* ============ CODE / PYTHON IDE ============ */
 .code{padding:16vh 0}
@@ -394,15 +394,40 @@ textarea,pre{
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:32px}
 .cols > div{
   background:rgba(255,255,255,.72);border:1px solid var(--line);
-  border-radius:20px;padding:24px;
+  border-radius:20px;padding:24px;display:flex;flex-direction:column;
   transition:transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth);
+}
+.dark .cols > div{
+  background:rgba(255,255,255,.06);border-color:var(--line-dark);color:#fff;
 }
 .cols > div:hover{
   transform:translateY(-4px);
   box-shadow:0 18px 36px -22px rgba(0,14,47,.25);
   border-color:rgba(29,99,220,.32);
 }
+.dark .cols > div:hover{
+  box-shadow:0 18px 36px -22px rgba(0,0,0,.55);
+  border-color:rgba(77,140,255,.45);
+}
 .cols h3{font-size:20px;margin-bottom:8px;letter-spacing:-.02em}
+.skill-img{
+  margin-top:16px;width:100%;aspect-ratio:16/10;border-radius:12px;
+  border:1px dashed var(--line);
+  background:
+    var(--skill-img,none) center/cover no-repeat,
+    repeating-linear-gradient(45deg,rgba(29,99,220,.05) 0,rgba(29,99,220,.05) 8px,transparent 8px,transparent 16px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:#5b6884;overflow:hidden;
+}
+.dark .skill-img{
+  border-color:var(--line-dark);
+  background:
+    var(--skill-img,none) center/cover no-repeat,
+    repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 8px,transparent 8px,transparent 16px);
+  color:#9db4e2;
+}
+.skill-img img{width:100%;height:100%;object-fit:cover;display:block}
 
 .tl{list-style:none;margin-top:30px}
 .tl li{
@@ -962,7 +987,7 @@ async function initCad(){
   ({GLTFLoader} = await import('three/addons/loaders/GLTFLoader.js'));
   ({STLLoader} = await import('three/addons/loaders/STLLoader.js'));
   ({RoomEnvironment} = await import('three/addons/environments/RoomEnvironment.js'));
-  const box = $('#stage'), msg = $('#cadMsg'), slider = $('#cEx');
+  const box = $('#stage'), msg = $('#cadMsg'), dlBtn = $('#cDownload');
   const R = new T.WebGLRenderer({antialias:true, alpha:true});
   R.setPixelRatio(Math.min(devicePixelRatio, 2));
   box.prepend(R.domElement);
@@ -978,14 +1003,19 @@ async function initCad(){
   ctl.dampingFactor = .065;
   const key = new T.DirectionalLight(0xffffff, 2.1); key.position.set(3, 5, 4); S.add(key);
 
-  let cur, parts = [], mats = [], wire = false, sc = 1, tw = null, vis = true, loadToken = 0;
+  let cur, mats = [], wire = false, tw = null, vis = true, loadToken = 0, activeModel = MODELS[0];
   const dirs = {iso:[1.1, .7, 1.3], front:[0, 0, 1], top:[0, 1, .0001], side:[1, 0, 0]};
   const go = (n, now) => {
     const t = new T.Vector3(...dirs[n]).normalize().multiplyScalar(6);
     if(now || RM){ tw = null; cam.position.copy(t); }
     else tw = {f:cam.position.clone(), t, s:performance.now()};
   };
-  const explode = () => parts.forEach(p => p.o.position.copy(p.h).addScaledVector(p.d, slider.value * 1.3 / sc));
+  const setDownloadTarget = m => {
+    activeModel = m;
+    if(!dlBtn) return;
+    dlBtn.href = encodeURI(m.file);
+    dlBtn.setAttribute('download', m.file.split('/').pop() || `${m.name}.stl`);
+  };
   const rs = () => {
     const w = Math.max(1, box.clientWidth), h = Math.max(1, box.clientHeight);
     R.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix();
@@ -1012,6 +1042,7 @@ async function initCad(){
   async function load(i){
     const token = ++loadToken;
     const m = MODELS[i];
+    setDownloadTarget(m);
 
     $('#cadDesc').textContent = m.desc || '';
     $('#cadNote').textContent = m.note || '';
@@ -1026,16 +1057,13 @@ async function initCad(){
       const sz = bb.getSize(new T.Vector3());
       const c = bb.getCenter(new T.Vector3());
       const maxDim = Math.max(sz.x, sz.y, sz.z) || 1;
-      sc = 3.2 / maxDim;
+      const sc = 3.2 / maxDim;
       o.scale.multiplyScalar(sc);
       o.position.sub(c.multiplyScalar(sc));
       cur = new T.Group(); cur.add(o); S.add(cur); S.updateMatrixWorld(true);
-      let n = o; while(n.children.length === 1) n = n.children[0];
-      parts = n.children.map(ch => ({o:ch, h:ch.position.clone(), d:new T.Box3().setFromObject(ch).getCenter(new T.Vector3())}));
       mats = [];
       o.traverse(x => { if(x.isMesh) (Array.isArray(x.material) ? x.material : [x.material]).forEach(q => mats.push(q)); });
       mats.forEach(q => q.wireframe = wire);
-      explode();
       ctl.target.set(0, 0, 0);
       go('iso', true);
       msg.hidden = true;
@@ -1064,15 +1092,15 @@ async function initCad(){
     tabs.append(b);
   });
   if(tabs.firstChild) tabs.firstChild.classList.add('on');
+  setDownloadTarget(MODELS[0]);
   document.querySelectorAll('[data-v]').forEach(b => b.onclick = () => go(b.dataset.v));
-  slider.oninput = explode;
   $('#cWire').onclick = e => {
     wire = !wire;
     mats.forEach(q => q.wireframe = wire);
     e.currentTarget.setAttribute('aria-pressed', wire);
   };
   $('#cReset').onclick = () => {
-    slider.value = 0; explode(); wire = false;
+    wire = false;
     mats.forEach(q => q.wireframe = false);
     $('#cWire').setAttribute('aria-pressed', false);
     ctl.target.set(0, 0, 0); go('iso');
@@ -1130,7 +1158,7 @@ async function boot(){
   finally{ pyLoading = null; }
 }
 function initPy(){
-  const tabs = $('#pyTabs'), code = $('#pyCode'), stdin = $('#pyIn'), runBtn = $('#pyRun');
+  const tabs = $('#pyTabs'), code = $('#pyCode'), stdin = $('#pyIn'), runBtn = $('#pyRun'), dlBtn = $('#pyDownload');
   const pick = i => {
     const p = PY[i];
     [...tabs.children].forEach((b, j) => b.classList.toggle('on', j === i));
@@ -1156,6 +1184,18 @@ function initPy(){
   });
   $('#pyClear').onclick = () => { $('#pyOut').textContent = ''; };
   $('#pyReset').onclick = () => pick(window.__py);
+  dlBtn.onclick = () => {
+    const active = PY[window.__py] || PY[0];
+    const blob = new Blob([code.value], {type:'text/x-python;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = active.name || 'program.py';
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
   runBtn.onclick = async () => {
     runBtn.disabled = true;
     runBtn.textContent = 'Running...';
@@ -1233,7 +1273,7 @@ function initPy(){
 </section>
 
 <!-- CAD ARCHIVE -->
-<section class="cad light" id="cad" data-theme="light">
+<section class="cad dark" id="cad" data-theme="dark">
   <div class="wrap cadgrid">
     <div>
       <p class="eyebrow">CAD archive</p>
@@ -1248,15 +1288,15 @@ function initPy(){
         <button data-v="side">Side</button>
         <button id="cWire" aria-pressed="false">Wireframe</button>
         <button id="cReset">Reset</button>
+        <a class="dl-btn" id="cDownload" href="models/fuel-rail.stl" download="fuel-rail.stl">Download</a>
       </div>
-      <label class="ex">Exploded view<input id="cEx" type="range" min="0" max="1" step=".01" value="0"></label>
     </div>
     <div class="stage" id="stage"><p class="msg" id="cadMsg">The 3D viewer loads when you scroll here.</p></div>
   </div>
 </section>
 
 <!-- PROGRAMMING ARCHIVE -->
-<section class="code dark" id="code" data-theme="dark">
+<section class="code light" id="code" data-theme="light">
   <div class="wrap">
     <h2 class="rv">Programming Projects Displayer:</h2>
     <div class="tabs" id="pyTabs" aria-label="Programs"></div>
@@ -1277,26 +1317,47 @@ function initPy(){
       <button id="pyRun" class="primary">Run</button>
       <button id="pyClear">Clear</button>
       <button id="pyReset">Reset</button>
+      <button type="button" id="pyDownload">Download</button>
     </div>
   </div>
 </section>
 
 <!-- SKILLS -->
-<section class="skills light" id="skills" data-theme="light">
+<section class="skills dark" id="skills" data-theme="dark">
   <div class="wrap">
     <h2 class="rv">My Current Skills:</h2>
     <div class="cols">
-      <div><h3>CAD and design</h3><p>SolidWorks (CSWA certified)</p></div>
-      <div><h3>Programming</h3><p>Python</p></div>
-      <div><h3>Engineering analysis</h3><p class="ph">[Add: e.g. tools or methods you've used]</p></div>
-      <div><h3>Creative software</h3><p>Adobe Photoshop, Illustrator, Premiere Pro</p></div>
-      <div><h3>Technical communication</h3><p class="ph">[Add: reports, presentations, documentation]</p></div>
+      <div>
+        <h3>CAD and design</h3>
+        <p>SolidWorks (CSWA certified)</p>
+        <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
+      </div>
+      <div>
+        <h3>Programming</h3>
+        <p>Python</p>
+        <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
+      </div>
+      <div>
+        <h3>Engineering analysis</h3>
+        <p class="ph">[Add: e.g. tools or methods you've used]</p>
+        <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
+      </div>
+      <div>
+        <h3>Creative software</h3>
+        <p>Adobe Photoshop, Illustrator, Premiere Pro</p>
+        <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
+      </div>
+      <div>
+        <h3>Technical communication</h3>
+        <p class="ph">[Add: reports, presentations, documentation]</p>
+        <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- EXPERIENCE -->
-<section class="exp gray" id="experience" data-theme="light">
+<section class="exp light" id="experience" data-theme="light">
   <div class="wrap">
     <p class="eyebrow">Experience</p>
     <h2 class="rv">Where I've been involved.</h2>
@@ -1348,4 +1409,3 @@ function initPy(){
 </div>
 </body>
 </html>
-```[cite: 1, 2]
