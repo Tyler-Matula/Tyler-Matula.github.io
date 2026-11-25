@@ -711,7 +711,7 @@ const MODELS = [
 const PROGRAMS = [
   {
     name: 'tictactoe.py',
-    desc: 'Developed in CSE 1010: Intro to Computing for Engineers, this Tic-Tac-Toe game allowed me to work with Python classes, functions, and nested loops. The game features a CPU opponent that can prioritize winning moves and blocking the player. The game displays a Tic-Tac-Toe board, taking in user coordinates to make the next move.',
+    desc: 'Developed in CSE 1010: Intro to Computing for Engineers, this Tic-Tac-Toe game allowed me to work with Python classes, functions, and nested loops. The game features a CPU opponent that can prioritize winning moves and blocking the player. The game displays a Tic-Tac-Toe board and takes in user coordinates to make the next move.',
     note: 'Transparency notice: This project was completed as part of a course assignment and was built on top of pre-existing starter code.',
     stdin: '0,0\n0,1\n0,2\n1,0\n1,1\n1,2\n2,0\n2,1\n2,2',
     code: `import random
@@ -846,7 +846,7 @@ if __name__ == "__main__":
   },
   {
     name: 'hangman.py',
-    desc: 'Also developed in CSE 1010: Intro to Computing for Engineers, this Hangman game developed my skills with Python logic and functions. The game features input validation so repeated or invalid guesses do not take away lives.',
+    desc: 'Also developed in CSE 1010: Intro to Computing for Engineers, this Hangman game expanded my skills with Python input logic and functions. The game uses input validation, so repeated or invalid guesses do not deduct lives.',
     note: 'Transparency notice: This project was completed as part of a course assignment and was built on top of pre-existing starter code. The word list was also shortened for improved readability on this portfolio.',
     stdin: 'e\na\nr\ni\no\nt\nn\ns\nl\nc\nu\nd\np\nm\nh\ng\nb\nf\ny\nw\nk\nv\nx\nz\nj\nq',
     code: `import random
@@ -1566,11 +1566,11 @@ function initPythonIde(){
   <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav id="menu" aria-label="Primary">
     <a href="#about">About Me</a>
-    <a href="#cad">CAD</a>
-    <a href="#code">Code</a>
-    <a href="#skills">Skills</a>
-    <a href="#journey">Journey</a>
-    <a href="#contact">Contact</a>
+    <a href="#cad">CAD Work</a>
+    <a href="#code">Programming Projects</a>
+    <a href="#skills">My Current Skills</a>
+    <a href="#journey">My Journey</a>
+    <a href="#contact">Contact Me</a>
   </nav>
 </header>
 
@@ -1593,7 +1593,7 @@ function initPythonIde(){
 <section class="about light" id="about" data-theme="light">
   <div class="wrap">
     <h2 class="rv">About Me</h2>
-    <p class="words" id="words">I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was initially drawn to mechanical engineering because I wanted to better understand the complex systems I interact with every day and hopefully innovate them in ways that improve the lives of many. I am particularly interested in and actively seeking research and internship opportunities in aerospace, manufacturing, and medical technology.</p>
+    <p class="words" id="words">I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was initially drawn to mechanical engineering because I wanted to better understand the complex systems I interact with every day and, hopefully, innovate them in ways that improve the human condition. I am actively seeking research and internship opportunities, particularly related to aerospace, manufacturing, and medical technologies.</p>
     <div class="resume-box" aria-label="Résumé">
       <div class="resume-meta">
         <div class="resume-top">
@@ -1675,26 +1675,26 @@ function initPythonIde(){
     <div class="cols">
       <div>
         <h3>Computer-aided Design</h3>
-        <p>I have experience using CAD software SolidWorks, having earned my CSWA certificate last February. I am excited to develop my skills as I work with more complex CAD modeling.</p>
+        <p>I have experience using CAD software, including SolidWorks, and earned my CSWA certificate last February. I am excited to develop my skills as I work with more complex CAD modeling.</p>
         <div class="skill-img">
           <div class="skill-img-box" style="--skill-img: url('images/cswa-certificate.png')"></div>
         </div>
       </div>
       <div>
         <h3>Programming</h3>
-        <p>I am actively learning Python through CSE 1010: Intro to Computing for Engineers. The two projects showcased above were developed as assignments in that course.</p>
+        <p>I am actively learning Python through CSE 1010: Intro to Computing for Engineers. The two projects showcased above (Tic-Tac-Toe and Hangman) highlight my continuous development of this skill.</p>
       </div>
       <div>
         <h3>AI-Driven Development</h3>
-        <p>Through ENGR 2001: AI Literacy, I learned prompt-engineering techniques to have AI break down and assist with unfamiliar technical tasks.</p>
+        <p>Through ENGR 2001: AI Literacy, I learned prompt-engineering techniques to have AI break down and assist with unfamiliar technical tasks, especially in programming.</p>
       </div>
       <div>
         <h3>Creative Software</h3>
-        <p>Taking DMD-oriented dual-enrollment classes in high school, I developed skills in Adobe Photoshop, Illustrator, and Premiere Pro. In engineering, this has been particularly useful for drafting flowcharts, diagrams, and visual prototypes.</p>
+        <p>Taking DMD-oriented dual-enrollment classes in high school, I developed skills in Adobe Photoshop, Illustrator, and Premiere Pro. In engineering, this has been especially useful for drafting flowcharts, diagrams, and visual prototypes.</p>
       </div>
       <div>
         <h3>Technical Communication</h3>
-        <p>ME 1100: Communications for Engineers has developed my ability to communicate technical information across diverse audiences. Reports and assignments from that class can be viewed and downloaded below.</p>
+        <p>ME 1100: Communications for Engineers has developed my ability to communicate technical information across diverse audiences. Several assignments from the course can be viewed below and are intended to showcase my skills in structured technical writing.</p>
         <div class="reports-dl" aria-label="ME 1100 Reports">
           <span class="reports-title">View Technical Writing Samples</span>
           <div class="report-links" id="me1100ReportLinks"></div>
@@ -1738,7 +1738,7 @@ function initPythonIde(){
           <ul class="tl-list">
             <li><strong>UConn ECE Biology:</strong> Recognized for academic excellence in dual-enrollment biology through UConn's Early College Experience program.</li>
             <li><strong>ECSU Statistics Student Award:</strong> Recognized for academic excellence in dual-enrollment statistics through ECSU's Early College Experience program.</li>
-            <li><strong>UConn Early College Experience STEM Scholarship Recipient:</strong> Selected to receive a scholarship after the completion of STEM project aimed at bridging together multiple technical disciplines.</li>
+            <li><strong>UConn Early College Experience STEM Scholarship Recipient:</strong> Selected to receive a scholarship after the completion of a STEM project aimed at bridging together multiple technical disciplines.</li>
             <li><strong>State of Connecticut General Assembly Official Citation:</strong> Received a State of Connecticut General Assembly Citation honoring academic excellence and top 10 class standing.</li>
           </ul>
         </div>
