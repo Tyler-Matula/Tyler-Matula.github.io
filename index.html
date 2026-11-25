@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tyler Matula | Mechanical Engineering, UConn</title>
-<meta name="description" content="Tyler Matula, mechanical engineering student at the University of Connecticut: projects, CAD archive and Python.">
+<meta name="description" content="Tyler Matula, mechanical engineering student at the University of Connecticut: CAD projects, Python projects, skills, and experience.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital@1&display=swap" rel="stylesheet">
@@ -14,21 +14,22 @@
 @font-face{font-family:Aileron;font-weight:600;font-display:swap;src:local('Aileron SemiBold'),url('fonts/Aileron-SemiBold.woff2') format('woff2'),url('fonts/Aileron-SemiBold.otf') format('opentype')}
 @font-face{font-family:Aileron;font-weight:800;font-display:swap;src:local('Aileron Heavy'),url('fonts/Aileron-Heavy.woff2') format('woff2'),url('fonts/Aileron-Heavy.otf') format('opentype')}
 
-/* ============ UCONN THEME & APPLE MOTION TOKENS ============ */
+/* ============ THEME & MOTION TOKENS ============ */
 :root{
   --navy:#000e2f;
   --navy-2:#071947;
   --blue:#1d63dc;
   --blue-bright:#4d8cff;
-  --red:#c8102e;
-  --red-bright:#ff5c77;
+  --white:#ffffff;
+  --slate-dark:#263147;
+  --slate-mid:#4d5a75;
   --ink:#0b1630;
-  --paper:#f5f7fb;
-  --gray:#e5eaf2;
-  --line:rgba(0,14,47,.12);
-  --line-dark:rgba(255,255,255,.14);
+  --paper:#ffffff;
+  --gray:#e6ebf3;
+  --line:rgba(0,14,47,.14);
+  --line-dark:rgba(255,255,255,.16);
 
-  --sans:Aileron,Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif;
+  --sans:Aileron,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
   --serif:Newsreader,Georgia,serif;
   --pad:clamp(20px,5vw,84px);
 
@@ -38,6 +39,7 @@
   --scroll-p:0;
 }
 
+/* ============ BASE & TYPOGRAPHY ============ */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:76px}
 body{
@@ -55,18 +57,18 @@ a{color:inherit}
 
 .progress{
   position:fixed;top:0;left:0;right:0;height:2.5px;z-index:80;pointer-events:none;
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.08);
 }
 .progress i{
   display:block;height:100%;width:100%;
   transform-origin:0 50%;
   transform:scaleX(var(--scroll-p));
-  background:linear-gradient(90deg,var(--blue-bright),var(--blue) 78%,var(--red));
+  background:linear-gradient(90deg,var(--navy-2),var(--blue) 55%,var(--blue-bright));
   will-change:transform;
 }
 
 .skip{
-  position:fixed;left:12px;top:-60px;background:#fff;color:var(--navy);
+  position:fixed;left:12px;top:-60px;background:var(--white);color:var(--navy);
   padding:10px 16px;border-radius:999px;font-weight:600;z-index:100;
   text-decoration:none;box-shadow:0 10px 25px rgba(0,0,0,.25);
   transition:top .28s var(--ease-spring);
@@ -76,48 +78,48 @@ a{color:inherit}
 h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:1.02}
 h2{font-size:clamp(36px,5.2vw,82px);margin-bottom:28px;max-width:14em}
 
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  font:600 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--blue);margin-bottom:18px;
-}
-.eyebrow::before{
-  content:"";width:6px;height:6px;border-radius:50%;
-  background:var(--red);flex:none;
-}
-.dark .eyebrow,.hero .eyebrow{color:#9ec0ff}
-.dark .eyebrow::before,.hero .eyebrow::before{background:var(--red-bright)}
-
 .wrap{max-width:1280px;margin:0 auto;padding:0 var(--pad)}
 section{position:relative;z-index:2}
 .light{background:var(--paper)}
 .gray{background:var(--gray)}
 .dark{
   background:
-    radial-gradient(900px 520px at 85% 10%,rgba(29,99,220,.24),transparent 60%),
-    radial-gradient(500px 320px at 12% 85%,rgba(200,16,46,.1),transparent 65%),
+    radial-gradient(900px 520px at 85% 10%,rgba(29,99,220,.26),transparent 60%),
+    radial-gradient(520px 340px at 14% 85%,rgba(38,49,71,.55),transparent 65%),
     var(--navy);
-  color:#fff;
+  color:var(--white);
 }
-.ph{color:#6d7892;font-style:italic}
-.dark .ph{color:#95a8d1}
-.lede{max-width:52ch;font-size:clamp(18px,1.45vw,22px);color:inherit;opacity:.86}
+.ph{color:var(--slate-mid);font-style:italic}
+.dark .ph{color:#a8b8d8}
+.lede{max-width:52ch;font-size:clamp(18px,1.45vw,22px);color:inherit;opacity:.88}
 
-/* ============ NAV ============ */
+.showcase-tag{
+  display:inline-flex;align-items:center;gap:12px;
+  font:700 clamp(14px,1.45vw,21px)/1.2 var(--sans);
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#dce8ff;
+}
+.showcase-tag::before{
+  content:"";width:28px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--blue-bright),var(--white));
+  flex:none;
+}
+
+/* ============ NAVIGATION ============ */
 .nav{
   position:fixed;inset:0 0 auto;z-index:60;
   display:flex;justify-content:space-between;align-items:center;
-  padding:16px var(--pad);color:#fff;
+  padding:16px var(--pad);color:var(--white);
   transition:background .45s var(--ease-smooth),color .45s var(--ease-smooth),padding .4s var(--ease-out),box-shadow .45s var(--ease-smooth);
 }
 .nav.scrolled{padding:11px var(--pad)}
 .nav[data-t=dark]{
-  background:rgba(0,14,47,.44);
+  background:rgba(0,14,47,.48);
   backdrop-filter:saturate(180%) blur(18px);
   -webkit-backdrop-filter:saturate(180%) blur(18px);
 }
 .nav[data-t=light]{
-  background:rgba(245,247,251,.8);
+  background:rgba(255,255,255,.86);
   backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   color:var(--navy);
@@ -129,11 +131,11 @@ section{position:relative;z-index:2}
   transition:transform .3s var(--ease-spring);
 }
 .brand:active{transform:scale(.96)}
-.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.22)}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--blue-bright);box-shadow:0 0 0 3px rgba(77,140,255,.25)}
 
 .nav nav{display:flex;gap:24px;font-size:14px;font-weight:600}
 .nav nav a{
-  position:relative;text-decoration:none;opacity:.82;padding:4px 0;
+  position:relative;text-decoration:none;opacity:.84;padding:4px 0;
   transition:opacity .25s var(--ease-smooth),transform .3s var(--ease-spring);
 }
 .nav nav a::after{
@@ -154,26 +156,26 @@ section{position:relative;z-index:2}
 .nav[data-t=light] .burger{background:rgba(0,14,47,.05);border-color:var(--line)}
 .burger:active{transform:scale(.94)}
 
-/* ============ HERO ============ */
+/* ============ HERO & BUTTONS ============ */
 .hero{
-  height:200vh;position:relative;z-index:1;color:#fff;
+  height:200vh;position:relative;z-index:1;color:var(--white);
   background:
-    radial-gradient(ellipse 80% 65% at 72% 28%,rgba(29,99,220,.34),transparent 62%),
-    radial-gradient(ellipse 45% 40% at 22% 78%,rgba(200,16,46,.14),transparent 65%),
+    radial-gradient(ellipse 80% 65% at 72% 28%,rgba(29,99,220,.36),transparent 62%),
+    radial-gradient(ellipse 45% 40% at 22% 78%,rgba(38,49,71,.65),transparent 65%),
     var(--navy);
 }
 .hero-in{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:flex-end;padding:0 var(--pad) 10vh}
 #gears{position:absolute;inset:0;width:100%;height:100%;will-change:transform}
-#gears path,#gears circle{fill:none;stroke:#fff;stroke-opacity:.22;stroke-width:1.2;vector-effect:non-scaling-stroke}
-#gears .accent-ring{stroke:var(--red-bright);stroke-opacity:.45;stroke-width:1.4}
+#gears path,#gears circle{fill:none;stroke:var(--white);stroke-opacity:.22;stroke-width:1.2;vector-effect:non-scaling-stroke}
+#gears .accent-ring{stroke:var(--blue-bright);stroke-opacity:.5;stroke-width:1.4}
 
 .hero-copy{position:relative;max-width:940px;transform-origin:0 100%;will-change:transform,opacity}
-.hero h1{font-size:clamp(60px,12vw,190px);margin:8px 0 22px;color:#fff}
-.hero .lede{color:rgba(255,255,255,.88)}
+.hero h1{font-size:clamp(60px,12vw,190px);margin:8px 0 22px;color:var(--white)}
+
 .cta{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:34px;font-weight:600;align-items:center}
 .btn-primary{
   display:inline-flex;align-items:center;gap:8px;
-  text-decoration:none;background:var(--blue);color:#fff;
+  text-decoration:none;background:var(--blue);color:var(--white);
   padding:12px 22px;border-radius:999px;border:0;font:600 14px/1 var(--sans);cursor:pointer;
   box-shadow:0 10px 24px -8px rgba(29,99,220,.65);
   transition:transform .35s var(--ease-spring),background .25s var(--ease-smooth),box-shadow .35s var(--ease-out);
@@ -184,16 +186,16 @@ section{position:relative;z-index:2}
 .btn-ghost{
   display:inline-flex;align-items:center;gap:6px;
   text-decoration:none;padding:11px 18px;border-radius:999px;
-  border:1px solid rgba(255,255,255,.24);background:transparent;color:inherit;
+  border:1px solid rgba(255,255,255,.26);background:transparent;color:inherit;
   font:600 14px/1 var(--sans);cursor:pointer;
   transition:transform .35s var(--ease-spring),border-color .25s var(--ease-smooth),background .25s var(--ease-smooth);
 }
-.btn-ghost:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);transform:translateY(-2px)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.65);background:rgba(255,255,255,.08);transform:translateY(-2px)}
 .btn-ghost:active{transform:scale(.97)}
 .light .btn-ghost,.gray .btn-ghost{border-color:var(--line);color:var(--navy)}
 .light .btn-ghost:hover,.gray .btn-ghost:hover{border-color:var(--navy);background:rgba(0,14,47,.05)}
 
-/* ============ ABOUT & RÉSUMÉ SLOT ============ */
+/* ============ ABOUT & RÉSUMÉ ============ */
 .about{padding:10vh 0}
 .words{font:700 clamp(22px,2.3vw,34px)/1.32 var(--sans);letter-spacing:-.025em;max-width:34em}
 .js .words span{
@@ -202,33 +204,32 @@ section{position:relative;z-index:2}
 }
 .js .words span.on{opacity:1;transform:none}
 
-.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-top:36px;max-width:960px;align-items:start}
-.two > p,.resume-slot{
-  background:rgba(255,255,255,.68);border:1px solid var(--line);
-  border-radius:20px;padding:24px;backdrop-filter:blur(8px);
+.resume-box{
+  margin-top:36px;width:100%;
+  background:var(--white);border:1px solid var(--line);
+  border-radius:20px;padding:24px 28px;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;
+  transition:transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth),opacity .45s var(--ease-out);
 }
-.resume-slot{
-  display:flex;flex-direction:column;gap:14px;
-  transition:transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth);
+.resume-box:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 36px -22px rgba(0,14,47,.2);
+  border-color:rgba(29,99,220,.35);
 }
-.resume-slot:hover{
-  transform:translateY(-3px);
-  box-shadow:0 18px 36px -22px rgba(0,14,47,.22);
-  border-color:rgba(29,99,220,.3);
-}
-.resume-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.resume-label{font-weight:700;font-size:18px;letter-spacing:-.02em;color:var(--navy)}
-.resume-tag{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
-.resume-actions{display:flex;flex-wrap:wrap;gap:10px}
+.resume-meta{display:flex;flex-direction:column;gap:4px}
+.resume-top{display:flex;align-items:center;gap:12px}
+.resume-label{font-weight:800;font-size:19px;letter-spacing:-.02em;color:var(--navy)}
+.resume-tag{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.resume-sub{font-size:15px;color:var(--slate-dark)}
+.resume-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
 .js .rv{
-  opacity:0;transform:translateY(28px) scale(.985);
-  transition:opacity .75s var(--ease-out),transform .85s var(--ease-spring);
-  will-change:opacity,transform;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .45s var(--ease-out),transform .45s var(--ease-out);
 }
-.js .rv.in{opacity:1;transform:none}
+.js .rv.in{opacity:1;transform:translateY(0)}
 
-/* ============ RÉSUMÉ PREVIEW MODAL ============ */
+/* ============ RÉSUMÉ MODAL ============ */
 .modal-backdrop{
   position:fixed;inset:0;z-index:90;
   background:rgba(0,10,34,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -238,7 +239,7 @@ section{position:relative;z-index:2}
 .modal-backdrop.open{opacity:1;pointer-events:auto}
 .modal{
   width:min(980px,100%);height:min(88vh,840px);
-  background:var(--navy-2);color:#fff;border:1px solid var(--line-dark);
+  background:var(--navy-2);color:var(--white);border:1px solid var(--line-dark);
   border-radius:24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.65);
   display:flex;flex-direction:column;overflow:hidden;
   transform:translateY(16px) scale(.98);
@@ -253,65 +254,31 @@ section{position:relative;z-index:2}
 .modal-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .modal-close{
   font:600 13px/1 var(--sans);padding:9px 14px;border-radius:999px;
-  border:1px solid var(--line-dark);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;
+  border:1px solid var(--line-dark);background:rgba(255,255,255,.08);color:var(--white);cursor:pointer;
   transition:background .2s var(--ease-smooth),transform .25s var(--ease-spring);
 }
 .modal-close:hover{background:rgba(255,255,255,.16)}
 .modal-close:active{transform:scale(.95)}
-.modal-body{position:relative;flex:1;background:#0b1630;display:flex}
-.modal-frame{width:100%;height:100%;border:0;background:#fff}
+.modal-body{position:relative;flex:1;background:var(--slate-dark);display:flex}
+.modal-frame{width:100%;height:100%;border:0;background:var(--white)}
 
-/* ============ PROJECTS ============ */
-.projs{padding:16vh 0}
-.proj{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--pad);margin-top:6vh}
-.stick{position:sticky;top:14vh;height:70vh}
-.figs{
-  position:relative;height:100%;border-radius:24px;overflow:hidden;
-  box-shadow:0 24px 60px -24px rgba(0,14,47,.28),0 0 0 1px var(--line);
-}
-.fig{
-  position:absolute;inset:0;opacity:0;transform:scale(1.04);
-  transition:opacity .65s var(--ease-out),transform .85s var(--ease-out);
-  background:
-    var(--img,none) center/cover,
-    linear-gradient(rgba(0,14,47,.06) 1px,transparent 1px) 0 0/32px 32px,
-    linear-gradient(90deg,rgba(0,14,47,.06) 1px,transparent 1px) 0 0/32px 32px,
-    #d7dfec;
-  display:flex;align-items:flex-end;padding:20px;
-}
-.fig.on{opacity:1;transform:scale(1)}
-.fig span{
-  font-size:13px;font-weight:500;color:var(--navy);
-  background:rgba(255,255,255,.84);backdrop-filter:blur(10px);
-  padding:6px 12px;border-radius:999px;border:1px solid var(--line);
-}
-
-.step{min-height:78vh;display:flex;flex-direction:column;justify-content:center;max-width:460px}
-.step h3{font-size:clamp(30px,3.6vw,54px);margin-bottom:16px}
-.step p+p{margin-top:12px}
-
-.rows{margin-top:14vh;list-style:none;border-top:1px solid var(--line)}
-.rows li{
-  display:grid;grid-template-columns:70px 1fr 1.3fr;gap:20px;align-items:baseline;
-  padding:26px 16px;margin:0 -16px;border-bottom:1px solid var(--line);border-radius:14px;
-  transition:background .3s var(--ease-smooth),transform .35s var(--ease-spring);
-}
-.rows li:hover{background:rgba(255,255,255,.65);transform:translateX(6px)}
-.rows span{color:var(--blue);font-weight:700;font-variant-numeric:tabular-nums;transition:color .25s var(--ease-smooth)}
-.rows li:hover span{color:var(--red)}
-.rows h3{font-size:clamp(24px,3vw,40px)}
-
-/* ============ CAD ARCHIVE ============ */
+/* ============ CAD VIEWER ============ */
 .cad{padding:16vh 0}
 .cadgrid{display:grid;grid-template-columns:.82fr 1.38fr;gap:var(--pad);align-items:start}
+#cadTitle{max-width:none;margin-bottom:10px}
+.cad-desc{
+  font-size:clamp(16px,1.15vw,19px);line-height:1.55;
+  color:#dce8ff;max-width:42ch;margin-top:4px;
+}
+.cad-panel{display:flex;flex-direction:column;gap:14px}
 .stage{
   position:relative;height:min(72vh,640px);border-radius:24px;overflow:hidden;
-  background:radial-gradient(120% 100% at 50% 15%,#16326b,#040d24);
+  background:radial-gradient(120% 100% at 50% 15%,var(--slate-dark),var(--navy));
   border:1px solid var(--line-dark);
   box-shadow:0 24px 60px -26px rgba(0,0,0,.55);
 }
 .light .stage{
-  background:radial-gradient(120% 100% at 50% 15%,#f7f9fc,#d4dce9);
+  background:radial-gradient(120% 100% at 50% 15%,var(--white),var(--gray));
   border:1px solid var(--line);
   box-shadow:0 24px 60px -26px rgba(0,14,47,.22);
 }
@@ -319,164 +286,238 @@ section{position:relative;z-index:2}
 .stage canvas:active{cursor:grabbing}
 .msg{
   position:absolute;left:16px;right:16px;bottom:14px;
-  font-size:13px;color:#fff;background:rgba(0,14,47,.78);
+  font-size:13px;color:var(--white);background:rgba(0,14,47,.82);
   backdrop-filter:blur(8px);padding:8px 14px;border-radius:12px;pointer-events:none;
 }
-.light .msg{color:var(--navy);background:rgba(255,255,255,.84)}
+.light .msg{color:var(--navy);background:rgba(255,255,255,.88)}
 .msg[hidden]{display:none}
-#cadNote{margin-top:10px}
-#cadNote:empty{display:none}
 
 .tabs,.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
-.tabs button,.ctl button,.ctl a.dl-btn{
+.tabs button,.ctl button{
   font:600 13px var(--sans);padding:8px 15px;border-radius:999px;
-  border:1px solid var(--line);background:rgba(255,255,255,.72);color:var(--navy);
-  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;
+  border:1px solid var(--line);background:var(--white);color:var(--navy);
+  cursor:pointer;display:inline-flex;align-items:center;
   transition:transform .28s var(--ease-spring),background .25s var(--ease-smooth),color .25s var(--ease-smooth),border-color .25s var(--ease-smooth),box-shadow .25s var(--ease-smooth);
 }
-.tabs button:hover,.ctl button:hover,.ctl a.dl-btn:hover{transform:translateY(-1.5px);border-color:rgba(0,14,47,.28);background:#fff}
-.tabs button:active,.ctl button:active,.ctl a.dl-btn:active{transform:scale(.95)}
+.tabs button:hover,.ctl button:hover{transform:translateY(-1.5px);border-color:rgba(0,14,47,.32);background:var(--gray)}
+.tabs button:active,.ctl button:active{transform:scale(.95)}
 .ctl button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 .tabs .on,.ctl [aria-pressed=true]{
-  background:var(--navy);color:#fff;border-color:var(--navy);
+  background:var(--navy);color:var(--white);border-color:var(--navy);
   box-shadow:0 6px 16px -6px rgba(0,14,47,.5);
 }
 .ctl .primary{
-  background:var(--blue);color:#fff;border-color:var(--blue);
+  background:var(--blue);color:var(--white);border-color:var(--blue);
   box-shadow:0 8px 20px -6px rgba(29,99,220,.65);
 }
 .ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
 
-.dark .tabs button,.dark .ctl button,.dark .ctl a.dl-btn{
-  background:rgba(255,255,255,.07);border-color:var(--line-dark);color:#e6efff;
+.dark .tabs button,.dark .ctl button{
+  background:var(--slate-dark);border-color:var(--line-dark);color:var(--white);
 }
-.dark .tabs button:hover,.dark .ctl button:hover,.dark .ctl a.dl-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32)}
+.dark .tabs button:hover,.dark .ctl button:hover{background:var(--slate-mid);border-color:rgba(255,255,255,.35)}
 .dark .tabs .on,.dark .ctl [aria-pressed=true]{
-  background:#fff;color:var(--navy);border-color:#fff;
+  background:var(--white);color:var(--navy);border-color:var(--white);
 }
-.dark .ctl .primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dark .ctl .primary{background:var(--blue);color:var(--white);border-color:var(--blue)}
 .dark .ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
 
-/* ============ CODE / PYTHON IDE ============ */
+.below-dl{display:flex;align-items:center;justify-content:flex-start}
+.file-dl{
+  font:600 13px/1 var(--sans);padding:10px 18px;border-radius:999px;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  background:transparent;color:var(--navy);border:1px solid rgba(0,14,47,.26);
+  transition:transform .28s var(--ease-spring),background .25s var(--ease-smooth),border-color .25s var(--ease-smooth),color .25s var(--ease-smooth);
+}
+.file-dl:hover{
+  transform:translateY(-1.5px);background:var(--gray);border-color:var(--navy);
+}
+.file-dl:active{transform:scale(.96)}
+.dark .file-dl{
+  background:transparent;color:#dce8ff;border:1px solid rgba(255,255,255,.26);
+}
+.dark .file-dl:hover{
+  background:rgba(255,255,255,.08);border-color:var(--blue-bright);color:var(--white);
+}
+
+/* ============ PYTHON RUNNER ============ */
 .code{padding:16vh 0}
 .code .lede{margin-top:18px}
 .ide{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px}
 .pane{
-  background:#ffffff;color:var(--ink);padding:16px 18px;border-radius:18px;
+  background:var(--white);color:var(--ink);padding:16px 18px;border-radius:18px;
   border:1px solid var(--line);display:flex;flex-direction:column;
-  box-shadow:0 16px 40px -24px rgba(0,0,0,.35);
+  box-shadow:0 16px 40px -24px rgba(0,14,47,.22);
 }
-.pane:last-child{
-  background:#020b22;color:#dce8ff;border-color:rgba(158,192,255,.18);
+.console-col{display:flex;flex-direction:column;gap:14px}
+.console-col .pane{flex:1}
+.pane:last-child,.console-col .pane{
+  background:var(--navy);color:var(--white);border-color:rgba(180,206,255,.22);
   position:relative;
 }
-.pane:last-child::before{
+.console-col .pane::before{
   content:"";position:absolute;top:0;left:20px;right:20px;height:2px;border-radius:2px;
-  background:linear-gradient(90deg,var(--blue-bright),var(--red));opacity:.75;
+  background:linear-gradient(90deg,var(--blue),var(--blue-bright));opacity:.85;
 }
 .pane label{
   font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;
-  opacity:.62;margin:6px 0 8px;
+  opacity:.65;margin:6px 0 8px;
 }
 textarea,pre{
   font:13px/1.58 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   background:none;border:0;color:inherit;outline:none;overflow:auto;width:100%;
 }
-#pyCode{height:330px;resize:vertical;white-space:pre}
-#pyIn{resize:vertical;border-top:1px solid var(--line);padding-top:10px}
+#pyCode{height:330px;resize:vertical;white-space:pre;color:var(--ink)}
+#pyIn{resize:vertical;border-top:1px solid var(--line);padding-top:10px;color:var(--ink)}
 #pyOut{flex:1;min-height:420px;white-space:pre-wrap}
-.err{color:var(--red-bright)}
-.dim{opacity:.62}
+.err{color:#9ec0ff;font-weight:600}
+.dim{opacity:.65}
 
-/* ============ SKILLS, EXPERIENCE, CONTACT ============ */
+/* ============ SKILLS, EXPERIENCE & CONTACT ============ */
+@keyframes skillCardIn{
+  0%{opacity:0;transform:translateY(26px) scale(.97)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes skillGlowPulse{
+  0%,100%{box-shadow:0 10px 26px -18px rgba(77,140,255,.22)}
+  50%{box-shadow:0 16px 34px -16px rgba(77,140,255,.45)}
+}
+@keyframes experienceItemIn{
+  0%{opacity:0;transform:translateX(-18px) translateY(14px)}
+  100%{opacity:1;transform:translateX(0) translateY(0)}
+}
+@keyframes contactFloatIn{
+  0%{opacity:0;transform:translateY(28px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@keyframes mailUnderlineShift{
+  0%,100%{border-bottom-color:var(--blue-bright)}
+  50%{border-bottom-color:var(--white)}
+}
+
 .skills,.exp{padding:14vh 0}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:32px}
+.cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:32px}
 .cols > div{
-  background:rgba(255,255,255,.72);border:1px solid var(--line);
-  border-radius:20px;padding:24px;display:flex;flex-direction:column;
-  transition:transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth);
+  background:var(--white);border:1px solid var(--line);
+  border-radius:18px;padding:18px;display:flex;flex-direction:column;min-width:0;
+  transition:transform .34s var(--ease-spring),box-shadow .34s var(--ease-out),border-color .28s var(--ease-smooth);
 }
 .dark .cols > div{
-  background:rgba(255,255,255,.06);border-color:var(--line-dark);color:#fff;
+  background:var(--slate-dark);border-color:var(--line-dark);color:var(--white);
 }
+.js .skills .cols > div{
+  opacity:0;transform:translateY(26px) scale(.97);animation:none;
+}
+.js .skills.in .cols > div{
+  animation:skillCardIn .62s var(--ease-out) both;
+}
+.js .skills.in .cols > div:nth-child(1){animation-delay:0ms}
+.js .skills.in .cols > div:nth-child(2){animation-delay:65ms}
+.js .skills.in .cols > div:nth-child(3){animation-delay:130ms}
+.js .skills.in .cols > div:nth-child(4){animation-delay:195ms}
+.js .skills.in .cols > div:nth-child(5){animation-delay:260ms}
+
 .cols > div:hover{
-  transform:translateY(-4px);
-  box-shadow:0 18px 36px -22px rgba(0,14,47,.25);
-  border-color:rgba(29,99,220,.32);
+  transform:translateY(-6px);
+  box-shadow:0 18px 36px -22px rgba(0,14,47,.28);
+  border-color:rgba(29,99,220,.4);
 }
 .dark .cols > div:hover{
-  box-shadow:0 18px 36px -22px rgba(0,0,0,.55);
-  border-color:rgba(77,140,255,.45);
+  transform:translateY(-6px);
+  animation:skillGlowPulse 2.4s var(--ease-smooth) infinite;
+  border-color:var(--blue-bright);
 }
-.cols h3{font-size:20px;margin-bottom:8px;letter-spacing:-.02em}
+.cols h3{font-size:17px;margin-bottom:6px;letter-spacing:-.02em}
+.cols p{font-size:14px;line-height:1.45}
 .skill-img{
-  margin-top:16px;width:100%;aspect-ratio:16/10;border-radius:12px;
+  margin-top:14px;width:100%;aspect-ratio:16/10;border-radius:10px;
   border:1px dashed var(--line);
   background:
     var(--skill-img,none) center/cover no-repeat,
-    repeating-linear-gradient(45deg,rgba(29,99,220,.05) 0,rgba(29,99,220,.05) 8px,transparent 8px,transparent 16px);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  color:#5b6884;overflow:hidden;
+    repeating-linear-gradient(45deg,rgba(29,99,220,.06) 0,rgba(29,99,220,.06) 8px,transparent 8px,transparent 16px);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--slate-mid);overflow:hidden;
+  transition:transform .35s var(--ease-spring),border-color .28s var(--ease-smooth);
 }
+.cols > div:hover .skill-img{transform:scale(1.02)}
 .dark .skill-img{
   border-color:var(--line-dark);
   background:
     var(--skill-img,none) center/cover no-repeat,
-    repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 8px,transparent 8px,transparent 16px);
-  color:#9db4e2;
+    repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 8px,transparent 8px,transparent 16px);
+  color:#c5d6f7;
 }
+.cols > div:hover .skill-img{border-color:rgba(77,140,255,.55)}
 .skill-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media(max-width:1100px){
+  .cols{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+}
 
 .tl{list-style:none;margin-top:30px}
 .tl li{
   display:grid;grid-template-columns:200px 1fr;gap:var(--pad);
   padding:24px 18px;margin:0 -18px;border-top:1px solid var(--line);border-radius:16px;
-  transition:background .3s var(--ease-smooth),transform .35s var(--ease-spring);
+  transition:background .3s var(--ease-smooth),transform .35s var(--ease-spring),border-color .28s var(--ease-smooth);
 }
 .tl li:last-child{border-bottom:1px solid var(--line)}
-.tl li:hover{background:rgba(255,255,255,.65);transform:translateX(6px)}
+.js .tl li{
+  opacity:0;transform:translateX(-18px) translateY(14px);animation:none;
+}
+.js .tl li.in{
+  animation:experienceItemIn .58s var(--ease-out) both;
+  animation-delay:var(--tl-delay,0ms);
+}
+.tl li:hover{background:var(--gray);transform:translateX(6px);border-top-color:rgba(29,99,220,.3)}
 .tl span{font-weight:700;color:var(--blue);font-size:15px;transition:color .25s var(--ease-smooth)}
-.tl li:hover span{color:var(--red)}
+.tl li:hover span{color:var(--navy)}
 .tl h3{font-size:clamp(20px,2vw,28px);margin-bottom:8px;letter-spacing:-.02em}
 .tl p{max-width:62ch}
 
 .contact{padding:18vh 0 8vh}
+.js .contact .wrap > *{
+  opacity:0;transform:translateY(28px);animation:none;
+}
+.js .contact.in .wrap > *{
+  animation:contactFloatIn .65s var(--ease-out) both;
+}
+.js .contact.in .wrap > *:nth-child(2){animation-delay:75ms}
+.js .contact.in .wrap > *:nth-child(3){animation-delay:150ms}
+.js .contact.in .wrap > *:nth-child(4){animation-delay:225ms}
+
 .mail{
   display:inline-block;font:800 clamp(24px,5.2vw,80px)/1.06 var(--sans);
   letter-spacing:-.04em;text-decoration:none;
   border-bottom:2.5px solid var(--blue-bright);padding-bottom:4px;
   word-break:break-word;
-  transition:color .25s var(--ease-smooth),border-color .25s var(--ease-smooth),transform .35s var(--ease-spring);
+  animation:mailUnderlineShift 3.2s var(--ease-smooth) infinite;
+  transition:color .25s var(--ease-smooth),transform .32s var(--ease-spring);
 }
-.mail:hover{color:#b6d0ff;border-color:var(--red);transform:translateY(-2px)}
-.cta{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:34px;font-weight:600;align-items:center}
+.mail:hover{color:#c5d8ff;transform:translateY(-3px)}
 .foot{
   margin-top:12vh;padding-top:24px;border-top:1px solid var(--line-dark);
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
-  opacity:.72;font-size:14px;
+  opacity:.78;font-size:14px;
 }
-.foot-accent{color:var(--red-bright);font-weight:600}
+.foot-accent{color:var(--blue-bright);font-weight:600}
 
+/* ============ RESPONSIVE & MOTION PREFERENCES ============ */
 @media(max-width:820px){
   .burger{display:inline-flex;align-items:center;z-index:70}
   .nav nav{
     position:fixed;inset:0;
     background:rgba(0,14,47,.96);backdrop-filter:blur(24px);
     -webkit-backdrop-filter:blur(24px);
-    color:#fff;flex-direction:column;justify-content:center;gap:22px;
+    color:var(--white);flex-direction:column;justify-content:center;gap:22px;
     padding:var(--pad);font-size:28px;font-weight:800;
     opacity:0;pointer-events:none;transform:scale(.97);
     transition:opacity .32s var(--ease-out),transform .38s var(--ease-spring);
   }
   .nav.open nav{opacity:1;pointer-events:auto;transform:none}
-  .nav.open .brand{position:relative;z-index:70;color:#fff}
-  .two,.proj,.cadgrid,.ide{grid-template-columns:1fr}
-  .stick{top:64px;height:34vh;z-index:1}
-  .step{min-height:70vh}
-  .rows li{grid-template-columns:44px 1fr}
-  .rows li p{grid-column:2}
+  .nav.open .brand{position:relative;z-index:70;color:var(--white)}
+  .cadgrid,.ide{grid-template-columns:1fr}
   .tl li{grid-template-columns:1fr;gap:6px}
   .stage{height:56vh}
   #pyOut{min-height:240px}
@@ -490,58 +531,56 @@ textarea,pre{
   }
 }
 </style>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 <script type="module">
-
-/* ================= 1. SITE CONFIG ================= */
-// Path to your PDF file in the GitHub repository.
+/* ================= 1. CONFIGURATION ================= */
 const RESUME_FILE = 'resume/Tyler Matula - Résumé.pdf';
 
 const MODELS = [
-  // Supports .glb/.gltf and .stl files. Place files in the models/ folder or update paths below.
   {
     name: 'Fuel Rail',
     file: 'models/fuel-rail.stl',
-    desc: 'Redesigned fuel rail CAD model for the UConn Formula SAE internal combustion powertrain subsystem.',
-    note: 'Formula SAE | SolidWorks (.stl)'
+    desc: 'Redesigned fuel rail CAD model for the UConn Formula SAE internal combustion powertrain subsystem.'
   },
   {
     name: 'Mounting Brackets',
     file: 'models/mounting-brackets.stl',
-    desc: 'Add what these brackets support and how they mount.',
-    note: 'Formula SAE | SolidWorks (.stl)'
+    desc: 'Structural mounting brackets engineered for secure chassis and subsystem attachment.'
   },
   {
     name: 'Part1',
     file: 'models/part1.stl',
-    desc: 'Add a short description of Part 1.',
-    note: 'Formula SAE | SolidWorks (.stl)'
+    desc: 'CAD assembly component Part 1 — update this description for your part.'
   },
   {
     name: 'Part2',
     file: 'models/part2.stl',
-    desc: 'Add a short description of Part 2.',
-    note: 'Formula SAE | SolidWorks (.stl)'
+    desc: 'CAD assembly component Part 2 — update this description for your part.'
   },
   {
     name: 'Part3',
     file: 'models/part3.stl',
-    desc: 'Add a short description of Part 3.',
-    note: 'Formula SAE | SolidWorks (.stl)'
+    desc: 'CAD assembly component Part 3 — update this description for your part.'
   },
   {
     name: 'Part4',
     file: 'models/part4.stl',
-    desc: 'Add a short description of Part 4.',
-    note: 'Formula SAE | SolidWorks (.stl)'
+    desc: 'CAD assembly component Part 4 — update this description for your part.'
   }
 ];
 
-const PY = [
+const PROGRAMS = [
   {
     name: 'tictactoe.py',
-    tag: 'My project',
-    desc: 'A class-based Tic-Tac-Toe game featuring a CPU opponent that can identify winning moves, block the player, and prioritize strategic board positions.',
+    tag: 'Project',
+    desc: 'A class-based Tic-Tac-Toe game featuring a CPU opponent that identifies winning moves, blocks the player, and prioritizes strategic board positions.',
     stdin: '0,0\n0,1\n0,2\n1,0\n1,1\n1,2\n2,0\n2,1\n2,2',
     code: `import random
 
@@ -671,64 +710,25 @@ if __name__ == "__main__":
   },
   {
     name: 'hangman.py',
-    tag: 'My project',
-    desc: 'A command-line Hangman game with input validation: invalid and repeated guesses never cost a life. On this page the secret word comes from a short built-in list. Type letters (one per line) in the Input box and press Run.',
+    tag: 'Project',
+    desc: 'A command-line Hangman game with input validation so invalid and repeated guesses do not cost lives. Enter guesses one per line in the Input box and click Run.',
     stdin: 'e\na\nr\ni\no\nt\nn\ns\nl\nc\nu\nd\np\nm\nh\ng\nb\nf\ny\nw\nk\nv\nx\nz\nj\nq',
     code: `import random
 import string
 
 
 def choose_random_word(word_list):
-    """Select a random word from the supplied list.
-
-    Arguments:
-        word_list (list[str]): A nonempty list of words.
-
-    Side effects:
-        Advances the random generator's state. Does not modify word_list.
-
-    Returns:
-        str: A randomly selected word from word_list.
-    """
+    """Select a random word from the supplied list."""
     return random.choice(word_list)
 
 
 def valid_guess(g):
-    """
-    Determine whether a guess is exactly one lowercase English letter.
-
-    Arguments:
-        g (str): The guess to check.
-
-    Side effects:
-        None.
-
-    Returns:
-        bool: True if g is exactly one letter from a through z;
-        False otherwise.
-    """
-    if g in string.ascii_lowercase and len(g) == 1:
-        return True
-    else:
-        return False
+    """Return True if g is a single lowercase English letter."""
+    return g in string.ascii_lowercase and len(g) == 1
 
 
 def get_user_guess(guessed):
-    """
-    Repeatedly prompt for a letter until the user enters a valid guess
-    that has not already been guessed. Convert input to lowercase before
-    checking it. Do not remove surrounding whitespace.
-
-    Arguments:
-        guessed (set[str]): The lowercase letters already guessed.
-
-    Side effects:
-        Reads keyboard input and prints prompts and feedback for invalid
-        or repeated guesses. Does not modify guessed.
-
-    Returns:
-        str: A single lowercase English letter not already in guessed.
-    """
+    """Prompt until the user provides a valid, unguessed lowercase letter."""
     while True:
         guess = input("Guess a letter: ").lower()
         if not valid_guess(guess):
@@ -740,52 +740,17 @@ def get_user_guess(guessed):
 
 
 def analyze_guess(secret, display, guess):
-    """
-    Check whether a guessed letter occurs in the secret word and reveal
-    every occurrence in the display. Preserve previously revealed letters.
-
-    Arguments:
-        secret (str): A nonempty word containing lowercase English letters.
-        display (list[str]): The current display, with one entry per letter
-            in secret. Each entry is either "_" or its revealed letter.
-        guess (str): A single lowercase English letter.
-
-    Side effects:
-        Modifies display in place to reveal every occurrence of guess.
-        Leaves display unchanged if guess does not occur in secret.
-
-    Returns:
-        bool: True if guess occurs in secret; False otherwise.
-    """
+    """Reveal matching positions of guess in display and return whether found."""
     letter_found = False
-    for letter in range(len(secret)):
-        if secret[letter] == guess:
-            display[letter] = guess
+    for index in range(len(secret)):
+        if secret[index] == guess:
+            display[index] = guess
             letter_found = True
     return letter_found
 
 
 def hangman(secret, lives):
-    """
-    Run a Hangman game with the given secret word and starting lives.
-    Display progress and track available and guessed letters. Correct
-    guesses reveal letters without costing lives; incorrect guesses cost
-    one life. Invalid and repeated guesses do not cost lives.
-
-    End the game when the entire word is revealed or no lives remain.
-    Report whether the player won or lost and reveal the secret word.
-
-    Arguments:
-        secret (str): A nonempty word containing lowercase English letters.
-        lives (int): A positive integer specifying the starting number of lives.
-
-    Side effects:
-        Reads keyboard input and prints game state, prompts, feedback,
-        and the final result.
-
-    Returns:
-        None.
-    """
+    """Run a Hangman game session with the given secret word and starting lives."""
     print("Welcome to hangman!")
     guessed = set()
     remaining_letters = set(string.ascii_lowercase)
@@ -812,8 +777,6 @@ def hangman(secret, lives):
 
 
 if __name__ == "__main__":
-    # Short built-in word list for the website (the original program
-    # reads these from words.txt).
     all_words = [
         "bridge", "engine", "bucket", "garden", "hammer", "island",
         "kettle", "machine", "monkey", "mountain", "pencil", "pocket",
@@ -821,89 +784,132 @@ if __name__ == "__main__":
         "library", "journey", "rhythm", "scissors", "sponge", "weather",
     ]
     secret = choose_random_word(all_words)
-    hangman(secret, 10)
-`
+    hangman(secret, 10)`
   }
 ];
 
-/* ================= 2. PAGE BEHAVIOUR ================= */
-const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
-const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ================= 2. PAGE & SCROLL BEHAVIOUR ================= */
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 document.documentElement.classList.add('js');
 
-function gear(g, cx, cy, n, ro, rr, accent = false){
-  const st = 2 * Math.PI / n, f = [[0, rr], [.12, ro], [.42, ro], [.54, rr]];
-  let d = '';
-  for(let k = 0; k < n; k++) f.forEach(([a, r], i) => {
-    const t = (k + a) * st;
-    d += (k + i ? 'L' : 'M') + (cx + Math.cos(t) * r).toFixed(1) + ' ' + (cy + Math.sin(t) * r).toFixed(1);
+$$('.tl li').forEach((item, idx) => {
+  item.style.setProperty('--tl-delay', `${Math.min(idx, 6) * 55}ms`);
+});
+
+function buildGear(target, cx, cy, teeth, outerRadius, rootRadius, accent = false){
+  const step = (2 * Math.PI) / teeth;
+  const profile = [[0, rootRadius], [.12, outerRadius], [.42, outerRadius], [.54, rootRadius]];
+  let pathData = '';
+
+  for(let k = 0; k < teeth; k++){
+    profile.forEach(([angleOffset, radius], idx) => {
+      const theta = (k + angleOffset) * step;
+      const x = (cx + Math.cos(theta) * radius).toFixed(1);
+      const y = (cy + Math.sin(theta) * radius).toFixed(1);
+      pathData += (k + idx ? 'L' : 'M') + x + ' ' + y;
+    });
+  }
+
+  const ringClass = accent ? ' class="accent-ring"' : '';
+  target.innerHTML =
+    `<path d="${pathData}Z"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${(rootRadius * .7).toFixed(1)}"${ringClass}/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${(rootRadius * .2).toFixed(1)}"/>`;
+}
+
+buildGear($('#gA'), 560, 330, 30, 262, 238, true);
+buildGear($('#gB'), 235, 518, 15, 137, 113, false);
+
+const heroSection = $('#home');
+const heroCopy = $('#heroCopy');
+const gearsSvg = $('#gears');
+const gearA = $('#gA');
+const gearB = $('#gB');
+const aboutWords = $('#words');
+const navBar = $('#nav');
+const themedSections = $$('[data-theme]');
+
+aboutWords.innerHTML = aboutWords.dataset.text
+  .split(' ')
+  .map(word => `<span>${word}</span>`)
+  .join(' ');
+const wordSpans = $$('span', aboutWords);
+
+function updateScrollState(){
+  const y = scrollY;
+  const vh = innerHeight;
+  const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+  document.documentElement.style.setProperty('--scroll-p', clamp(y / maxScroll).toFixed(4));
+  navBar.classList.toggle('scrolled', y > 24);
+
+  if(prefersReducedMotion){
+    wordSpans.forEach(span => span.classList.add('on'));
+  }else{
+    const heroRange = Math.max(1, heroSection.offsetHeight - vh);
+    const p = clamp(y / heroRange);
+    heroCopy.style.transform = `translateY(${-p * 9}vh) scale(${1 - p * .24})`;
+    heroCopy.style.opacity = clamp(1.55 - p * 1.55);
+    gearsSvg.style.transform = `scale(${1 + p * .55})`;
+    gearA.setAttribute('transform', `translate(560 330) rotate(${p * 120}) translate(-560 -330)`);
+    gearB.setAttribute('transform', `translate(235 518) rotate(${-p * 240}) translate(-235 -518)`);
+
+    const wordsRect = aboutWords.getBoundingClientRect();
+    const wordProgress = clamp((vh * .82 - wordsRect.top) / Math.max(1, vh * .52 + wordsRect.height * .55));
+    wordSpans.forEach((span, index) => span.classList.toggle('on', index < wordProgress * wordSpans.length + 1));
+  }
+
+  let activeTheme = 'dark';
+  if(!navBar.classList.contains('open')){
+    themedSections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= 56 && rect.bottom > 56) activeTheme = sec.dataset.theme;
+    });
+  }
+  navBar.dataset.t = activeTheme;
+}
+
+let scrollScheduled = false;
+const scheduleScrollUpdate = () => {
+  if(scrollScheduled) return;
+  scrollScheduled = true;
+  requestAnimationFrame(() => {
+    scrollScheduled = false;
+    updateScrollState();
   });
-  const cls = accent ? ' class="accent-ring"' : '';
-  g.innerHTML = `<path d="${d}Z"/><circle cx="${cx}" cy="${cy}" r="${rr * .7}"${cls}/><circle cx="${cx}" cy="${cy}" r="${rr * .2}"/>`;
-}
-gear($('#gA'), 560, 330, 30, 262, 238, true);
-gear($('#gB'), 235, 518, 15, 137, 113, false);
+};
 
-const hero = $('#home'), hc = $('#heroCopy'), gs = $('#gears'), gA = $('#gA'), gB = $('#gB'), words = $('#words'), nav = $('#nav'), secs = $$('[data-theme]');
-words.innerHTML = words.dataset.text.split(' ').map(w => `<span>${w}</span>`).join(' ');
-const ws = $$('span', words);
+addEventListener('scroll', scheduleScrollUpdate, {passive:true});
+addEventListener('resize', scheduleScrollUpdate);
+updateScrollState();
 
-function tick(){
-  const y = scrollY, vh = innerHeight;
-  const maxDoc = Math.max(1, document.documentElement.scrollHeight - vh);
-  document.documentElement.style.setProperty('--scroll-p', clamp(y / maxDoc).toFixed(4));
-  nav.classList.toggle('scrolled', y > 24);
-
-  if(RM) ws.forEach(s => s.classList.add('on'));
-  else{
-    const heroSpan = Math.max(1, hero.offsetHeight - vh);
-    const p = clamp(y / heroSpan);
-    hc.style.transform = `translateY(${-p * 9}vh) scale(${1 - p * .24})`;
-    hc.style.opacity = clamp(1.55 - p * 1.55);
-    gs.style.transform = `scale(${1 + p * .55})`;
-    gA.setAttribute('transform', `translate(560 330) rotate(${p * 120}) translate(-560 -330)`);
-    gB.setAttribute('transform', `translate(235 518) rotate(${-p * 240}) translate(-235 -518)`);
-    const r = words.getBoundingClientRect();
-    const q = clamp((vh * .82 - r.top) / Math.max(1, vh * .52 + r.height * .55));
-    ws.forEach((s, i) => s.classList.toggle('on', i < q * ws.length + 1));
-  }
-  let t = nav.classList.contains('open') ? 'dark' : 'dark';
-  if(!nav.classList.contains('open')){
-    secs.forEach(s => { const r = s.getBoundingClientRect(); if(r.top <= 56 && r.bottom > 56) t = s.dataset.theme; });
-  }
-  nav.dataset.t = t;
-}
-let busy = false;
-const req = () => { if(!busy){ busy = true; requestAnimationFrame(() => { busy = false; tick(); }); } };
-addEventListener('scroll', req, {passive:true});
-addEventListener('resize', req);
-tick();
-
-/* Mobile menu & Résumé preview modal with Escape & body lock */
-const burger = $('#burger');
+/* Mobile Navigation & Résumé Modal */
+const burgerBtn = $('#burger');
 const resumeModal = $('#resumeModal');
 const resumeFrame = $('#resumeFrame');
 const resumeDownload = $('#resumeDownload');
 const resumeModalDownload = $('#resumeModalDownload');
 const resumeNewTab = $('#resumeNewTab');
 const encodedResumeUrl = encodeURI(RESUME_FILE);
-let lastFocused = null;
+let lastFocusedElement = null;
 
 resumeDownload.href = encodedResumeUrl;
 resumeModalDownload.href = encodedResumeUrl;
 resumeNewTab.href = encodedResumeUrl;
 
-function setMenu(open){
-  nav.classList.toggle('open', open);
-  document.body.classList.toggle('locked', open || resumeModal.classList.contains('open'));
-  burger.setAttribute('aria-expanded', open);
-  burger.textContent = open ? 'Close' : 'Menu';
-  tick();
+function setMobileMenuOpen(isOpen){
+  navBar.classList.toggle('open', isOpen);
+  document.body.classList.toggle('locked', isOpen || resumeModal.classList.contains('open'));
+  burgerBtn.setAttribute('aria-expanded', String(isOpen));
+  burgerBtn.textContent = isOpen ? 'Close' : 'Menu';
+  updateScrollState();
 }
 
 function openResumeModal(){
-  lastFocused = document.activeElement;
+  lastFocusedElement = document.activeElement;
   resumeFrame.src = `${encodedResumeUrl}#view=FitH`;
   resumeModal.classList.add('open');
   resumeModal.setAttribute('aria-hidden', 'false');
@@ -915,212 +921,288 @@ function closeResumeModal(){
   if(!resumeModal.classList.contains('open')) return;
   resumeModal.classList.remove('open');
   resumeModal.setAttribute('aria-hidden', 'true');
-  document.body.classList.toggle('locked', nav.classList.contains('open'));
+  document.body.classList.toggle('locked', navBar.classList.contains('open'));
   resumeFrame.removeAttribute('src');
-  if(lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-  lastFocused = null;
+  if(lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
+  lastFocusedElement = null;
 }
 
-burger.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
-$$('#menu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+burgerBtn.addEventListener('click', () => setMobileMenuOpen(!navBar.classList.contains('open')));
+$$('#menu a').forEach(link => link.addEventListener('click', () => setMobileMenuOpen(false)));
 $('#resumePreview').addEventListener('click', openResumeModal);
 $('#resumeClose').addEventListener('click', closeResumeModal);
-resumeModal.addEventListener('click', e => { if(e.target === resumeModal) closeResumeModal(); });
+resumeModal.addEventListener('click', event => {
+  if(event.target === resumeModal) closeResumeModal();
+});
 
-addEventListener('keydown', e => {
-  if(e.key === 'Escape'){
-    if(resumeModal.classList.contains('open')) closeResumeModal();
-    else if(nav.classList.contains('open')){ setMenu(false); burger.focus(); }
+addEventListener('keydown', event => {
+  if(event.key !== 'Escape') return;
+  if(resumeModal.classList.contains('open')) closeResumeModal();
+  else if(navBar.classList.contains('open')){
+    setMobileMenuOpen(false);
+    burgerBtn.focus();
   }
 });
 
-/* Projects sticky figure */
-const figs = $$('.fig');
-const so = new IntersectionObserver(es => es.forEach(e => {
-  if(e.isIntersecting) figs.forEach(f => f.classList.toggle('on', f.dataset.i === e.target.dataset.i));
-}), {rootMargin:'-45% 0px -45% 0px'});
-$$('.step').forEach(s => so.observe(s));
+/* Bidirectional Reveal Animations (replays on scroll up and down) */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.remove('in');
+      void entry.target.offsetWidth;
+      entry.target.classList.add('in');
+    }else{
+      entry.target.classList.remove('in');
+    }
+  });
+}, {threshold:.05});
 
-/* Apple-like staggered reveal */
-const ro = new IntersectionObserver(es => es.forEach(e => {
-  if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); }
-}), {threshold:.12});
-$$('.rv, .two > p, .resume-slot, .cols > div, .tl li, .rows li').forEach((el, idx) => {
-  if(!el.classList.contains('rv')) el.classList.add('rv');
-  el.style.transitionDelay = `${(idx % 4) * 55}ms`;
-  ro.observe(el);
+$$('.rv, .resume-box, .tl li, .skills, .contact').forEach(el => revealObserver.observe(el));
+
+/* Lazy Initialization for Heavy Modules */
+function lazyInit(selector, initFn, onError){
+  const target = $(selector);
+  if(!target) return;
+  new IntersectionObserver((entries, observer) => {
+    if(!entries[0].isIntersecting) return;
+    observer.disconnect();
+    Promise.resolve()
+      .then(initFn)
+      .catch(err => {
+        console.warn(err);
+        if(onError) onError();
+      });
+  }, {rootMargin:'700px'}).observe(target);
+}
+
+lazyInit('#cad', initCadViewer, () => {
+  $('#cadMsg').textContent = 'The 3D viewer could not load (requires WebGL and network access).';
+});
+lazyInit('#code', initPythonIde, () => {
+  $('#pyOut').textContent = 'The Python environment could not load.';
 });
 
-/* Lazy-load CAD & Pyodide */
-function lazy(sel, fn, fail){
-  const el = $(sel);
-  if(!el) return;
-  new IntersectionObserver((es, o) => {
-    if(es[0].isIntersecting){ o.disconnect(); Promise.resolve().then(fn).catch(e => { console.warn(e); fail && fail(); }); }
-  }, {rootMargin:'700px'}).observe(el);
-}
-lazy('#cad', initCad, () => { $('#cadMsg').textContent = 'The 3D viewer could not load (it needs a network connection and WebGL).'; });
-lazy('#code', initPy, () => { $('#pyOut').textContent = 'The Python editor could not load.'; });
-
-/* ================= 3. CAD VIEWER ================= */
-let T, OrbitControls, GLTFLoader, STLLoader, RoomEnvironment;
-
+/* ================= 3. 3D CAD VIEWER ================= */
 function disposeObject(root){
   if(!root) return;
   root.traverse(obj => {
     if(obj.geometry) obj.geometry.dispose();
     if(obj.material){
-      const list = Array.isArray(obj.material) ? obj.material : [obj.material];
-      list.forEach(m => {
-        for(const k in m){
-          if(m[k] && typeof m[k].dispose === 'function') m[k].dispose();
+      const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+      materials.forEach(mat => {
+        for(const key in mat){
+          if(mat[key] && typeof mat[key].dispose === 'function') mat[key].dispose();
         }
-        m.dispose();
+        mat.dispose();
       });
     }
   });
 }
 
-async function initCad(){
-  T = await import('three');
-  ({OrbitControls} = await import('three/addons/controls/OrbitControls.js'));
-  ({GLTFLoader} = await import('three/addons/loaders/GLTFLoader.js'));
-  ({STLLoader} = await import('three/addons/loaders/STLLoader.js'));
-  ({RoomEnvironment} = await import('three/addons/environments/RoomEnvironment.js'));
-  const box = $('#stage'), msg = $('#cadMsg'), dlBtn = $('#cDownload');
-  const R = new T.WebGLRenderer({antialias:true, alpha:true});
-  R.setPixelRatio(Math.min(devicePixelRatio, 2));
-  box.prepend(R.domElement);
+async function initCadViewer(){
+  const THREE = await import('three');
+  const {OrbitControls} = await import('three/addons/controls/OrbitControls.js');
+  const {GLTFLoader} = await import('three/addons/loaders/GLTFLoader.js');
+  const {STLLoader} = await import('three/addons/loaders/STLLoader.js');
+  const {RoomEnvironment} = await import('three/addons/environments/RoomEnvironment.js');
 
-  const S = new T.Scene();
-  const pmrem = new T.PMREMGenerator(R);
-  const envMap = pmrem.fromScene(new RoomEnvironment(), .04).texture;
-  S.environment = envMap;
+  const stage = $('#stage');
+  const statusMsg = $('#cadMsg');
+  const downloadLink = $('#cDownload');
 
-  const cam = new T.PerspectiveCamera(35, 1, .1, 100);
-  const ctl = new OrbitControls(cam, R.domElement);
-  ctl.enableDamping = true;
-  ctl.dampingFactor = .065;
-  const key = new T.DirectionalLight(0xffffff, 2.1); key.position.set(3, 5, 4); S.add(key);
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  stage.prepend(renderer.domElement);
 
-  let cur, mats = [], wire = false, tw = null, vis = true, loadToken = 0;
-  const dirs = {iso:[1.1, .7, 1.3], front:[0, 0, 1], top:[0, 1, .0001], side:[1, 0, 0]};
-  const go = (n, now) => {
-    const t = new T.Vector3(...dirs[n]).normalize().multiplyScalar(6);
-    if(now || RM){ tw = null; cam.position.copy(t); }
-    else tw = {f:cam.position.clone(), t, s:performance.now()};
+  const scene = new THREE.Scene();
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), .04).texture;
+
+  const camera = new THREE.PerspectiveCamera(35, 1, .1, 100);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = .065;
+
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.1);
+  keyLight.position.set(3, 5, 4);
+  scene.add(keyLight);
+
+  let currentModel = null;
+  let modelMaterials = [];
+  let wireframeEnabled = false;
+  let cameraTween = null;
+  let stageVisible = true;
+  let loadSequence = 0;
+
+  const presetViews = {
+    iso: [1.1, .7, 1.3],
+    front: [0, 0, 1],
+    top: [0, 1, .0001],
+    side: [1, 0, 0]
   };
-  const setDownloadTarget = m => {
-    if(!dlBtn || !m) return;
-    dlBtn.href = encodeURI(m.file);
-    dlBtn.setAttribute('download', m.file.split('/').pop() || `${m.name}.stl`);
+
+  const setView = (viewName, instant = false) => {
+    const targetPos = new THREE.Vector3(...presetViews[viewName]).normalize().multiplyScalar(6);
+    if(instant || prefersReducedMotion){
+      cameraTween = null;
+      camera.position.copy(targetPos);
+    }else{
+      cameraTween = {from: camera.position.clone(), to: targetPos, start: performance.now()};
+    }
   };
-  const rs = () => {
-    const w = Math.max(1, box.clientWidth), h = Math.max(1, box.clientHeight);
-    R.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix();
+
+  const updateDownloadLink = model => {
+    if(!downloadLink || !model) return;
+    downloadLink.href = encodeURI(model.file);
+    downloadLink.setAttribute('download', model.file.split('/').pop() || `${model.name}.stl`);
   };
-  new ResizeObserver(rs).observe(box); rs();
+
+  const handleResize = () => {
+    const w = Math.max(1, stage.clientWidth);
+    const h = Math.max(1, stage.clientHeight);
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  };
+
+  new ResizeObserver(handleResize).observe(stage);
+  handleResize();
 
   const gltfLoader = new GLTFLoader();
   const stlLoader = new STLLoader();
 
-  async function loadModelObject(m){
-    if(!m.file) throw new Error('Missing model file path');
-    if(m.file.toLowerCase().endsWith('.stl')){
-      const geo = await stlLoader.loadAsync(m.file);
-      if(!geo.attributes.normal) geo.computeVertexNormals();
-      const mat = new T.MeshStandardMaterial({color:0xa8b5cc, metalness:.85, roughness:.3});
-      const mesh = new T.Mesh(geo, mat);
-      const grp = new T.Group();
-      grp.add(mesh);
-      return grp;
+  async function loadAsset(model){
+    if(!model.file) throw new Error('Missing model file path');
+    if(model.file.toLowerCase().endsWith('.stl')){
+      const geometry = await stlLoader.loadAsync(model.file);
+      if(!geometry.attributes.normal) geometry.computeVertexNormals();
+      const material = new THREE.MeshStandardMaterial({color:0xb8c7e4, metalness:.85, roughness:.3});
+      const group = new THREE.Group();
+      group.add(new THREE.Mesh(geometry, material));
+      return group;
     }
-    return (await gltfLoader.loadAsync(m.file)).scene;
+    return (await gltfLoader.loadAsync(model.file)).scene;
   }
 
-  async function load(i){
-    const token = ++loadToken;
-    const m = MODELS[i];
-    setDownloadTarget(m);
+  async function selectModel(index){
+    const token = ++loadSequence;
+    const model = MODELS[index];
+    updateDownloadLink(model);
 
-    $('#cadDesc').textContent = m.desc || '';
-    $('#cadNote').textContent = m.note || '';
-    msg.hidden = false;
-    msg.textContent = `Loading ${m.name}...`;
+    $('#cadTitle').textContent = model.name;
+    $('#cadDesc').textContent = model.desc || '';
+    statusMsg.hidden = false;
+    statusMsg.textContent = `Loading ${model.name}...`;
 
     try{
-      const o = await loadModelObject(m);
-      if(token !== loadToken){ disposeObject(o); return; }
-      if(cur){ S.remove(cur); disposeObject(cur); }
-      const bb = new T.Box3().setFromObject(o);
-      const sz = bb.getSize(new T.Vector3());
-      const c = bb.getCenter(new T.Vector3());
-      const maxDim = Math.max(sz.x, sz.y, sz.z) || 1;
-      const sc = 3.2 / maxDim;
-      o.scale.multiplyScalar(sc);
-      o.position.sub(c.multiplyScalar(sc));
-      cur = new T.Group(); cur.add(o); S.add(cur); S.updateMatrixWorld(true);
-      mats = [];
-      o.traverse(x => { if(x.isMesh) (Array.isArray(x.material) ? x.material : [x.material]).forEach(q => mats.push(q)); });
-      mats.forEach(q => q.wireframe = wire);
-      ctl.target.set(0, 0, 0);
-      go('iso', true);
-      msg.hidden = true;
-    }catch(e){
-      if(token !== loadToken) return;
-      console.warn(e);
-      msg.hidden = false;
-      msg.textContent = `Could not load ${m.file}. Make sure the file is uploaded to your repository.`;
+      const loadedObj = await loadAsset(model);
+      if(token !== loadSequence){
+        disposeObject(loadedObj);
+        return;
+      }
+      if(currentModel){
+        scene.remove(currentModel);
+        disposeObject(currentModel);
+      }
+
+      const box = new THREE.Box3().setFromObject(loadedObj);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z) || 1;
+      const scale = 3.2 / maxDim;
+
+      loadedObj.scale.multiplyScalar(scale);
+      loadedObj.position.sub(center.multiplyScalar(scale));
+
+      currentModel = new THREE.Group();
+      currentModel.add(loadedObj);
+      scene.add(currentModel);
+      scene.updateMatrixWorld(true);
+
+      modelMaterials = [];
+      loadedObj.traverse(node => {
+        if(!node.isMesh) return;
+        const mats = Array.isArray(node.material) ? node.material : [node.material];
+        mats.forEach(mat => modelMaterials.push(mat));
+      });
+      modelMaterials.forEach(mat => { mat.wireframe = wireframeEnabled; });
+
+      controls.target.set(0, 0, 0);
+      setView('iso', true);
+      statusMsg.hidden = true;
+    }catch(err){
+      if(token !== loadSequence) return;
+      console.warn(err);
+      statusMsg.hidden = false;
+      statusMsg.textContent = `Could not load ${model.file}. Verify the file exists in the repository.`;
     }
   }
 
-  const tabs = $('#cadTabs');
-  MODELS.forEach((m, i) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = m.name;
-    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
-    b.onclick = () => {
-      [...tabs.children].forEach(x => {
-        const selected = x === b;
-        x.classList.toggle('on', selected);
-        x.setAttribute('aria-pressed', String(selected));
+  const tabContainer = $('#cadTabs');
+  MODELS.forEach((model, idx) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = model.name;
+    btn.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
+    btn.onclick = () => {
+      [...tabContainer.children].forEach(item => {
+        const selected = item === btn;
+        item.classList.toggle('on', selected);
+        item.setAttribute('aria-pressed', String(selected));
       });
-      load(i);
+      selectModel(idx);
     };
-    tabs.append(b);
+    tabContainer.append(btn);
   });
-  if(tabs.firstChild) tabs.firstChild.classList.add('on');
-  setDownloadTarget(MODELS[0]);
-  document.querySelectorAll('[data-v]').forEach(b => b.onclick = () => go(b.dataset.v));
-  $('#cWire').onclick = e => {
-    wire = !wire;
-    mats.forEach(q => q.wireframe = wire);
-    e.currentTarget.setAttribute('aria-pressed', wire);
+
+  if(tabContainer.firstChild) tabContainer.firstChild.classList.add('on');
+  if(MODELS[0]){
+    $('#cadTitle').textContent = MODELS[0].name;
+    $('#cadDesc').textContent = MODELS[0].desc || '';
+  }
+  updateDownloadLink(MODELS[0]);
+
+  $$('[data-v]').forEach(btn => {
+    btn.onclick = () => setView(btn.dataset.v);
+  });
+
+  $('#cWire').onclick = event => {
+    wireframeEnabled = !wireframeEnabled;
+    modelMaterials.forEach(mat => { mat.wireframe = wireframeEnabled; });
+    event.currentTarget.setAttribute('aria-pressed', String(wireframeEnabled));
   };
+
   $('#cReset').onclick = () => {
-    wire = false;
-    mats.forEach(q => q.wireframe = false);
-    $('#cWire').setAttribute('aria-pressed', false);
-    ctl.target.set(0, 0, 0); go('iso');
+    wireframeEnabled = false;
+    modelMaterials.forEach(mat => { mat.wireframe = false; });
+    $('#cWire').setAttribute('aria-pressed', 'false');
+    controls.target.set(0, 0, 0);
+    setView('iso');
   };
-  new IntersectionObserver(es => vis = es[0].isIntersecting).observe(box);
-  (function loop(t){
-    requestAnimationFrame(loop);
-    if(!vis) return;
-    if(tw){
-      const k = Math.min(1, (t - tw.s) / 550);
-      const e = 1 - Math.pow(1 - k, 3);
-      cam.position.lerpVectors(tw.f, tw.t, e);
-      k >= 1 && (tw = null);
+
+  new IntersectionObserver(entries => {
+    stageVisible = entries[0].isIntersecting;
+  }).observe(stage);
+
+  function renderLoop(now){
+    requestAnimationFrame(renderLoop);
+    if(!stageVisible) return;
+    if(cameraTween){
+      const t = Math.min(1, (now - cameraTween.start) / 550);
+      const eased = 1 - Math.pow(1 - t, 3);
+      camera.position.lerpVectors(cameraTween.from, cameraTween.to, eased);
+      if(t >= 1) cameraTween = null;
     }
-    ctl.update(); R.render(S, cam);
-  })(0);
-  load(0);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(renderLoop);
+
+  selectModel(0);
 }
 
-/* ================= 4. PYTHON EDITOR ================= */
-const PRE = `import builtins
+/* ================= 4. PYTHON RUNNER ================= */
+const INPUT_SHIM = `import builtins
 _in = INPUT_TEXT.splitlines()
 def _input(prompt=""):
     if not _in:
@@ -1130,89 +1212,117 @@ def _input(prompt=""):
     return v
 builtins.input = _input
 `;
-let py, pyLoading = null;
-const out = (s, k = '') => {
-  const o = $('#pyOut');
-  const line = Object.assign(document.createElement('span'), {className:k, textContent:s + '\n'});
-  o.append(line);
-  o.scrollTop = o.scrollHeight;
-};
-async function boot(){
-  if(py) return py;
-  if(pyLoading) return pyLoading;
-  pyLoading = (async () => {
-    out('Loading Python (about 10 MB, first run only)...', 'dim');
+
+let pyodideInstance = null;
+let pyodideLoadingPromise = null;
+
+function appendConsoleLine(text, styleClass = ''){
+  const output = $('#pyOut');
+  const span = Object.assign(document.createElement('span'), {
+    className: styleClass,
+    textContent: text + '\n'
+  });
+  output.append(span);
+  output.scrollTop = output.scrollHeight;
+}
+
+async function loadPythonRuntime(){
+  if(pyodideInstance) return pyodideInstance;
+  if(pyodideLoadingPromise) return pyodideLoadingPromise;
+
+  pyodideLoadingPromise = (async () => {
+    appendConsoleLine('Loading Python runtime (first run only)...', 'dim');
     if(!window.loadPyodide){
-      await new Promise((ok, no) => {
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
-        s.onload = ok; s.onerror = no; document.head.append(s);
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.append(script);
       });
     }
-    py = await loadPyodide();
-    out('Ready.', 'dim');
-    return py;
+    pyodideInstance = await loadPyodide();
+    appendConsoleLine('Ready.', 'dim');
+    return pyodideInstance;
   })();
-  try{ return await pyLoading; }
-  finally{ pyLoading = null; }
+
+  try{
+    return await pyodideLoadingPromise;
+  }finally{
+    pyodideLoadingPromise = null;
+  }
 }
-function initPy(){
-  const tabs = $('#pyTabs'), code = $('#pyCode'), stdin = $('#pyIn'), runBtn = $('#pyRun'), dlBtn = $('#pyDownload');
-  const pick = i => {
-    const p = PY[i];
-    [...tabs.children].forEach((b, j) => b.classList.toggle('on', j === i));
-    code.value = p.code; stdin.value = p.stdin;
-    $('#pyDesc').textContent = p.tag + '. ' + p.desc;
+
+function initPythonIde(){
+  const tabList = $('#pyTabs');
+  const codeEditor = $('#pyCode');
+  const stdinEditor = $('#pyIn');
+  const runButton = $('#pyRun');
+  const downloadButton = $('#pyDownload');
+
+  const selectProgram = index => {
+    const program = PROGRAMS[index];
+    [...tabList.children].forEach((btn, i) => btn.classList.toggle('on', i === index));
+    codeEditor.value = program.code;
+    stdinEditor.value = program.stdin;
+    $('#pyDesc').textContent = `${program.tag}. ${program.desc}`;
     $('#pyOut').textContent = '';
-    out('Press Run.', 'dim');
-    window.__py = i;
+    appendConsoleLine('Click Run to execute.', 'dim');
+    window.__pyIndex = index;
   };
-  PY.forEach((p, i) => {
-    const b = document.createElement('button');
-    b.textContent = p.name;
-    b.onclick = () => pick(i);
-    tabs.append(b);
+
+  PROGRAMS.forEach((program, idx) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = program.name;
+    btn.onclick = () => selectProgram(idx);
+    tabList.append(btn);
   });
-  pick(0);
-  code.addEventListener('keydown', e => {
-    if(e.key === 'Tab'){
-      e.preventDefault();
-      const s = code.selectionStart;
-      code.setRangeText('    ', s, code.selectionEnd, 'end');
+
+  selectProgram(0);
+
+  codeEditor.addEventListener('keydown', event => {
+    if(event.key === 'Tab'){
+      event.preventDefault();
+      const start = codeEditor.selectionStart;
+      codeEditor.setRangeText('    ', start, codeEditor.selectionEnd, 'end');
     }
   });
-  $('#pyClear').onclick = () => { $('#pyOut').textContent = ''; };
-  $('#pyReset').onclick = () => pick(window.__py);
-  dlBtn.onclick = () => {
-    const active = PY[window.__py] || PY[0];
-    const blob = new Blob([code.value], {type:'text/x-python;charset=utf-8'});
+
+  $('#pyReset').onclick = () => selectProgram(window.__pyIndex);
+
+  downloadButton.onclick = () => {
+    const active = PROGRAMS[window.__pyIndex] || PROGRAMS[0];
+    const blob = new Blob([codeEditor.value], {type:'text/x-python;charset=utf-8'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = active.name || 'program.py';
-    document.body.append(a);
-    a.click();
-    a.remove();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = active.name || 'program.py';
+    document.body.append(link);
+    link.click();
+    link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
-  runBtn.onclick = async () => {
-    runBtn.disabled = true;
-    runBtn.textContent = 'Running...';
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    runButton.textContent = 'Running...';
     $('#pyOut').textContent = '';
     try{
-      const p = await boot();
-      p.globals.set('INPUT_TEXT', stdin.value);
-      p.globals.set('__name__', '__main__');
-      p.setStdout({batched:s => out(s)});
-      p.setStderr({batched:s => out(s, 'err')});
-      await p.runPythonAsync(PRE + code.value);
-      out('Execution finished.', 'dim');
+      const py = await loadPythonRuntime();
+      py.globals.set('INPUT_TEXT', stdinEditor.value);
+      py.globals.set('__name__', '__main__');
+      py.setStdout({batched: text => appendConsoleLine(text)});
+      py.setStderr({batched: text => appendConsoleLine(text, 'err')});
+      await py.runPythonAsync(INPUT_SHIM + codeEditor.value);
+      appendConsoleLine('Execution finished.', 'dim');
     }catch(err){
-      console.error('Python execution failed:', err);
-      out(String(err && err.message || err).trim().split('\n').slice(-6).join('\n'), 'err');
+      console.error('Python execution error:', err);
+      const summary = String(err && err.message || err).trim().split('\n').slice(-6).join('\n');
+      appendConsoleLine(summary, 'err');
     }finally{
-      runBtn.disabled = false;
-      runBtn.textContent = 'Run';
+      runButton.disabled = false;
+      runButton.textContent = 'Run';
     }
   };
 }
@@ -1220,16 +1330,16 @@ function initPy(){
 </head>
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
-<a class="skip" href="#projects">Skip to projects</a>
+<a class="skip" href="#about">Skip to content</a>
 
 <header class="nav" id="nav" data-t="dark">
   <a class="brand" href="#home"><span class="brand-dot" aria-hidden="true"></span>Tyler Matula</a>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
-  <nav id="menu" aria-label="Main">
-    <a href="#about">About</a>
-    <a href="#projects">Projects</a>
+  <nav id="menu" aria-label="Primary">
+    <a href="#about">About Me</a>
     <a href="#cad">CAD</a>
     <a href="#code">Code</a>
+    <a href="#skills">Skills</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -1245,7 +1355,7 @@ function initPy(){
     </svg>
     <div class="hero-copy" id="heroCopy">
       <h1>Tyler Matula</h1>
-      <p class="lede">Engineering Showcase</p>
+      <p class="showcase-tag">Engineering Showcase</p>
     </div>
   </div>
 </section>
@@ -1253,52 +1363,55 @@ function initPy(){
 <!-- ABOUT -->
 <section class="about light" id="about" data-theme="light">
   <div class="wrap">
-    <p class="eyebrow">About</p>
-    <p class="words" id="words" data-text="I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was drawn to mechanical engineering for my desire to better understand the complex systems I interactive with on an everyday basis, and to hopefully innovate on them in ways that improve the lives of many."></p>
-    <div class="two">
-      <p>My most recent, up-to-date Résumé can be previewed or downloaded here:</p>
-      <div class="resume-slot" aria-label="Résumé">
+    <h2 class="rv">About Me</h2>
+    <p class="words" id="words" data-text="I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was drawn to mechanical engineering for my desire to better understand the complex systems I interact with on an everyday basis, and to innovate on them in ways that improve the lives of many."></p>
+    <div class="resume-box" aria-label="Résumé">
+      <div class="resume-meta">
         <div class="resume-top">
           <span class="resume-label">Résumé</span>
           <span class="resume-tag">PDF</span>
         </div>
-        <div class="resume-actions">
-          <button type="button" class="btn-primary" id="resumePreview">Preview</button>
-          <a class="btn-ghost" id="resumeDownload" href="resume/Tyler%20Matula%20-%20R%C3%A9sum%C3%A9.pdf" download>Download</a>
-        </div>
+        <span class="resume-sub">Preview or download my current résumé.</span>
+      </div>
+      <div class="resume-actions">
+        <button type="button" class="btn-primary" id="resumePreview">Preview</button>
+        <a class="btn-ghost" id="resumeDownload" href="resume/Tyler%20Matula%20-%20R%C3%A9sum%C3%A9.pdf" download>Download</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CAD ARCHIVE -->
+<!-- CAD PROJECTS -->
 <section class="cad dark" id="cad" data-theme="dark">
   <div class="wrap cadgrid">
     <div>
-      <p class="eyebrow">CAD archive</p>
-      <h2 class="rv">Models you can turn around.</h2>
-      <p id="cadDesc">Drag to rotate, scroll to zoom, right-drag to pan.</p>
-      <p class="ph" id="cadNote"></p>
-      <div class="tabs" id="cadTabs" aria-label="Models"></div>
+      <h2 class="rv">CAD Projects</h2>
+      <h3 class="rv" id="cadTitle" style="font-size:clamp(28px,3.2vw,48px);margin-bottom:8px">Fuel Rail</h3>
+      <p class="cad-desc" id="cadDesc"></p>
+      <div class="tabs" id="cadTabs" aria-label="CAD Models"></div>
       <div class="ctl">
-        <button data-v="iso">Iso</button>
-        <button data-v="front">Front</button>
-        <button data-v="top">Top</button>
-        <button data-v="side">Side</button>
-        <button id="cWire" aria-pressed="false">Wireframe</button>
-        <button id="cReset">Reset</button>
-        <a class="dl-btn" id="cDownload" href="models/fuel-rail.stl" download="fuel-rail.stl">Download</a>
+        <button type="button" data-v="iso">Iso</button>
+        <button type="button" data-v="front">Front</button>
+        <button type="button" data-v="top">Top</button>
+        <button type="button" data-v="side">Side</button>
+        <button type="button" id="cWire" aria-pressed="false">Wireframe</button>
+        <button type="button" id="cReset">Reset</button>
       </div>
     </div>
-    <div class="stage" id="stage"><p class="msg" id="cadMsg">The 3D viewer loads when you scroll here.</p></div>
+    <div class="cad-panel">
+      <div class="stage" id="stage"><p class="msg" id="cadMsg">3D viewer loads when scrolled into view.</p></div>
+      <div class="below-dl">
+        <a class="file-dl" id="cDownload" href="models/fuel-rail.stl" download="fuel-rail.stl">Download STL File</a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- PROGRAMMING ARCHIVE -->
+<!-- PROGRAMMING PROJECTS -->
 <section class="code light" id="code" data-theme="light">
   <div class="wrap">
-    <h2 class="rv">Programming Projects Displayer:</h2>
-    <div class="tabs" id="pyTabs" aria-label="Programs"></div>
+    <h2 class="rv">My Programming Projects</h2>
+    <div class="tabs" id="pyTabs" aria-label="Python Programs"></div>
     <p id="pyDesc" class="lede"></p>
     <div class="ide">
       <div class="pane">
@@ -1307,16 +1420,19 @@ function initPy(){
         <label for="pyIn">Input (one line per prompt)</label>
         <textarea id="pyIn" rows="3" spellcheck="false"></textarea>
       </div>
-      <div class="pane">
-        <label>Console</label>
-        <pre id="pyOut" aria-live="polite"></pre>
+      <div class="console-col">
+        <div class="pane">
+          <label>Console</label>
+          <pre id="pyOut" aria-live="polite"></pre>
+        </div>
+        <div class="below-dl">
+          <button type="button" id="pyDownload" class="file-dl">Download .py File</button>
+        </div>
       </div>
     </div>
     <div class="ctl">
-      <button id="pyRun" class="primary">Run</button>
-      <button id="pyClear">Clear</button>
-      <button id="pyReset">Reset</button>
-      <button type="button" id="pyDownload">Download</button>
+      <button type="button" id="pyRun" class="primary">Run</button>
+      <button type="button" id="pyReset">Reset</button>
     </div>
   </div>
 </section>
@@ -1324,10 +1440,10 @@ function initPy(){
 <!-- SKILLS -->
 <section class="skills dark" id="skills" data-theme="dark">
   <div class="wrap">
-    <h2 class="rv">My Current Skills:</h2>
+    <h2 class="rv">My Current Skills</h2>
     <div class="cols">
       <div>
-        <h3>CAD and design</h3>
+        <h3>CAD and Design</h3>
         <p>SolidWorks (CSWA certified)</p>
         <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
       </div>
@@ -1337,18 +1453,18 @@ function initPy(){
         <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
       </div>
       <div>
-        <h3>Engineering analysis</h3>
-        <p class="ph">[Add: e.g. tools or methods you've used]</p>
+        <h3>Engineering Analysis</h3>
+        <p class="ph">[Add: tools or methods]</p>
         <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
       </div>
       <div>
-        <h3>Creative software</h3>
+        <h3>Creative Software</h3>
         <p>Adobe Photoshop, Illustrator, Premiere Pro</p>
         <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
       </div>
       <div>
-        <h3>Technical communication</h3>
-        <p class="ph">[Add: reports, presentations, documentation]</p>
+        <h3>Technical Communication</h3>
+        <p class="ph">[Add: reports &amp; docs]</p>
         <div class="skill-img"><span>Image placeholder (.jpg / .png)</span></div>
       </div>
     </div>
@@ -1358,14 +1474,13 @@ function initPy(){
 <!-- EXPERIENCE -->
 <section class="exp light" id="experience" data-theme="light">
   <div class="wrap">
-    <p class="eyebrow">Experience</p>
-    <h2 class="rv">Where I've been involved.</h2>
+    <h2 class="rv">My Experience</h2>
     <ul class="tl">
       <li><span>Sep 2026 &ndash; now</span><div><h3>UConn Formula SAE</h3><p>Internal combustion powertrain subsystem. Redesigned the fuel rail in CAD.</p></div></li>
       <li><span>Sep 2026 &ndash; now</span><div><h3>American Society of Mechanical Engineers</h3><p>Technical workshops and professional development on mechanical design and manufacturing.</p></div></li>
-      <li><span>Jun &ndash; Aug 2026</span><div><h3>FedEx, package handler</h3><p>Loaded and sorted packages in a fast-paced warehouse, working with a team to meet shipping deadlines.</p></div></li>
-      <li><span>Jun &ndash; Aug 2025</span><div><h3>Town of Vernon Parks and Recreation, aquatic attendant</h3><p>Customer service, payments and pool safety.</p></div></li>
-      <li><span>2022 &ndash; now</span><div><h3>Community volunteer</h3><p>70+ documented hours supporting community events.</p></div></li>
+      <li><span>Jun &ndash; Aug 2026</span><div><h3>FedEx, Package Handler</h3><p>Loaded and sorted packages in a fast-paced warehouse, working with a team to meet shipping deadlines.</p></div></li>
+      <li><span>Jun &ndash; Aug 2025</span><div><h3>Town of Vernon Parks and Recreation, Aquatic Attendant</h3><p>Customer service, payments, and pool safety.</p></div></li>
+      <li><span>2022 &ndash; now</span><div><h3>Community Volunteer</h3><p>70+ documented hours supporting community events.</p></div></li>
       <li><span>2026</span><div><h3>Education</h3><p>B.S. Mechanical Engineering, UConn, anticipated May 2030, Honors Program (GPA 3.899). Rockville High School: ranked 5th of 241, over 60 college credits.</p></div></li>
       <li><span>2025 &ndash; 2026</span><div><h3>Recognition</h3><p>UConn Early College Experience STEM Scholarship (2026), RIT Computing Innovation Award (2025), CT General Assembly Official Citation (2026), ECSU Statistics Student Award (2026).</p></div></li>
     </ul>
@@ -1375,16 +1490,14 @@ function initPy(){
 <!-- CONTACT -->
 <section class="contact dark" id="contact" data-theme="dark">
   <div class="wrap">
-    <p class="eyebrow">Contact</p>
-    <h2 class="rv">Let's talk.</h2>
+    <h2 class="rv">Contact Me</h2>
     <a class="mail" href="mailto:tyler.matula@uconn.edu">tyler.matula@uconn.edu</a>
     <p class="cta">
       <a class="btn-primary" href="https://linkedin.com/in/tyler-matula" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn-ghost" href="#">GitHub [add URL]</a>
     </p>
     <footer class="foot">
       <span>Tyler Matula &middot; University of Connecticut</span>
-      <span class="foot-accent">Husky Pride &middot; Class of 2030</span>
+      <span class="foot-accent">Class of 2030</span>
     </footer>
   </div>
 </section>
