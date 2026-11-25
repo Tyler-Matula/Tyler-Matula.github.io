@@ -51,7 +51,7 @@ body{
 body.locked{overflow:hidden}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
-.dark :focus-visible,.hero :focus-visible{outline-color:var(--blue-bright)}
+.dark :focus-visible,.hero :focus-visible,.modal :focus-visible{outline-color:var(--blue-bright)}
 
 .progress{
   position:fixed;top:0;left:0;right:0;height:2.5px;z-index:80;pointer-events:none;
@@ -171,28 +171,30 @@ section{position:relative;z-index:2}
 .hero h1{font-size:clamp(60px,12vw,190px);margin:8px 0 22px;color:#fff}
 .hero .lede{color:rgba(255,255,255,.88)}
 .cta{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:34px;font-weight:600;align-items:center}
-.cta a.btn-primary{
+.btn-primary{
   display:inline-flex;align-items:center;gap:8px;
   text-decoration:none;background:var(--blue);color:#fff;
-  padding:12px 22px;border-radius:999px;
+  padding:12px 22px;border-radius:999px;border:0;font:600 14px/1 var(--sans);
+  cursor:pointer;
   box-shadow:0 10px 24px -8px rgba(29,99,220,.65);
   transition:transform .35s var(--ease-spring),background .25s var(--ease-smooth),box-shadow .35s var(--ease-out);
 }
-.cta a.btn-primary:hover{background:var(--blue-bright);transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(77,140,255,.7)}
-.cta a.btn-primary:active{transform:scale(.97)}
+.btn-primary:hover{background:var(--blue-bright);transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(77,140,255,.7)}
+.btn-primary:active{transform:scale(.97)}
 
-.cta a.btn-ghost{
+.btn-ghost{
   display:inline-flex;align-items:center;gap:6px;
-  text-decoration:none;padding:12px 18px;border-radius:999px;
-  border:1px solid rgba(255,255,255,.24);
+  text-decoration:none;padding:11px 18px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.24);background:transparent;color:inherit;
+  font:600 14px/1 var(--sans);cursor:pointer;
   transition:transform .35s var(--ease-spring),border-color .25s var(--ease-smooth),background .25s var(--ease-smooth);
 }
-.cta a.btn-ghost:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);transform:translateY(-2px)}
-.cta a.btn-ghost:active{transform:scale(.97)}
-.light .cta a.btn-ghost,.gray .cta a.btn-ghost{border-color:var(--line);color:var(--navy)}
-.light .cta a.btn-ghost:hover,.gray .cta a.btn-ghost:hover{border-color:var(--navy);background:rgba(0,14,47,.05)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);transform:translateY(-2px)}
+.btn-ghost:active{transform:scale(.97)}
+.light .btn-ghost,.gray .btn-ghost{border-color:var(--line);color:var(--navy)}
+.light .btn-ghost:hover,.gray .btn-ghost:hover{border-color:var(--navy);background:rgba(0,14,47,.05)}
 
-/* ============ ABOUT ============ */
+/* ============ ABOUT & RÉSUMÉ SLOT ============ */
 .about{padding:20vh 0}
 .words{font:800 clamp(30px,4.5vw,66px)/1.08 var(--sans);letter-spacing:-.03em;max-width:20em}
 .js .words span{
@@ -201,11 +203,25 @@ section{position:relative;z-index:2}
 }
 .js .words span.on{opacity:1;transform:none}
 
-.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-top:60px;max-width:920px}
-.two > p{
-  background:rgba(255,255,255,.68);border:1px solid var(--line);
+.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-top:60px;max-width:980px;align-items:start}
+.two > p,.resume-slot{
+  background:rgba(255,255,255,.72);border:1px solid var(--line);
   border-radius:20px;padding:24px;backdrop-filter:blur(8px);
 }
+.resume-slot{
+  display:flex;flex-direction:column;gap:14px;
+  transition:transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth);
+}
+.resume-slot:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 36px -22px rgba(0,14,47,.22);
+  border-color:rgba(29,99,220,.3);
+}
+.resume-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.resume-title{font-weight:700;font-size:18px;letter-spacing:-.02em;color:var(--navy)}
+.resume-meta{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.resume-desc{font-size:15px;opacity:.82}
+.resume-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 
 .js .rv{
   opacity:0;transform:translateY(28px) scale(.985);
@@ -214,45 +230,63 @@ section{position:relative;z-index:2}
 }
 .js .rv.in{opacity:1;transform:none}
 
-/* ============ PROJECTS ============ */
-.projs{padding:16vh 0}
-.proj{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--pad);margin-top:6vh}
-.stick{position:sticky;top:14vh;height:70vh}
-.figs{
-  position:relative;height:100%;border-radius:24px;overflow:hidden;
-  box-shadow:0 24px 60px -24px rgba(0,14,47,.28),0 0 0 1px var(--line);
+/* ============ RÉSUMÉ PREVIEW MODAL ============ */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:90;
+  background:rgba(0,10,34,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease-out);
 }
-.fig{
-  position:absolute;inset:0;opacity:0;transform:scale(1.04);
-  transition:opacity .65s var(--ease-out),transform .85s var(--ease-out);
-  background:
-    var(--img,none) center/cover,
-    linear-gradient(rgba(0,14,47,.06) 1px,transparent 1px) 0 0/32px 32px,
-    linear-gradient(90deg,rgba(0,14,47,.06) 1px,transparent 1px) 0 0/32px 32px,
-    #d7dfec;
-  display:flex;align-items:flex-end;padding:20px;
+.modal-backdrop.open{opacity:1;pointer-events:auto}
+.modal{
+  width:min(940px,100%);height:min(88vh,860px);
+  background:var(--navy-2);color:#fff;border:1px solid var(--line-dark);
+  border-radius:24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.65);
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(16px) scale(.98);
+  transition:transform .35s var(--ease-spring);
 }
-.fig.on{opacity:1;transform:scale(1)}
-.fig span{
-  font-size:13px;font-weight:500;color:var(--navy);
-  background:rgba(255,255,255,.84);backdrop-filter:blur(10px);
-  padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+.modal-backdrop.open .modal{transform:none}
+.modal-bar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 20px;border-bottom:1px solid var(--line-dark);background:rgba(0,14,47,.6);
 }
-
-.step{min-height:78vh;display:flex;flex-direction:column;justify-content:center;max-width:460px}
-.step h3{font-size:clamp(30px,3.6vw,54px);margin-bottom:16px}
-.step p+p{margin-top:12px}
-
-.rows{margin-top:14vh;list-style:none;border-top:1px solid var(--line)}
-.rows li{
-  display:grid;grid-template-columns:70px 1fr 1.3fr;gap:20px;align-items:baseline;
-  padding:26px 16px;margin:0 -16px;border-bottom:1px solid var(--line);border-radius:14px;
-  transition:background .3s var(--ease-smooth),transform .35s var(--ease-spring);
+.modal-title{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.modal-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.modal-close{
+  font:600 13px/1 var(--sans);padding:9px 14px;border-radius:999px;
+  border:1px solid var(--line-dark);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;
+  transition:background .2s var(--ease-smooth),transform .25s var(--ease-spring);
 }
-.rows li:hover{background:rgba(255,255,255,.65);transform:translateX(6px)}
-.rows span{color:var(--blue);font-weight:700;font-variant-numeric:tabular-nums;transition:color .25s var(--ease-smooth)}
-.rows li:hover span{color:var(--red)}
-.rows h3{font-size:clamp(24px,3vw,40px)}
+.modal-close:hover{background:rgba(255,255,255,.16)}
+.modal-close:active{transform:scale(.95)}
+.modal-body{
+  position:relative;flex:1;overflow:auto;padding:clamp(18px,4vw,36px);
+  background:#dfe6f2;color:var(--ink);
+}
+.resume-sheet{
+  max-width:780px;margin:0 auto;background:#fff;color:#0b1630;
+  border-radius:14px;padding:clamp(24px,4.5vw,44px);
+  box-shadow:0 18px 40px -20px rgba(0,14,47,.32);
+  font-size:14px;line-height:1.5;
+}
+.res-header{
+  border-bottom:2px solid var(--navy);padding-bottom:12px;margin-bottom:18px;
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;
+}
+.res-name{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--navy)}
+.res-contact{font-size:12.5px;color:#334155;display:flex;flex-wrap:wrap;gap:6px 14px}
+.res-sec{margin-top:16px}
+.res-sec h4{
+  font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:10px;
+}
+.res-item{margin-bottom:10px}
+.res-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-weight:700;color:var(--navy)}
+.res-sub{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-size:13px;color:#334155;margin-bottom:4px}
+.res-list{padding-left:18px;margin-top:4px}
+.res-list li{margin-bottom:3px;font-size:13.5px}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;font-size:13.5px}
 
 /* ============ CAD ARCHIVE ============ */
 .cad{padding:16vh 0}
@@ -359,7 +393,7 @@ textarea,pre{
 
 .tl{list-style:none;margin-top:30px}
 .tl li{
-  display:grid;grid-template-columns:200px 1fr;gap:var(--pad);
+  display:grid;grid-template-columns:210px 1fr;gap:var(--pad);
   padding:24px 18px;margin:0 -18px;border-top:1px solid var(--line);border-radius:16px;
   transition:background .3s var(--ease-smooth),transform .35s var(--ease-spring);
 }
@@ -379,6 +413,7 @@ textarea,pre{
   transition:color .25s var(--ease-smooth),border-color .25s var(--ease-smooth),transform .35s var(--ease-spring);
 }
 .mail:hover{color:#b6d0ff;border-color:var(--red);transform:translateY(-2px)}
+.cta{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:34px;font-weight:600;align-items:center}
 .foot{
   margin-top:12vh;padding-top:24px;border-top:1px solid var(--line-dark);
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
@@ -399,11 +434,7 @@ textarea,pre{
   }
   .nav.open nav{opacity:1;pointer-events:auto;transform:none}
   .nav.open .brand{position:relative;z-index:70;color:#fff}
-  .two,.proj,.cadgrid,.ide{grid-template-columns:1fr}
-  .stick{top:64px;height:34vh;z-index:1}
-  .step{min-height:70vh}
-  .rows li{grid-template-columns:44px 1fr}
-  .rows li p{grid-column:2}
+  .two,.cadgrid,.ide,.res-grid{grid-template-columns:1fr}
   .tl li{grid-template-columns:1fr;gap:6px}
   .stage{height:56vh}
   #pyOut{min-height:240px}
@@ -421,12 +452,101 @@ textarea,pre{
 <script type="module">
 
 /* ================= 1. SITE CONFIG ================= */
+// Optional: set RESUME_URL to a hosted PDF path (e.g. 'resume/Tyler_Matula_Resume.pdf')
+// to download/view a static file instead of generating one from RESUME_DATA.
+const RESUME_URL = '';
+
+const RESUME_DATA = {
+  name: 'Tyler Matula',
+  filename: 'Tyler_Matula_Resume.pdf',
+  location: 'Storrs, CT',
+  phone: '(860) 682-7275',
+  email: 'tyler.matula@uconn.edu',
+  linkedin: 'linkedin.com/in/tyler-matula',
+  education: [
+    {
+      school: 'University of Connecticut',
+      degree: 'Bachelor of Science in Mechanical Engineering | 3.899/4.000 GPA',
+      place: 'Storrs, CT',
+      dates: 'Anticipated May 2030',
+      bullets: [
+        'First-year student in the Honors Program and selected as one of approximately 75 STEM Scholars for the Class of 2030.',
+        'Relevant coursework: Computing for Engineers, Calculus II, Physics for Engineers, Design Lab I & II.'
+      ]
+    },
+    {
+      school: 'Rockville High School',
+      degree: 'High School Diploma | 104.68 GPA',
+      place: 'Vernon, CT',
+      dates: 'June 2026',
+      bullets: [
+        'Ranked 5th out of 241 students; completed a predominantly college-level course load to earn over 60 college credits while in high school.'
+      ]
+    }
+  ],
+  experience: [
+    {
+      org: 'FEDEX CORPORATION',
+      role: 'Package Handler',
+      place: 'Willington, CT',
+      dates: 'June 2026 – August 2026',
+      bullets: [
+        'Loaded and unloaded thousands of packages per shift in a fast-paced warehouse environment.',
+        'Collaborated with team members to sort packages and meet shipping deadlines.'
+      ]
+    },
+    {
+      org: 'TOWN OF VERNON PARKS AND RECREATION',
+      role: 'Aquatic Attendant',
+      place: 'Vernon, CT',
+      dates: 'June 2025 – August 2025',
+      bullets: [
+        'Greeted patrons, processed payments, and delivered excellent customer service.',
+        'Prioritized safety standards and monitored pool entry to ensure compliance with policies.'
+      ]
+    }
+  ],
+  skills: {
+    technical: 'SolidWorks (CSWA Certified), Adobe Creative Suite (Photoshop, Illustrator, Premiere Pro), Google Workspace, Programming (Python)',
+    professional: 'Adaptability, Communication, Organizational Skills, Problem Solving, Time Management'
+  },
+  activities: [
+    {
+      org: 'UConn Formula SAE Design Team',
+      dates: 'September 2026 – Present',
+      bullets: [
+        'Newly inducted member within the IC powertrain subsystem; utilized CAD to improve the fuel rail design, reducing weight by 18% and optimizing mounting structural stability ahead of prototype testing.'
+      ]
+    },
+    {
+      org: 'American Society of Mechanical Engineers (ASME)',
+      dates: 'September 2026 – Present',
+      bullets: [
+        'Participant in technical workshops and professional development seminars focused on mechanical design and manufacturing.'
+      ]
+    },
+    {
+      org: 'Community Volunteer',
+      dates: 'August 2022 – Present',
+      bullets: [
+        'Completed 70+ hours of documented volunteer service supporting community events.'
+      ]
+    }
+  ],
+  awards: [
+    'UConn Early College Experience STEM Scholarship Recipient (2026)',
+    'RIT Computing Innovation Award (2025)',
+    'State of Connecticut General Assembly Official Citation (2026)',
+    'ECSU Statistics Student Award (2026)'
+  ]
+};
+
 const MODELS = [
   // Supports .glb/.gltf and .stl files. Place files in the models/ folder or update paths below.
   {
     name: 'Fuel Rail',
     file: 'models/fuel-rail.stl',
-    desc: 'Redesigned fuel rail CAD model for the UConn Formula SAE internal combustion powertrain subsystem.',
+    desc: 'Redesigned fuel rail CAD model for the UConn Formula SAE IC powertrain subsystem—reducing weight by 18% and optimizing mounting structural stability ahead of prototype testing.',
     note: 'Formula SAE | SolidWorks (.stl)'
   },
   {
@@ -792,7 +912,7 @@ function tick(){
     const q = clamp((vh * .82 - r.top) / Math.max(1, vh * .52 + r.height * .55));
     ws.forEach((s, i) => s.classList.toggle('on', i < q * ws.length + 1));
   }
-  let t = nav.classList.contains('open') ? 'dark' : 'dark';
+  let t = 'dark';
   if(!nav.classList.contains('open')){
     secs.forEach(s => { const r = s.getBoundingClientRect(); if(r.top <= 56 && r.bottom > 56) t = s.dataset.theme; });
   }
@@ -804,31 +924,261 @@ addEventListener('scroll', req, {passive:true});
 addEventListener('resize', req);
 tick();
 
-/* Mobile menu with Escape & body lock */
+/* Mobile menu & Résumé preview / PDF download */
 const burger = $('#burger');
+const resumeModal = $('#resumeModal');
+const resumeSheet = $('#resumeSheet');
+const resumeDownloadBtn = $('#resumeDownloadBtn');
+const resumeModalDownloadBtn = $('#resumeModalDownloadBtn');
+let lastFocused = null;
+let generatedPdfUrl = null;
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderResumeSheet(d){
+  const eduHtml = d.education.map(e => `
+    <div class="res-item">
+      <div class="res-row"><span>${esc(e.school)}</span><span>${esc(e.place)}</span></div>
+      <div class="res-sub"><span>${esc(e.degree)}</span><span>${esc(e.dates)}</span></div>
+      <ul class="res-list">${e.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  const expHtml = d.experience.map(x => `
+    <div class="res-item">
+      <div class="res-row"><span>${esc(x.org)}</span><span>${esc(x.place)}</span></div>
+      <div class="res-sub"><span>${esc(x.role)}</span><span>${esc(x.dates)}</span></div>
+      <ul class="res-list">${x.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  const actHtml = d.activities.map(a => `
+    <div class="res-item">
+      <div class="res-row"><span>${esc(a.org)}</span><span>${esc(a.dates)}</span></div>
+      <ul class="res-list">${a.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  resumeSheet.innerHTML = `
+    <header class="res-header">
+      <div class="res-name">${esc(d.name)}</div>
+      <div class="res-contact">
+        <span>${esc(d.location)}</span>
+        <span>${esc(d.phone)}</span>
+        <span>${esc(d.email)}</span>
+        <span>${esc(d.linkedin)}</span>
+      </div>
+    </header>
+    <section class="res-sec">
+      <h4>Education</h4>
+      ${eduHtml}
+    </section>
+    <section class="res-sec">
+      <h4>Work Experience</h4>
+      ${expHtml}
+    </section>
+    <section class="res-sec">
+      <h4>Skills</h4>
+      <div class="res-grid">
+        <div><strong>Technical:</strong> ${esc(d.skills.technical)}</div>
+        <div><strong>Professional:</strong> ${esc(d.skills.professional)}</div>
+      </div>
+    </section>
+    <section class="res-sec">
+      <h4>Leadership and Activities</h4>
+      ${actHtml}
+    </section>
+    <section class="res-sec">
+      <h4>Awards and Achievements</h4>
+      <ul class="res-list">${d.awards.map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+    </section>`;
+}
+renderResumeSheet(RESUME_DATA);
+
+function pdfSafe(str){
+  return String(str)
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[^\x20-\x7E]/g, c => ({'\u2022':'-'}[c] || ''))
+    .replace(/([()\\])/g, '\\$1');
+}
+
+function wrapText(text, maxChars){
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const lines = [];
+  let cur = '';
+  for(const w of words){
+    if(!cur) cur = w;
+    else if((cur + ' ' + w).length <= maxChars) cur += ' ' + w;
+    else { lines.push(cur); cur = w; }
+  }
+  if(cur) lines.push(cur);
+  return lines;
+}
+
+function buildResumePdfBlob(d){
+  // Letter page: 612 x 792 pt, 42 pt margins
+  const ops = [];
+  let y = 750;
+  const left = 42, right = 570;
+
+  const text = (font, size, x, yy, s, color = '0.04 0.08 0.19') => {
+    ops.push(`${color} rg`);
+    ops.push(`BT /${font} ${size} Tf 1 0 0 1 ${x.toFixed(1)} ${yy.toFixed(1)} Tm (${pdfSafe(s)}) Tj ET`);
+  };
+  const line = (x1, yy, x2, w = 0.7, gray = '0.78') => {
+    ops.push(`${gray} RG ${w} w ${x1.toFixed(1)} ${yy.toFixed(1)} m ${x2.toFixed(1)} ${yy.toFixed(1)} l S`);
+  };
+  const sec = title => {
+    y -= 12;
+    text('F2', 9.5, left, y, title.toUpperCase(), '0.11 0.39 0.86');
+    y -= 3;
+    line(left, y, right, 0.6, '0.82');
+    y -= 11;
+  };
+  const bullets = list => {
+    for(const b of list){
+      const lines = wrapText(b, 92);
+      lines.forEach((ln, idx) => {
+        text('F1', 8.8, left + 10, y, (idx === 0 ? '- ' : '  ') + ln, '0.1 0.14 0.22');
+        y -= 10.6;
+      });
+    }
+  };
+
+  text('F2', 16, left, y, d.name, '0 0.05 0.18');
+  text('F1', 8.8, left, y - 13, `${d.location}  |  ${d.phone}  |  ${d.email}  |  ${d.linkedin}`, '0.25 0.32 0.44');
+  y -= 20;
+  line(left, y, right, 1.4, '0 0.05 0.18');
+
+  sec('Education');
+  for(const e of d.education){
+    text('F2', 9.5, left, y, e.school);
+    text('F2', 9, right - e.place.length * 4.4, y, e.place, '0.25 0.32 0.44');
+    y -= 11;
+    text('F1', 8.8, left, y, e.degree, '0.2 0.26 0.36');
+    text('F1', 8.8, right - e.dates.length * 4.2, y, e.dates, '0.25 0.32 0.44');
+    y -= 11;
+    bullets(e.bullets);
+    y -= 2;
+  }
+
+  sec('Work Experience');
+  for(const x of d.experience){
+    text('F2', 9.5, left, y, x.org);
+    text('F2', 9, right - x.place.length * 4.4, y, x.place, '0.25 0.32 0.44');
+    y -= 11;
+    text('F1', 8.8, left, y, x.role, '0.2 0.26 0.36');
+    text('F1', 8.8, right - x.dates.length * 4.2, y, x.dates, '0.25 0.32 0.44');
+    y -= 11;
+    bullets(x.bullets);
+    y -= 2;
+  }
+
+  sec('Skills');
+  for(const ln of wrapText('Technical: ' + d.skills.technical, 95)){
+    text('F1', 8.8, left, y, ln, '0.1 0.14 0.22'); y -= 10.6;
+  }
+  for(const ln of wrapText('Professional: ' + d.skills.professional, 95)){
+    text('F1', 8.8, left, y, ln, '0.1 0.14 0.22'); y -= 10.6;
+  }
+
+  sec('Leadership and Activities');
+  for(const a of d.activities){
+    text('F2', 9.3, left, y, a.org);
+    text('F1', 8.8, right - a.dates.length * 4.2, y, a.dates, '0.25 0.32 0.44');
+    y -= 11;
+    bullets(a.bullets);
+  }
+
+  sec('Awards and Achievements');
+  bullets(d.awards);
+
+  const stream = ops.join('\n');
+  const objects = [
+    '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
+    '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj',
+    '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >> endobj',
+    '4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',
+    '5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj',
+    `6 0 obj << /Length ${stream.length} >> stream\n${stream}\nendstream endobj`
+  ];
+
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+  for(const obj of objects){
+    offsets.push(pdf.length);
+    pdf += obj + '\n';
+  }
+  const xrefPos = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  for(let i = 1; i <= objects.length; i++){
+    pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+  }
+  pdf += `trailer << /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF`;
+  return new Blob([pdf], {type: 'application/pdf'});
+}
+
+function triggerResumeDownload(){
+  if(RESUME_URL){
+    const a = document.createElement('a');
+    a.href = RESUME_URL;
+    a.download = RESUME_DATA.filename;
+    a.click();
+    return;
+  }
+  if(!generatedPdfUrl){
+    generatedPdfUrl = URL.createObjectURL(buildResumePdfBlob(RESUME_DATA));
+  }
+  const a = document.createElement('a');
+  a.href = generatedPdfUrl;
+  a.download = RESUME_DATA.filename;
+  a.click();
+}
+
 function setMenu(open){
   nav.classList.toggle('open', open);
-  document.body.classList.toggle('locked', open);
+  document.body.classList.toggle('locked', open || resumeModal.classList.contains('open'));
   burger.setAttribute('aria-expanded', open);
   burger.textContent = open ? 'Close' : 'Menu';
   tick();
 }
+
+function openResumeModal(){
+  lastFocused = document.activeElement;
+  resumeModal.classList.add('open');
+  resumeModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('locked');
+  $('#resumeClose').focus();
+}
+
+function closeResumeModal(){
+  if(!resumeModal.classList.contains('open')) return;
+  resumeModal.classList.remove('open');
+  resumeModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.toggle('locked', nav.classList.contains('open'));
+  if(lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  lastFocused = null;
+}
+
 burger.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
 $$('#menu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-addEventListener('keydown', e => { if(e.key === 'Escape' && nav.classList.contains('open')){ setMenu(false); burger.focus(); } });
+$('#resumePreviewBtn').addEventListener('click', openResumeModal);
+$('#resumeClose').addEventListener('click', closeResumeModal);
+resumeDownloadBtn.addEventListener('click', triggerResumeDownload);
+resumeModalDownloadBtn.addEventListener('click', triggerResumeDownload);
+resumeModal.addEventListener('click', e => { if(e.target === resumeModal) closeResumeModal(); });
 
-/* Projects sticky figure */
-const figs = $$('.fig');
-const so = new IntersectionObserver(es => es.forEach(e => {
-  if(e.isIntersecting) figs.forEach(f => f.classList.toggle('on', f.dataset.i === e.target.dataset.i));
-}), {rootMargin:'-45% 0px -45% 0px'});
-$$('.step').forEach(s => so.observe(s));
+addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    if(resumeModal.classList.contains('open')) closeResumeModal();
+    else if(nav.classList.contains('open')){ setMenu(false); burger.focus(); }
+  }
+});
 
 /* Apple-like staggered reveal */
 const ro = new IntersectionObserver(es => es.forEach(e => {
   if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); }
 }), {threshold:.12});
-$$('.rv, .two > p, .cols > div, .tl li, .rows li').forEach((el, idx) => {
+$$('.rv, .two > p, .resume-slot, .cols > div, .tl li').forEach((el, idx) => {
   if(!el.classList.contains('rv')) el.classList.add('rv');
   el.style.transitionDelay = `${(idx % 4) * 55}ms`;
   ro.observe(el);
@@ -921,7 +1271,6 @@ async function initCad(){
     const token = ++loadToken;
     const m = MODELS[i];
 
-    // Update the selected model's information immediately, even while its file loads.
     $('#cadDesc').textContent = m.desc || '';
     $('#cadNote').textContent = m.note || '';
     msg.hidden = false;
@@ -1002,8 +1351,6 @@ async function initCad(){
 }
 
 /* ================= 4. PYTHON EDITOR ================= */
-// If the Input box runs out of lines, input() raises EOFError instead of
-// returning "" forever (which would hang programs that loop until valid input).
 const PRE = `import builtins
 _in = INPUT_TEXT.splitlines()
 def _input(prompt=""):
@@ -1092,16 +1439,16 @@ function initPy(){
 </head>
 <body>
 <div class="progress" aria-hidden="true"><i></i></div>
-<a class="skip" href="#projects">Skip to projects</a>
+<a class="skip" href="#cad">Skip to CAD</a>
 
 <header class="nav" id="nav" data-t="dark">
   <a class="brand" href="#home"><span class="brand-dot" aria-hidden="true"></span>Tyler Matula</a>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
   <nav id="menu" aria-label="Main">
     <a href="#about">About</a>
-    <a href="#projects">Projects</a>
     <a href="#cad">CAD</a>
     <a href="#code">Code</a>
+    <a href="#skills">Skills</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -1128,7 +1475,18 @@ function initPy(){
     <p class="eyebrow">About</p>
     <p class="words" id="words" data-text="I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was drawn to mechanical engineering for my desire to better understand the complex systems I interactive with on an everyday basis, and to hopefully innovate on them in ways that improve the lives of many."></p>
     <div class="two">
-      <p>My most recent, up-to-date Résumé can be downloaded here:</p>
+      <p>UConn STEM Scholar (Class of 2030) working on IC powertrain CAD in Formula SAE, CSWA-certified in SolidWorks, and building interactive Python tools.</p>
+      <div class="resume-slot" aria-label="Résumé">
+        <div class="resume-head">
+          <span class="resume-title">Résumé</span>
+          <span class="resume-meta">PDF</span>
+        </div>
+        <p class="resume-desc">Preview my current résumé on the page or download a PDF copy.</p>
+        <div class="resume-actions">
+          <button type="button" class="btn-primary" id="resumePreviewBtn">Preview</button>
+          <button type="button" class="btn-ghost" id="resumeDownloadBtn">Download PDF</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1187,11 +1545,11 @@ function initPy(){
   <div class="wrap">
     <h2 class="rv">My Current Skills:</h2>
     <div class="cols">
-      <div><h3>CAD and design</h3><p>SolidWorks (CSWA certified)</p></div>
+      <div><h3>CAD and design</h3><p>SolidWorks (CSWA Certified)</p></div>
       <div><h3>Programming</h3><p>Python</p></div>
-      <div><h3>Engineering analysis</h3><p class="ph">[Add: e.g. tools or methods you've used]</p></div>
-      <div><h3>Creative software</h3><p>Adobe Photoshop, Illustrator, Premiere Pro</p></div>
-      <div><h3>Technical communication</h3><p class="ph">[Add: reports, presentations, documentation]</p></div>
+      <div><h3>Engineering coursework</h3><p>Computing for Engineers, Calculus II, Physics for Engineers, Design Lab I &amp; II</p></div>
+      <div><h3>Creative &amp; workspace</h3><p>Adobe Creative Suite (Photoshop, Illustrator, Premiere Pro), Google Workspace</p></div>
+      <div><h3>Professional</h3><p>Adaptability, Communication, Organizational Skills, Problem Solving, Time Management</p></div>
     </div>
   </div>
 </section>
@@ -1202,13 +1560,13 @@ function initPy(){
     <p class="eyebrow">Experience</p>
     <h2 class="rv">Where I've been involved.</h2>
     <ul class="tl">
-      <li><span>Sep 2026 &ndash; now</span><div><h3>UConn Formula SAE</h3><p>Internal combustion powertrain subsystem. Redesigned the fuel rail in CAD.</p></div></li>
-      <li><span>Sep 2026 &ndash; now</span><div><h3>American Society of Mechanical Engineers</h3><p>Technical workshops and professional development on mechanical design and manufacturing.</p></div></li>
-      <li><span>Jun &ndash; Aug 2026</span><div><h3>FedEx, package handler</h3><p>Loaded and sorted packages in a fast-paced warehouse, working with a team to meet shipping deadlines.</p></div></li>
-      <li><span>Jun &ndash; Aug 2025</span><div><h3>Town of Vernon Parks and Recreation, aquatic attendant</h3><p>Customer service, payments and pool safety.</p></div></li>
-      <li><span>2022 &ndash; now</span><div><h3>Community volunteer</h3><p>70+ documented hours supporting community events.</p></div></li>
-      <li><span>2026</span><div><h3>Education</h3><p>B.S. Mechanical Engineering, UConn, anticipated May 2030, Honors Program (GPA 3.899). Rockville High School: ranked 5th of 241, over 60 college credits.</p></div></li>
-      <li><span>2025 &ndash; 2026</span><div><h3>Recognition</h3><p>UConn Early College Experience STEM Scholarship (2026), RIT Computing Innovation Award (2025), CT General Assembly Official Citation (2026), ECSU Statistics Student Award (2026).</p></div></li>
+      <li><span>Sep 2026 &ndash; Present</span><div><h3>UConn Formula SAE Design Team</h3><p>IC powertrain subsystem; utilized CAD to improve the fuel rail design, reducing weight by 18% and optimizing mounting structural stability ahead of prototype testing.</p></div></li>
+      <li><span>Sep 2026 &ndash; Present</span><div><h3>American Society of Mechanical Engineers (ASME)</h3><p>Participant in technical workshops and professional development seminars focused on mechanical design and manufacturing.</p></div></li>
+      <li><span>Jun &ndash; Aug 2026</span><div><h3>FedEx Corporation, Package Handler</h3><p>Willington, CT. Loaded and unloaded thousands of packages per shift in a fast-paced warehouse environment, collaborating to sort packages and meet shipping deadlines.</p></div></li>
+      <li><span>Jun &ndash; Aug 2025</span><div><h3>Town of Vernon Parks and Recreation, Aquatic Attendant</h3><p>Vernon, CT. Greeted patrons, processed payments, delivered customer service, and monitored pool entry to enforce safety standards and policies.</p></div></li>
+      <li><span>Aug 2022 &ndash; Present</span><div><h3>Community Volunteer</h3><p>Completed 70+ hours of documented volunteer service supporting community events.</p></div></li>
+      <li><span>Anticipated May 2030</span><div><h3>Education</h3><p>B.S. Mechanical Engineering, UConn (3.899/4.000 GPA), Honors Program &amp; STEM Scholar (~75 in Class of 2030). Rockville High School (June 2026, 104.68 GPA): ranked 5th of 241, 60+ college credits.</p></div></li>
+      <li><span>2025 &ndash; 2026</span><div><h3>Awards &amp; Achievements</h3><p>UConn Early College Experience STEM Scholarship Recipient (2026), RIT Computing Innovation Award (2025), State of Connecticut General Assembly Official Citation (2026), ECSU Statistics Student Award (2026).</p></div></li>
     </ul>
   </div>
 </section>
@@ -1221,14 +1579,31 @@ function initPy(){
     <a class="mail" href="mailto:tyler.matula@uconn.edu">tyler.matula@uconn.edu</a>
     <p class="cta">
       <a class="btn-primary" href="https://linkedin.com/in/tyler-matula" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn-ghost" href="#">GitHub [add URL]</a>
+      <a class="btn-ghost" href="tel:+18606827275">(860) 682-7275</a>
     </p>
     <footer class="foot">
-      <span>Tyler Matula &middot; University of Connecticut</span>
+      <span>Tyler Matula &middot; University of Connecticut &middot; Storrs, CT</span>
       <span class="foot-accent">Husky Pride &middot; Class of 2030</span>
     </footer>
   </div>
 </section>
 </main>
+
+<!-- RÉSUMÉ PREVIEW MODAL -->
+<div class="modal-backdrop" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-bar">
+      <span class="modal-title" id="resumeModalTitle">Tyler Matula &mdash; Résumé Preview</span>
+      <div class="modal-tools">
+        <button type="button" class="btn-primary" id="resumeModalDownloadBtn">Download PDF</button>
+        <button type="button" class="modal-close" id="resumeClose">Close</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <article class="resume-sheet" id="resumeSheet"></article>
+    </div>
+  </div>
+</div>
 </body>
 </html>
+```[cite: 1, 2]
