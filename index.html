@@ -592,20 +592,22 @@ if __name__ == "__main__":
     game = TicTacToe()
     first = random.choice(("X", "O"))
     game.play("X", "O", first)`
-  }
-];
-  {name:'beam_deflection.py', tag:'Example, not one of my projects',
-   desc:'A textbook formula as a program: maximum deflection of a simply supported beam under a uniform load. The input values are example numbers.',
-   stdin:'',
-   code:`# Simply supported beam, uniform load: max deflection = 5 w L^4 / (384 E I)
-w = 2000      # load, N/m (example value)
-L = 3.0       # span, m (example value)
-E = 200e9     # Young's modulus, Pa (steel)
-I = 8.0e-6    # second moment of area, m^4 (example value)
+  },
+
+  {
+    name: 'beam_deflection.py',
+    tag: 'Example, not one of my projects',
+    desc: 'A textbook formula as a program: maximum deflection of a simply supported beam under a uniform load. The input values are example numbers.',
+    stdin: '',
+    code: `# Simply supported beam, uniform load: max deflection = 5 w L^4 / (384 E I)
+w = 2000
+L = 3.0
+E = 200e9
+I = 8.0e-6
 
 delta = 5 * w * L**4 / (384 * E * I)
-print(f"Max deflection: {delta * 1000:.2f} mm")
-`},
+print(f"Max deflection: {delta * 1000:.2f} mm")`
+  }
 ];
 
 /* ================= 2. PAGE BEHAVIOUR ================= */
