@@ -462,56 +462,132 @@ const MODELS = [
 ];
 
 const PY = [
-  {name:'grade_lookup.py', tag:'My project',
-   desc:'Looks up a student\'s score on one of three tests and prints it as a percentage. Every input is validated: an unknown student, a test number outside 1 to 3, or points that are not a positive integer give a clear error message instead of a crash. Try Dave, or test number 4.',
-   stdin:'Alice\n2\n25',
-   code:`def get_user_data(grade_database):
-    name    = input("Student name: ")
-    test_s  = input("Test number (1, 2, or 3): ")
-    total_s = input("Points possible: ")
+  {
+    name: 'tic_tac_toe.py',
+    tag: 'My project',
+    desc: 'Playable Tic-Tac-Toe game in Python with a rule-based CPU opponent that checks for winning moves, blocks opponent wins, and prioritizes center and corner squares.',
+    stdin: '1,1\n0,0\n2,2',
+    code: `import random
 
-    if name not in grade_database:
-        raise ValueError("Student not found.")
+class TicTacToe:
+    def __init__(self):
+        self.board = [
+            [' ', ' ', ' '],
+            [' ', ' ', ' '],
+            [' ', ' ', ' '],
+        ]
 
-    try:
-        test = int(test_s)
-    except ValueError:
-        raise ValueError("Please enter a valid test number.")
+    def print_board(self):
+        for i in range(3):
+            print(' ' + ' | '.join(self.board[i]))
+            if i < 2:
+                print('---+---+---')
+        
+    def open_spaces(self):
+        full_list = []
+        for row in range(3):
+            for col in range(3):
+                if self.board[row][col] == ' ':
+                    full_list.append((row, col))
+                        
+        return full_list
 
-    if test < 1 or test > 3:
-        raise ValueError("Invalid test number. Should be within test range: 1-3.")
+    def is_draw(self):
+        empty_list = self.open_spaces()
+        if len(empty_list) == 0:
+            return True
+        else:
+            return False
 
-    try:
-        total = int(total_s)
-    except ValueError:
-        raise ValueError("Please enter a number of points.")
+    def won_game(self, symbol):
+        for r in range(3):
+            if all(self.board[r][c] == symbol for c in range(3)):
+                return True
+        
+        for c in range(3):
+            if all(self.board[r][c] == symbol for r in range(3)):
+                return True
+        
+        if all(self.board[i][i] == symbol for i in range(3)):
+            return True
+        if all(self.board[i][2 - i] == symbol for i in range(3)):
+            return True
 
-    if total <= 0:
-        raise ValueError("Possible points must be positive.")
+        return False
 
-    return name, test, total
-
-
-def print_test_percentage():
-    grades = {
-        "Alice": [18, 22, 25],
-        "Bob": [15, 21, 19],
-        "Charlie": [24, 20, 23]
-    }
-
-    try:
-        name, test, total = get_user_data(grades)
-        all_scores = grades[name]
-        score      = all_scores[test - 1]
-        percentage = score / total * 100
-        print(f"Percentage: {percentage:.1f}%")
-
-    except ValueError as e:
-        print(f"Error: {e}")
+    def winning_moves(self, symbol):
+        moves = []
+        for row, col in self.open_spaces():
+            self.board[row][col] = symbol
+            if self.won_game(symbol):
+                moves.append((row, col))
+            self.board[row][col] = ' '
+        return moves
 
 
+    def get_cpu_move(self, cpu, human):
+        cpu_win_moves = self.winning_moves(cpu)
+        if len(cpu_win_moves) > 0:
+            return random.choice(cpu_win_moves)
+
+        human_win_moves = self.winning_moves(human)
+        if len(human_win_moves) > 0:
+            return random.choice(human_win_moves)
+
+        available = self.open_spaces()
+
+        if (1, 1) in available:
+            return (1, 1)
+
+        corners = [(0, 0), (0, 2), (2, 0), (2, 2)]
+        open_corners = []
+        for move in corners:
+            if move in available:
+                open_corners.append(move)
+        if len(open_corners) > 0:
+            return random.choice(open_corners)
+
+        return random.choice(available)
+
+    def get_user_move(self, symbol):
+        coordinates = input(f"Player {symbol}, enter your move (row,col): ")
+        row = int(coordinates[0])
+        col = int(coordinates[2])
+        return (row, col)
+
+    def play(self, human, cpu, turn):
+        self.print_board()
+
+        while True:
+            if turn == human:
+                row, col = self.get_user_move(human)
+            else:
+                row, col = self.get_cpu_move(cpu, human)
+
+            self.board[row][col] = turn
+            self.print_board()
+
+            if self.won_game(human):
+                print("You win!")
+                break
+            elif self.won_game(cpu):
+                print("You lose!")
+                break
+            elif self.is_draw():
+                print("It's a draw!")
+                break
+
+            if turn == human:
+                turn = cpu
+            else:
+                turn = human
+                
 if __name__ == "__main__":
-    print_test_percentage()
+    # feel free to replace this with any game instance
+    # you'd like to test
+    game = TicTacToe()
+    first = random.choice(("X", "O"))
+    game.play("X", "O", first)`
 `},
   {name:'beam_deflection.py', tag:'Example, not one of my projects',
    desc:'A textbook formula as a program: maximum deflection of a simply supported beam under a uniform load. The input values are example numbers.',
