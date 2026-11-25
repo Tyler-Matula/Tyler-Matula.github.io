@@ -462,7 +462,12 @@ const MODELS = [
 ];
 
 const PY = [
-  import random
+  {
+    name: 'tictactoe.py',
+    tag: 'My project',
+    desc: 'A class-based Tic-Tac-Toe game featuring a CPU opponent that can identify winning moves, block the player, and prioritize strategic board positions.',
+    stdin: '0,0\n0,1\n0,2\n1,0\n1,1\n1,2\n2,0\n2,1\n2,2',
+    code: `import random
 
 class TicTacToe:
     def __init__(self):
@@ -477,14 +482,13 @@ class TicTacToe:
             print(' ' + ' | '.join(self.board[i]))
             if i < 2:
                 print('---+---+---')
-        
+
     def open_spaces(self):
         full_list = []
         for row in range(3):
             for col in range(3):
                 if self.board[row][col] == ' ':
                     full_list.append((row, col))
-                        
         return full_list
 
     def is_draw(self):
@@ -498,11 +502,11 @@ class TicTacToe:
         for r in range(3):
             if all(self.board[r][c] == symbol for c in range(3)):
                 return True
-        
+
         for c in range(3):
             if all(self.board[r][c] == symbol for r in range(3)):
                 return True
-        
+
         if all(self.board[i][i] == symbol for i in range(3)):
             return True
         if all(self.board[i][2 - i] == symbol for i in range(3)):
@@ -518,7 +522,6 @@ class TicTacToe:
                 moves.append((row, col))
             self.board[row][col] = ' '
         return moves
-
 
     def get_cpu_move(self, cpu, human):
         cpu_win_moves = self.winning_moves(cpu)
@@ -539,16 +542,24 @@ class TicTacToe:
         for move in corners:
             if move in available:
                 open_corners.append(move)
+
         if len(open_corners) > 0:
             return random.choice(open_corners)
 
         return random.choice(available)
 
     def get_user_move(self, symbol):
-        coordinates = input(f"Player {symbol}, enter your move (row,col): ")
-        row = int(coordinates[0])
-        col = int(coordinates[2])
-        return (row, col)
+        while True:
+            coordinates = input(
+                f"Player {symbol}, enter your move (row,col): "
+            )
+            row = int(coordinates[0])
+            col = int(coordinates[2])
+
+            if (row, col) in self.open_spaces():
+                return (row, col)
+
+            print("That space is taken. Try another move.")
 
     def play(self, human, cpu, turn):
         self.print_board()
@@ -576,14 +587,13 @@ class TicTacToe:
                 turn = cpu
             else:
                 turn = human
-                
+
 if __name__ == "__main__":
-    # feel free to replace this with any game instance
-    # you'd like to test
     game = TicTacToe()
     first = random.choice(("X", "O"))
-    game.play("X", "O", first)
-`},
+    game.play("X", "O", first)`
+  }
+];
   {name:'beam_deflection.py', tag:'Example, not one of my projects',
    desc:'A textbook formula as a program: maximum deflection of a simply supported beam under a uniform load. The input values are example numbers.',
    stdin:'',
