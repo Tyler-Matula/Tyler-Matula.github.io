@@ -97,7 +97,7 @@ section{position:relative;z-index:2}
   display:inline-flex;align-items:center;gap:12px;
   font:700 clamp(14px,1.45vw,21px)/1.2 var(--sans);
   letter-spacing:.12em;text-transform:uppercase;
-  color:#dce8ff;
+  color:var(--white);
 }
 .showcase-tag::before{
   content:"";width:28px;height:2px;border-radius:2px;
@@ -261,16 +261,16 @@ section{position:relative;z-index:2}
 .modal-close:active{transform:scale(.95)}
 .modal-desc-box{
   padding:14px 20px;
-  background:rgba(7,25,71,.92);
+  background:var(--navy-2);
   border-bottom:1px solid var(--line-dark);
   display:flex;flex-direction:column;gap:4px;
 }
 .modal-desc-label{
   font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:#9ec0ff;
+  color:var(--blue-bright);
 }
 .modal-desc-text{
-  font-size:14px;line-height:1.5;color:#eef4ff;
+  font-size:14px;line-height:1.5;color:var(--white);
 }
 .modal-body{position:relative;flex:1;background:var(--slate-dark);display:flex}
 .modal-frame{width:100%;height:100%;border:0;background:var(--white)}
@@ -281,7 +281,7 @@ section{position:relative;z-index:2}
 #cadTitle{max-width:none;margin-bottom:10px}
 .cad-desc{
   font-size:clamp(16px,1.15vw,19px);line-height:1.55;
-  color:#dce8ff;max-width:42ch;margin-top:4px;
+  color:var(--white);opacity:.88;max-width:42ch;margin-top:4px;
 }
 .cad-controls-head{
   margin-top:22px;
@@ -289,7 +289,7 @@ section{position:relative;z-index:2}
   font-weight:700;
   letter-spacing:.12em;
   text-transform:uppercase;
-  color:#9ec0ff;
+  color:var(--blue-bright);
 }
 .cad-panel{display:flex;flex-direction:column;gap:14px}
 .stage{
@@ -340,7 +340,7 @@ section{position:relative;z-index:2}
 }
 .dark .tabs button:hover,.dark .ctl button:hover{background:var(--slate-mid);border-color:rgba(255,255,255,.35)}
 .dark .tabs .on,.dark .ctl [aria-pressed=true]{
-  background:var(--white);color:var(--navy);border-color:var(--white);
+  background:var(--blue);color:var(--white);border-color:var(--blue-bright);
 }
 .dark .ctl .primary{background:var(--blue);color:var(--white);border-color:var(--blue)}
 .dark .ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
@@ -357,7 +357,7 @@ section{position:relative;z-index:2}
 }
 .file-dl:active{transform:scale(.96)}
 .dark .file-dl{
-  background:transparent;color:#dce8ff;border:1px solid rgba(255,255,255,.26);
+  background:transparent;color:var(--white);border:1px solid var(--line-dark);
 }
 .dark .file-dl:hover{
   background:rgba(255,255,255,.08);border-color:var(--blue-bright);color:var(--white);
@@ -375,7 +375,7 @@ section{position:relative;z-index:2}
 .console-col{display:flex;flex-direction:column;gap:14px}
 .console-col .pane{flex:1}
 .pane:last-child,.console-col .pane{
-  background:var(--navy);color:var(--white);border-color:rgba(180,206,255,.22);
+  background:var(--navy);color:var(--white);border-color:var(--line-dark);
   position:relative;
 }
 .console-col .pane::before{
@@ -393,7 +393,7 @@ textarea,pre{
 #pyCode{height:330px;resize:vertical;white-space:pre;color:var(--ink)}
 #pyIn{resize:vertical;border-top:1px solid var(--line);padding-top:10px;color:var(--ink)}
 #pyOut{flex:1;min-height:420px;white-space:pre-wrap}
-.err{color:#9ec0ff;font-weight:600}
+.err{color:var(--blue-bright);font-weight:600}
 .dim{opacity:.65}
 
 /* ============ SKILLS, EXPERIENCE & CONTACT ============ */
@@ -466,7 +466,7 @@ textarea,pre{
   font-weight:700;
   letter-spacing:.1em;
   text-transform:uppercase;
-  color:#dce8ff;
+  color:var(--white);
 }
 .report-links{
   display:flex;
@@ -478,15 +478,15 @@ textarea,pre{
   text-decoration:none;
   padding:6px 11px;
   border-radius:999px;
-  border:1px solid rgba(255,255,255,.24);
-  background:rgba(255,255,255,.06);
-  color:var(--white);
+  border:1px solid var(--white);
+  background:var(--white);
+  color:var(--navy);
   cursor:pointer;
   transition:background .2s var(--ease-smooth),border-color .2s var(--ease-smooth),transform .25s var(--ease-spring);
 }
 .report-link:hover{
-  background:rgba(77,140,255,.22);
-  border-color:var(--blue-bright);
+  background:var(--gray);
+  border-color:var(--gray);
   transform:translateY(-1px);
 }
 
@@ -510,7 +510,7 @@ textarea,pre{
   background:
     var(--skill-img,none) center/cover no-repeat,
     repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 8px,transparent 8px,transparent 16px);
-  color:#c5d6f7;
+  color:var(--white);
 }
 .cols > div:hover .skill-img-box{border-color:rgba(77,140,255,.55)}
 .skill-img-box img{width:100%;height:100%;object-fit:cover;display:block}
@@ -558,7 +558,7 @@ textarea,pre{
   animation:mailUnderlineShift 3.2s var(--ease-smooth) infinite;
   transition:color .25s var(--ease-smooth),transform .32s var(--ease-spring);
 }
-.mail:hover{color:#c5d8ff;transform:translateY(-3px)}
+.mail:hover{color:var(--blue-bright);transform:translateY(-3px)}
 .foot{
   margin-top:12vh;padding-top:24px;border-top:1px solid var(--line-dark);
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
@@ -1520,7 +1520,7 @@ function initPythonIde(){
       <h3 class="rv" id="cadTitle" style="font-size:clamp(28px,3.2vw,48px);margin-bottom:8px">Fuel Rail</h3>
       <p class="cad-desc" id="cadDesc"></p>
       <div class="tabs" id="cadTabs" aria-label="CAD Models"></div>
-      <div class="cad-controls-head" id="cadControlsHead">Camera &amp; View Controls</div>
+      <div class="cad-controls-head" id="cadControlsHead">View Controls</div>
       <div class="ctl" aria-labelledby="cadControlsHead">
         <button type="button" data-v="iso">Iso</button>
         <button type="button" data-v="front">Front</button>
@@ -1549,7 +1549,7 @@ function initPythonIde(){
       <div class="pane">
         <label for="pyCode">Program</label>
         <textarea id="pyCode" spellcheck="false"></textarea>
-        <label for="pyIn">Input (one line per prompt)</label>
+        <label for="pyIn">Input</label>
         <textarea id="pyIn" rows="3" spellcheck="false"></textarea>
       </div>
       <div class="console-col">
@@ -1688,3 +1688,4 @@ function initPythonIde(){
 </div>
 </body>
 </html>
+```[cite: 3]
