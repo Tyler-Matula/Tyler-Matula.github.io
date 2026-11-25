@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tyler Matula | Mechanical Engineering, UConn</title>
 <meta name="description" content="Tyler Matula, mechanical engineering student at the University of Connecticut: CAD projects, Python projects, skills, and experience.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000e2f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%234d8cff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============ FONTS ============ */
 @font-face{font-family:Aileron;font-weight:400;font-display:swap;src:local('Aileron Regular'),url('fonts/Aileron-Regular.woff2') format('woff2'),url('fonts/Aileron-Regular.otf') format('opentype')}
@@ -247,9 +248,10 @@ section{position:relative;z-index:2}
   position:fixed;inset:0;z-index:90;
   background:rgba(0,10,34,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   display:flex;align-items:center;justify-content:center;padding:20px;
-  opacity:0;pointer-events:none;transition:opacity .3s var(--ease-out);
+  opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity .3s var(--ease-out),visibility 0s linear .3s;
 }
-.modal-backdrop.open{opacity:1;pointer-events:auto}
+.modal-backdrop.open{opacity:1;pointer-events:auto;visibility:visible;transition-delay:0s}
 .modal{
   width:min(980px,100%);height:min(88vh,840px);
   background:var(--navy-2);color:var(--white);border:1px solid var(--line-dark);
@@ -445,7 +447,12 @@ textarea,pre{
   opacity:0;transform:translateY(26px) scale(.97);animation:none;
 }
 .js .skills.in .cols > div{
-  animation:skillCardIn .62s var(--ease-out) both;
+  opacity:1;transform:none;
+  animation:skillCardIn .62s var(--ease-out) backwards;
+}
+.js .skills.in .cols > div:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 34px -16px rgba(77,140,255,.45);
 }
 .js .skills.in .cols > div:nth-child(1){animation-delay:0ms}
 .js .skills.in .cols > div:nth-child(2){animation-delay:65ms}
@@ -626,6 +633,7 @@ textarea,pre{
   }
   .nav.open nav{opacity:1;pointer-events:auto;transform:none}
   .nav.open .brand{position:relative;z-index:70;color:var(--white)}
+  .nav.open[data-t]{backdrop-filter:none;-webkit-backdrop-filter:none;background:transparent;box-shadow:none}
   .cadgrid,.ide{grid-template-columns:1fr}
   .tl li{grid-template-columns:1fr;gap:6px}
   .stage{height:56vh}
@@ -650,7 +658,7 @@ textarea,pre{
 </script>
 <script type="module">
 /* ================= 1. CONFIGURATION ================= */
-const RESUME_FILE = 'resume/Tyler Matula - Résumé.pdf';
+const RESUME_FILE = 'resume/Tyler-Matula-Resume.pdf';
 
 const ME1100_REPORTS = [
   {
@@ -792,8 +800,12 @@ class TicTacToe:
             coordinates = input(
                 f"Player {symbol}, enter your move (row,col): "
             )
-            row = int(coordinates[0])
-            col = int(coordinates[2])
+            try:
+                row = int(coordinates[0])
+                col = int(coordinates[2])
+            except (ValueError, IndexError):
+                print("Please enter your move as row,col (for example 1,1).")
+                continue
 
             if (row, col) in self.open_spaces():
                 return (row, col)
@@ -959,8 +971,8 @@ const aboutWords = $('#words');
 const navBar = $('#nav');
 const themedSections = $$('[data-theme]');
 
-aboutWords.innerHTML = aboutWords.dataset.text
-  .split(' ')
+aboutWords.innerHTML = aboutWords.textContent.trim()
+  .split(/\s+/)
   .map(word => `<span>${word}</span>`)
   .join(' ');
 const wordSpans = $$('span', aboutWords);
@@ -1045,6 +1057,7 @@ const reportFrame = $('#reportFrame');
 const reportModalDownload = $('#reportModalDownload');
 const reportNewTab = $('#reportNewTab');
 let lastFocusedElement = null;
+const openPdfInTab = () => matchMedia('(max-width: 820px), (pointer: coarse)').matches;
 
 resumeDownload.href = encodedResumeUrl;
 resumeModalDownload.href = encodedResumeUrl;
@@ -1063,6 +1076,7 @@ function setMobileMenuOpen(isOpen){
 }
 
 function openResumeModal(){
+  if(openPdfInTab()){ window.open(encodedResumeUrl, '_blank', 'noopener'); return; }
   lastFocusedElement = document.activeElement;
   resumeFrame.src = `${encodedResumeUrl}#view=FitH`;
   resumeModal.classList.add('open');
@@ -1084,6 +1098,7 @@ function closeResumeModal(){
 function openReportModal(report){
   lastFocusedElement = document.activeElement;
   const encodedUrl = encodeURI(report.file);
+  if(openPdfInTab()){ window.open(encodedUrl, '_blank', 'noopener'); lastFocusedElement = null; return; }
   reportModalTitle.textContent = report.title;
   reportModalDesc.textContent = report.desc || '';
   reportModalDownload.href = encodedUrl;
@@ -1131,6 +1146,20 @@ reportModal.addEventListener('click', event => {
 });
 
 addEventListener('keydown', event => {
+  if(event.key === 'Tab'){
+    const openModal = reportModal.classList.contains('open') ? reportModal
+      : resumeModal.classList.contains('open') ? resumeModal : null;
+    if(openModal){
+      const focusables = $$('a[href], button:not([disabled])', openModal);
+      if(focusables.length){
+        const first = focusables[0], last = focusables[focusables.length - 1];
+        if(!openModal.contains(document.activeElement)){ event.preventDefault(); first.focus(); }
+        else if(event.shiftKey && document.activeElement === first){ event.preventDefault(); last.focus(); }
+        else if(!event.shiftKey && document.activeElement === last){ event.preventDefault(); first.focus(); }
+      }
+    }
+    return;
+  }
   if(event.key !== 'Escape') return;
   if(reportModal.classList.contains('open')) closeReportModal();
   else if(resumeModal.classList.contains('open')) closeResumeModal();
@@ -1256,7 +1285,7 @@ async function initCadViewer(){
   const handleResize = () => {
     const w = Math.max(1, stage.clientWidth);
     const h = Math.max(1, stage.clientHeight);
-    renderer.setSize(w, h);
+    renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   };
@@ -1478,8 +1507,11 @@ function initPythonIde(){
 
   selectProgram(0);
 
+  let tabInsertsSpaces = true;
+  codeEditor.addEventListener('focus', () => { tabInsertsSpaces = true; });
   codeEditor.addEventListener('keydown', event => {
-    if(event.key === 'Tab'){
+    if(event.key === 'Escape'){ tabInsertsSpaces = false; return; }
+    if(event.key === 'Tab' && tabInsertsSpaces && !event.shiftKey){
       event.preventDefault();
       const start = codeEditor.selectionStart;
       codeEditor.setRangeText('    ', start, codeEditor.selectionEnd, 'end');
@@ -1561,7 +1593,7 @@ function initPythonIde(){
 <section class="about light" id="about" data-theme="light">
   <div class="wrap">
     <h2 class="rv">About Me</h2>
-    <p class="words" id="words" data-text="I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was initially drawn to mechanical engineering because I wanted to better understand the complex systems I interact with every day and hopefully innovate them in ways that improve the lives of many. I am particularly interested in and actively seeking research and internship opportunities in aerospace, manufacturing, and medical technology."></p>
+    <p class="words" id="words">I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was initially drawn to mechanical engineering because I wanted to better understand the complex systems I interact with every day and hopefully innovate them in ways that improve the lives of many. I am particularly interested in and actively seeking research and internship opportunities in aerospace, manufacturing, and medical technology.</p>
     <div class="resume-box" aria-label="Résumé">
       <div class="resume-meta">
         <div class="resume-top">
@@ -1572,7 +1604,7 @@ function initPythonIde(){
       </div>
       <div class="resume-actions">
         <button type="button" class="btn-primary" id="resumePreview">Preview</button>
-        <a class="btn-ghost" id="resumeDownload" href="resume/Tyler%20Matula%20-%20R%C3%A9sum%C3%A9.pdf" download>Download</a>
+        <a class="btn-ghost" id="resumeDownload" href="resume/Tyler-Matula-Resume.pdf" download>Download</a>
       </div>
     </div>
   </div>
@@ -1662,7 +1694,7 @@ function initPythonIde(){
       </div>
       <div>
         <h3>Technical Communication</h3>
-        <p>ME 1100: Communications for Engineers has developed my ability of communicating technical information across diverse audiences. Reports and assignments from that class can be viewed and downloaded below.</p>
+        <p>ME 1100: Communications for Engineers has developed my ability to communicate technical information across diverse audiences. Reports and assignments from that class can be viewed and downloaded below.</p>
         <div class="reports-dl" aria-label="ME 1100 Reports">
           <span class="reports-title">View Technical Writing Samples</span>
           <div class="report-links" id="me1100ReportLinks"></div>
@@ -1705,7 +1737,7 @@ function initPythonIde(){
           <p>Recognized for early college coursework, quantitative analysis, and STEM achievement:</p>
           <ul class="tl-list">
             <li><strong>UConn ECE Biology:</strong> Recognized for academic excellence in dual-enrollment biology through UConn's Early College Experience program.</li>
-            <li><strong>ECSU Statistics Student Award:</strong> ecognized for academic excellence in dual-enrollment statistics through ECSU's Early College Experience program.</li>
+            <li><strong>ECSU Statistics Student Award:</strong> Recognized for academic excellence in dual-enrollment statistics through ECSU's Early College Experience program.</li>
             <li><strong>UConn Early College Experience STEM Scholarship Recipient:</strong> Selected to receive a scholarship after the completion of STEM project aimed at bridging together multiple technical disciplines.</li>
             <li><strong>State of Connecticut General Assembly Official Citation:</strong> Received a State of Connecticut General Assembly Citation honoring academic excellence and top 10 class standing.</li>
           </ul>
@@ -1722,7 +1754,7 @@ function initPythonIde(){
         <span>May 2025</span>
         <div>
           <h3>RIT Computing Innovation Award</h3>
-          <p>Awarded in conjunction with Rochester Institute of Technology for outstanding performacne in AP Computer Science.</p>
+          <p>Awarded in conjunction with Rochester Institute of Technology for outstanding performance in AP Computer Science.</p>
         </div>
       </li>
       <li>
@@ -1758,8 +1790,8 @@ function initPythonIde(){
     <div class="modal-bar">
       <span class="modal-title" id="resumeModalTitle">Tyler Matula &mdash; Résumé</span>
       <div class="modal-tools">
-        <a class="btn-ghost" id="resumeNewTab" href="resume/Tyler%20Matula%20-%20R%C3%A9sum%C3%A9.pdf" target="_blank" rel="noopener">Open in Tab</a>
-        <a class="btn-primary" id="resumeModalDownload" href="resume/Tyler%20Matula%20-%20R%C3%A9sum%C3%A9.pdf" download>Download</a>
+        <a class="btn-ghost" id="resumeNewTab" href="resume/Tyler-Matula-Resume.pdf" target="_blank" rel="noopener">Open in Tab</a>
+        <a class="btn-primary" id="resumeModalDownload" href="resume/Tyler-Matula-Resume.pdf" download>Download</a>
         <button type="button" class="modal-close" id="resumeClose">Close</button>
       </div>
     </div>
