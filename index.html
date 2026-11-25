@@ -419,7 +419,7 @@ textarea,pre{
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script type="module">
-  
+
 /* ================= 1. SITE CONFIG ================= */
 const MODELS = [
   // Supports .glb/.gltf and .stl files. Place files in the models/ folder or update paths below.
@@ -593,20 +593,160 @@ if __name__ == "__main__":
     first = random.choice(("X", "O"))
     game.play("X", "O", first)`
   },
-
   {
-    name: 'beam_deflection.py',
-    tag: 'Example, not one of my projects',
-    desc: 'A textbook formula as a program: maximum deflection of a simply supported beam under a uniform load. The input values are example numbers.',
-    stdin: '',
-    code: `# Simply supported beam, uniform load: max deflection = 5 w L^4 / (384 E I)
-w = 2000
-L = 3.0
-E = 200e9
-I = 8.0e-6
+    name: 'hangman.py',
+    tag: 'My project',
+    desc: 'A command-line Hangman game with input validation: invalid and repeated guesses never cost a life. On this page the secret word comes from a short built-in list. Type letters (one per line) in the Input box and press Run.',
+    stdin: 'e\na\nr\ni\no\nt\nn\ns\nl\nc\nu\nd\np\nm\nh\ng\nb\nf\ny\nw\nk\nv\nx\nz\nj\nq',
+    code: `import random
+import string
 
-delta = 5 * w * L**4 / (384 * E * I)
-print(f"Max deflection: {delta * 1000:.2f} mm")`
+
+def choose_random_word(word_list):
+    """Select a random word from the supplied list.
+
+    Arguments:
+        word_list (list[str]): A nonempty list of words.
+
+    Side effects:
+        Advances the random generator's state. Does not modify word_list.
+
+    Returns:
+        str: A randomly selected word from word_list.
+    """
+    return random.choice(word_list)
+
+
+def valid_guess(g):
+    """
+    Determine whether a guess is exactly one lowercase English letter.
+
+    Arguments:
+        g (str): The guess to check.
+
+    Side effects:
+        None.
+
+    Returns:
+        bool: True if g is exactly one letter from a through z;
+        False otherwise.
+    """
+    if g in string.ascii_lowercase and len(g) == 1:
+        return True
+    else:
+        return False
+
+
+def get_user_guess(guessed):
+    """
+    Repeatedly prompt for a letter until the user enters a valid guess
+    that has not already been guessed. Convert input to lowercase before
+    checking it. Do not remove surrounding whitespace.
+
+    Arguments:
+        guessed (set[str]): The lowercase letters already guessed.
+
+    Side effects:
+        Reads keyboard input and prints prompts and feedback for invalid
+        or repeated guesses. Does not modify guessed.
+
+    Returns:
+        str: A single lowercase English letter not already in guessed.
+    """
+    while True:
+        guess = input("Guess a letter: ").lower()
+        if not valid_guess(guess):
+            print("Your guess is invalid. Please enter a different guess to continue.")
+        elif guess in guessed:
+            print("You already guessed this letter. Please guess a new letter.")
+        else:
+            return guess
+
+
+def analyze_guess(secret, display, guess):
+    """
+    Check whether a guessed letter occurs in the secret word and reveal
+    every occurrence in the display. Preserve previously revealed letters.
+
+    Arguments:
+        secret (str): A nonempty word containing lowercase English letters.
+        display (list[str]): The current display, with one entry per letter
+            in secret. Each entry is either "_" or its revealed letter.
+        guess (str): A single lowercase English letter.
+
+    Side effects:
+        Modifies display in place to reveal every occurrence of guess.
+        Leaves display unchanged if guess does not occur in secret.
+
+    Returns:
+        bool: True if guess occurs in secret; False otherwise.
+    """
+    letter_found = False
+    for letter in range(len(secret)):
+        if secret[letter] == guess:
+            display[letter] = guess
+            letter_found = True
+    return letter_found
+
+
+def hangman(secret, lives):
+    """
+    Run a Hangman game with the given secret word and starting lives.
+    Display progress and track available and guessed letters. Correct
+    guesses reveal letters without costing lives; incorrect guesses cost
+    one life. Invalid and repeated guesses do not cost lives.
+
+    End the game when the entire word is revealed or no lives remain.
+    Report whether the player won or lost and reveal the secret word.
+
+    Arguments:
+        secret (str): A nonempty word containing lowercase English letters.
+        lives (int): A positive integer specifying the starting number of lives.
+
+    Side effects:
+        Reads keyboard input and prints game state, prompts, feedback,
+        and the final result.
+
+    Returns:
+        None.
+    """
+    print("Welcome to hangman!")
+    guessed = set()
+    remaining_letters = set(string.ascii_lowercase)
+    display = ["_"] * len(secret)
+
+    while lives > 0 and "_" in display:
+        print("You have", lives, "lives remaining.")
+        print("Available Letters:", "".join(sorted(remaining_letters)))
+        print("Guessed Letters:", "".join(sorted(guessed)))
+        print(" ".join(display))
+
+        guess = get_user_guess(guessed)
+        guessed.add(guess)
+        remaining_letters.remove(guess)
+
+        if not analyze_guess(secret, display, guess):
+            lives -= 1
+
+    print(" ".join(display))
+    if "_" not in display:
+        print("Congrats, you win! My word was", secret)
+    else:
+        print("Too bad, you lose! My word was", secret)
+
+
+if __name__ == "__main__":
+    # Short built-in word list for the website (the original program
+    # reads these from words.txt).
+    all_words = [
+        "bridge", "engine", "bucket", "garden", "hammer", "island",
+        "kettle", "machine", "monkey", "mountain", "pencil", "pocket",
+        "silver", "thunder", "umbrella", "window", "winter", "yellow",
+        "library", "journey", "rhythm", "scissors", "sponge", "weather",
+    ]
+    secret = choose_random_word(all_words)
+    hangman(secret, 10)
+`
   }
 ];
 
@@ -862,10 +1002,14 @@ async function initCad(){
 }
 
 /* ================= 4. PYTHON EDITOR ================= */
+// If the Input box runs out of lines, input() raises EOFError instead of
+// returning "" forever (which would hang programs that loop until valid input).
 const PRE = `import builtins
 _in = INPUT_TEXT.splitlines()
 def _input(prompt=""):
-    v = _in.pop(0) if _in else ""
+    if not _in:
+        raise EOFError("Out of input. Add more lines to the Input box.")
+    v = _in.pop(0)
     print(prompt + v)
     return v
 builtins.input = _input
