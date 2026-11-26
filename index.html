@@ -1,4 +1,19 @@
 <!doctype html>
+<!--
+  Tyler Matula | Mechanical Engineering Portfolio
+  Single-file site (HTML + CSS + JS), no build step. Deploys as-is on GitHub Pages.
+
+  Layout of this file
+    1. <style>   Theme tokens, then one commented block per section of the page.
+    2. <body>    Hero, About, CAD Work, Programming Projects, Skills, Journey, Contact, modals.
+    3. <script>  Config (edit here), page & scroll behaviour, 3D CAD viewer, Python runner.
+
+  Common edits (top of the script block)
+    RESUME_FILE / ME1100_REPORTS   Résumé and technical-writing PDFs.
+    MODELS                         CAD models shown in the viewer (STL or GLB).
+    PROGRAMS                       Python projects. `quick` adds tap-to-answer buttons
+                                   for the interactive console.
+-->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -11,640 +26,1561 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============ FONTS ============ */
-@font-face{font-family:Aileron;font-weight:400;font-display:swap;src:local('Aileron Regular'),url('fonts/Aileron-Regular.woff2') format('woff2'),url('fonts/Aileron-Regular.otf') format('opentype')}
-@font-face{font-family:Aileron;font-weight:600;font-display:swap;src:local('Aileron SemiBold'),url('fonts/Aileron-SemiBold.woff2') format('woff2'),url('fonts/Aileron-SemiBold.otf') format('opentype')}
-@font-face{font-family:Aileron;font-weight:800;font-display:swap;src:local('Aileron Heavy'),url('fonts/Aileron-Heavy.woff2') format('woff2'),url('fonts/Aileron-Heavy.otf') format('opentype')}
+
+@font-face {
+  font-family: Aileron;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Aileron Regular'),url('fonts/Aileron-Regular.woff2') format('woff2'),url('fonts/Aileron-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: Aileron;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Aileron SemiBold'),url('fonts/Aileron-SemiBold.woff2') format('woff2'),url('fonts/Aileron-SemiBold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: Aileron;
+  font-weight: 800;
+  font-display: swap;
+  src: local('Aileron Heavy'),url('fonts/Aileron-Heavy.woff2') format('woff2'),url('fonts/Aileron-Heavy.otf') format('opentype');
+}
 
 /* ============ THEME & MOTION TOKENS ============ */
-:root{
-  --navy:#000e2f;
-  --navy-2:#071947;
-  --blue:#1d63dc;
-  --blue-bright:#4d8cff;
-  --white:#ffffff;
-  --slate-dark:#263147;
-  --slate-mid:#4d5a75;
-  --ink:#0b1630;
-  --paper:#ffffff;
-  --gray:#e6ebf3;
-  --line:rgba(0,14,47,.14);
-  --line-dark:rgba(255,255,255,.16);
 
-  --sans:Aileron,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
-  --serif:Newsreader,Georgia,serif;
-  --pad:clamp(20px,5vw,84px);
-
-  --ease-out:cubic-bezier(.22,1,.36,1);
-  --ease-spring:cubic-bezier(.2,1.18,.32,1);
-  --ease-smooth:cubic-bezier(.4,0,.2,1);
-  --scroll-p:0;
+:root {
+  --navy: #000e2f;
+  --navy-2: #071947;
+  --blue: #1d63dc;
+  --blue-bright: #4d8cff;
+  --white: #ffffff;
+  --slate-dark: #263147;
+  --slate-mid: #4d5a75;
+  --ink: #0b1630;
+  --paper: #ffffff;
+  --gray: #e6ebf3;
+  --line: rgba(0,14,47,.14);
+  --line-dark: rgba(255,255,255,.16);
+  --sans: Aileron,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --pad: clamp(20px,5vw,84px);
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-spring: cubic-bezier(.2,1.18,.32,1);
+  --ease-smooth: cubic-bezier(.4,0,.2,1);
+  --scroll-p: 0;
 }
 
 /* ============ BASE & TYPOGRAPHY ============ */
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:76px}
-body{
-  font:400 clamp(16px,1.12vw,19px)/1.62 var(--sans);
-  color:var(--ink);
-  background:var(--navy);
-  overflow-x:clip;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-body.locked{overflow:hidden}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
-.dark :focus-visible,.hero :focus-visible,.modal :focus-visible{outline-color:var(--blue-bright)}
 
-.progress{
-  position:fixed;top:0;left:0;right:0;height:2.5px;z-index:80;pointer-events:none;
-  background:rgba(255,255,255,.08);
-}
-.progress i{
-  display:block;height:100%;width:100%;
-  transform-origin:0 50%;
-  transform:scaleX(var(--scroll-p));
-  background:linear-gradient(90deg,var(--navy-2),var(--blue) 55%,var(--blue-bright));
-  will-change:transform;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.skip{
-  position:fixed;left:12px;top:-60px;background:var(--white);color:var(--navy);
-  padding:10px 16px;border-radius:999px;font-weight:600;z-index:100;
-  text-decoration:none;box-shadow:0 10px 25px rgba(0,0,0,.25);
-  transition:top .28s var(--ease-spring);
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
 }
-.skip:focus{top:12px}
 
-h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:1.02}
-h2{font-size:clamp(36px,5.2vw,82px);margin-bottom:28px;max-width:14em}
-
-.wrap{max-width:1280px;margin:0 auto;padding:0 var(--pad)}
-section{position:relative;z-index:2}
-.light{background:var(--paper)}
-.gray{background:var(--gray)}
-.dark{
-  background:
-    radial-gradient(900px 520px at 85% 10%,rgba(29,99,220,.26),transparent 60%),
-    radial-gradient(520px 340px at 14% 85%,rgba(38,49,71,.55),transparent 65%),
-    var(--navy);
-  color:var(--white);
+body {
+  font: 400 clamp(16px,1.12vw,19px)/1.62 var(--sans);
+  color: var(--ink);
+  background: var(--navy);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.ph{color:var(--slate-mid);font-style:italic}
-.dark .ph{color:#a8b8d8}
-.lede{max-width:52ch;font-size:clamp(18px,1.45vw,22px);color:inherit;opacity:.88}
 
-.py-note{
-  margin-top:10px;
-  max-width:68ch;
-  font-size:clamp(13.5px,1vw,15px);
-  line-height:1.55;
-  font-style:italic;
-  color:var(--slate-mid);
-  opacity:.88;
-  padding-left:12px;
-  border-left:2px solid var(--line);
+body.locked {
+  overflow: hidden;
 }
-.py-note:empty{display:none}
 
-.showcase-tag{
-  display:inline-flex;align-items:center;gap:12px;
-  font:700 clamp(14px,1.45vw,21px)/1.2 var(--sans);
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--white);
+a {
+  color: inherit;
 }
-.showcase-tag::before{
-  content:"";width:28px;height:2px;border-radius:2px;
-  background:linear-gradient(90deg,var(--blue-bright),var(--white));
-  flex:none;
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.dark :focus-visible,
+.hero :focus-visible,
+.modal :focus-visible {
+  outline-color: var(--blue-bright);
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  z-index: 80;
+  pointer-events: none;
+  background: rgba(255,255,255,.08);
+}
+
+.progress i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scroll-p));
+  background: linear-gradient(90deg,var(--navy-2),var(--blue) 55%,var(--blue-bright));
+  will-change: transform;
+}
+
+.skip {
+  position: fixed;
+  left: 12px;
+  top: -60px;
+  background: var(--white);
+  color: var(--navy);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  z-index: 100;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+  transition: top .28s var(--ease-spring);
+}
+
+.skip:focus {
+  top: 12px;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.02;
+}
+
+h2 {
+  font-size: clamp(36px,5.2vw,82px);
+  margin-bottom: 28px;
+  max-width: 14em;
+}
+
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+section {
+  position: relative;
+  z-index: 2;
+}
+
+.light {
+  background: var(--paper);
+}
+
+.dark {
+  background: radial-gradient(900px 520px at 85% 10%,rgba(29,99,220,.26),transparent 60%), radial-gradient(520px 340px at 14% 85%,rgba(38,49,71,.55),transparent 65%), var(--navy);
+  color: var(--white);
+}
+
+.lede {
+  max-width: 52ch;
+  font-size: clamp(18px,1.45vw,22px);
+  color: inherit;
+  opacity: .88;
+}
+
+.py-note {
+  margin-top: 10px;
+  max-width: 68ch;
+  font-size: clamp(13.5px,1vw,15px);
+  line-height: 1.55;
+  font-style: italic;
+  color: var(--slate-mid);
+  opacity: .88;
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+}
+
+.py-note:empty {
+  display: none;
+}
+
+.showcase-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font: 700 clamp(14px,1.45vw,21px)/1.2 var(--sans);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.showcase-tag::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,var(--blue-bright),var(--white));
+  flex: none;
 }
 
 /* ============ NAVIGATION ============ */
-.nav{
-  position:fixed;inset:0 0 auto;z-index:60;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px var(--pad);color:var(--white);
-  transition:background .45s var(--ease-smooth),color .45s var(--ease-smooth),padding .4s var(--ease-out),box-shadow .45s var(--ease-smooth);
-}
-.nav.scrolled{padding:11px var(--pad)}
-.nav[data-t=dark]{
-  background:rgba(0,14,47,.48);
-  backdrop-filter:saturate(180%) blur(18px);
-  -webkit-backdrop-filter:saturate(180%) blur(18px);
-}
-.nav[data-t=light]{
-  background:rgba(255,255,255,.86);
-  backdrop-filter:saturate(180%) blur(20px);
-  -webkit-backdrop-filter:saturate(180%) blur(20px);
-  color:var(--navy);
-  box-shadow:0 1px 0 var(--line);
-}
-.brand{
-  font-weight:800;text-decoration:none;letter-spacing:-.025em;
-  display:inline-flex;align-items:center;gap:9px;
-  transition:transform .3s var(--ease-spring);
-}
-.brand:active{transform:scale(.96)}
-.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--blue-bright);box-shadow:0 0 0 3px rgba(77,140,255,.25)}
 
-.nav nav{display:flex;gap:24px;font-size:14px;font-weight:600}
-.nav nav a{
-  position:relative;text-decoration:none;opacity:.84;padding:4px 0;
-  transition:opacity .25s var(--ease-smooth),transform .3s var(--ease-spring);
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px var(--pad);
+  color: var(--white);
+  transition: background .45s var(--ease-smooth),color .45s var(--ease-smooth),padding .4s var(--ease-out),box-shadow .45s var(--ease-smooth);
 }
-.nav nav a::after{
-  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
-  background:var(--blue);transform:scaleX(0);transform-origin:100% 50%;
-  transition:transform .35s var(--ease-out);
-}
-.nav[data-t=dark] nav a::after{background:var(--blue-bright)}
-.nav nav a:hover{opacity:1}
-.nav nav a:hover::after{transform:scaleX(1);transform-origin:0 50%}
 
-.burger{
-  display:none;font:600 14px var(--sans);background:rgba(255,255,255,.1);
-  border:1px solid rgba(255,255,255,.18);color:inherit;cursor:pointer;
-  padding:7px 14px;border-radius:999px;backdrop-filter:blur(10px);
-  transition:transform .25s var(--ease-spring),background .25s var(--ease-smooth);
+.nav.scrolled {
+  padding: 11px var(--pad);
 }
-.nav[data-t=light] .burger{background:rgba(0,14,47,.05);border-color:var(--line)}
-.burger:active{transform:scale(.94)}
+
+.nav[data-t=dark] {
+  background: rgba(0,14,47,.48);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+}
+
+.nav[data-t=light] {
+  background: rgba(255,255,255,.86);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  color: var(--navy);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.brand {
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -.025em;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: transform .3s var(--ease-spring);
+}
+
+.brand:active {
+  transform: scale(.96);
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue-bright);
+  box-shadow: 0 0 0 3px rgba(77,140,255,.25);
+}
+
+.nav nav {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav nav a {
+  position: relative;
+  text-decoration: none;
+  opacity: .84;
+  padding: 4px 0;
+  transition: opacity .25s var(--ease-smooth),transform .3s var(--ease-spring);
+}
+
+.nav nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform .35s var(--ease-out);
+}
+
+.nav[data-t=dark] nav a::after {
+  background: var(--blue-bright);
+}
+
+.nav nav a:hover {
+  opacity: 1;
+}
+
+.nav nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+
+.burger {
+  display: none;
+  font: 600 14px var(--sans);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  color: inherit;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  transition: transform .25s var(--ease-spring),background .25s var(--ease-smooth);
+}
+
+.nav[data-t=light] .burger {
+  background: rgba(0,14,47,.05);
+  border-color: var(--line);
+}
+
+.burger:active {
+  transform: scale(.94);
+}
 
 /* ============ HERO & BUTTONS ============ */
-.hero{
-  height:200vh;position:relative;z-index:1;color:var(--white);
-  background:
-    radial-gradient(ellipse 80% 65% at 72% 28%,rgba(29,99,220,.36),transparent 62%),
-    radial-gradient(ellipse 45% 40% at 22% 78%,rgba(38,49,71,.65),transparent 65%),
-    var(--navy);
-}
-.hero-in{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:flex-end;padding:0 var(--pad) 10vh}
-#gears{position:absolute;inset:0;width:100%;height:100%;will-change:transform}
-#gears path,#gears circle{fill:none;stroke:var(--white);stroke-opacity:.22;stroke-width:1.2;vector-effect:non-scaling-stroke}
-#gears .accent-ring{stroke:var(--blue-bright);stroke-opacity:.5;stroke-width:1.4}
 
-.hero-copy{position:relative;max-width:940px;transform-origin:0 100%;will-change:transform,opacity}
-.hero h1{font-size:clamp(60px,12vw,190px);margin:8px 0 22px;color:var(--white)}
-
-.cta{display:flex;flex-wrap:wrap;gap:14px 18px;margin-top:34px;font-weight:600;align-items:center}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:8px;
-  text-decoration:none;background:var(--blue);color:var(--white);
-  padding:12px 22px;border-radius:999px;border:0;font:600 14px/1 var(--sans);cursor:pointer;
-  box-shadow:0 10px 24px -8px rgba(29,99,220,.65);
-  transition:transform .35s var(--ease-spring),background .25s var(--ease-smooth),box-shadow .35s var(--ease-out);
+.hero {
+  height: 200vh;
+  position: relative;
+  z-index: 1;
+  color: var(--white);
+  background: radial-gradient(ellipse 80% 65% at 72% 28%,rgba(29,99,220,.36),transparent 62%), radial-gradient(ellipse 45% 40% at 22% 78%,rgba(38,49,71,.65),transparent 65%), var(--navy);
 }
-.btn-primary:hover{background:var(--blue-bright);transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(77,140,255,.7)}
-.btn-primary:active{transform:scale(.97)}
 
-.btn-ghost{
-  display:inline-flex;align-items:center;gap:6px;
-  text-decoration:none;padding:11px 18px;border-radius:999px;
-  border:1px solid rgba(255,255,255,.26);background:transparent;color:inherit;
-  font:600 14px/1 var(--sans);cursor:pointer;
-  transition:transform .35s var(--ease-spring),border-color .25s var(--ease-smooth),background .25s var(--ease-smooth);
+.hero-in {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 var(--pad) 10vh;
 }
-.btn-ghost:hover{border-color:rgba(255,255,255,.65);background:rgba(255,255,255,.08);transform:translateY(-2px)}
-.btn-ghost:active{transform:scale(.97)}
-.light .btn-ghost,.gray .btn-ghost{border-color:var(--line);color:var(--navy)}
-.light .btn-ghost:hover,.gray .btn-ghost:hover{border-color:var(--navy);background:rgba(0,14,47,.05)}
+
+#gears {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+#gears path,
+#gears circle {
+  fill: none;
+  stroke: var(--white);
+  stroke-opacity: .22;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+#gears .accent-ring {
+  stroke: var(--blue-bright);
+  stroke-opacity: .5;
+  stroke-width: 1.4;
+}
+
+.hero-copy {
+  position: relative;
+  max-width: 940px;
+  transform-origin: 0 100%;
+  will-change: transform,opacity;
+}
+
+.hero h1 {
+  font-size: clamp(60px,12vw,190px);
+  margin: 8px 0 22px;
+  color: var(--white);
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  margin-top: 34px;
+  font-weight: 600;
+  align-items: center;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  background: var(--blue);
+  color: var(--white);
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 0;
+  font: 600 14px/1 var(--sans);
+  cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(29,99,220,.65);
+  transition: transform .35s var(--ease-spring),background .25s var(--ease-smooth),box-shadow .35s var(--ease-out);
+}
+
+.btn-primary:hover {
+  background: var(--blue-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -8px rgba(77,140,255,.7);
+}
+
+.btn-primary:active {
+  transform: scale(.97);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.26);
+  background: transparent;
+  color: inherit;
+  font: 600 14px/1 var(--sans);
+  cursor: pointer;
+  transition: transform .35s var(--ease-spring),border-color .25s var(--ease-smooth),background .25s var(--ease-smooth);
+}
+
+.btn-ghost:hover {
+  border-color: rgba(255,255,255,.65);
+  background: rgba(255,255,255,.08);
+  transform: translateY(-2px);
+}
+
+.btn-ghost:active {
+  transform: scale(.97);
+}
+
+.light .btn-ghost {
+  border-color: var(--line);
+  color: var(--navy);
+}
+
+.light .btn-ghost:hover {
+  border-color: var(--navy);
+  background: rgba(0,14,47,.05);
+}
 
 /* ============ ABOUT & RÉSUMÉ ============ */
-.about{padding:10vh 0}
-.words{font:700 clamp(22px,2.3vw,34px)/1.32 var(--sans);letter-spacing:-.025em;max-width:34em}
-.js .words span{
-  display:inline-block;opacity:.16;transform:translateY(4px);
-  transition:opacity .4s var(--ease-out),transform .45s var(--ease-spring);
-}
-.js .words span.on{opacity:1;transform:none}
 
-.resume-box{
-  margin-top:36px;width:100%;
-  background:var(--white);border:1px solid var(--line);
-  border-radius:20px;padding:24px 28px;
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;
-  transition:transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth),opacity .45s var(--ease-out);
+.about {
+  padding: 10vh 0;
 }
-.resume-box:hover{
-  transform:translateY(-2px);
-  box-shadow:0 18px 36px -22px rgba(0,14,47,.2);
-  border-color:rgba(29,99,220,.35);
-}
-.resume-meta{display:flex;flex-direction:column;gap:4px}
-.resume-top{display:flex;align-items:center;gap:12px}
-.resume-label{font-weight:800;font-size:19px;letter-spacing:-.02em;color:var(--navy)}
-.resume-tag{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
-.resume-sub{font-size:15px;color:var(--slate-dark)}
-.resume-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
-.js .rv{
-  opacity:0;transform:translateY(24px);
-  transition:opacity .45s var(--ease-out),transform .45s var(--ease-out);
+.words {
+  font: 700 clamp(22px,2.3vw,34px)/1.32 var(--sans);
+  letter-spacing: -.025em;
+  max-width: 34em;
 }
-.js .rv.in{opacity:1;transform:translateY(0)}
+
+.js .words span {
+  display: inline-block;
+  opacity: .16;
+  transform: translateY(4px);
+  transition: opacity .4s var(--ease-out),transform .45s var(--ease-spring);
+}
+
+.js .words span.on {
+  opacity: 1;
+  transform: none;
+}
+
+.resume-box {
+  margin-top: 36px;
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  transition: transform .38s var(--ease-spring),box-shadow .38s var(--ease-out),border-color .3s var(--ease-smooth),opacity .45s var(--ease-out);
+}
+
+.resume-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -22px rgba(0,14,47,.2);
+  border-color: rgba(29,99,220,.35);
+}
+
+.resume-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resume-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resume-label {
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -.02em;
+  color: var(--navy);
+}
+
+.resume-tag {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.resume-sub {
+  font-size: 15px;
+  color: var(--slate-dark);
+}
+
+.resume-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.js .rv {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .45s var(--ease-out),transform .45s var(--ease-out);
+}
+
+.js .rv.in {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ============ MODALS (RÉSUMÉ & REPORT VIEWER) ============ */
-.modal-backdrop{
-  position:fixed;inset:0;z-index:90;
-  background:rgba(0,10,34,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  display:flex;align-items:center;justify-content:center;padding:20px;
-  opacity:0;pointer-events:none;visibility:hidden;
-  transition:opacity .3s var(--ease-out),visibility 0s linear .3s;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0,10,34,.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity .3s var(--ease-out),visibility 0s linear .3s;
 }
-.modal-backdrop.open{opacity:1;pointer-events:auto;visibility:visible;transition-delay:0s}
-.modal{
-  width:min(980px,100%);height:min(88vh,840px);
-  background:var(--navy-2);color:var(--white);border:1px solid var(--line-dark);
-  border-radius:24px;box-shadow:0 30px 80px -20px rgba(0,0,0,.65);
-  display:flex;flex-direction:column;overflow:hidden;
-  transform:translateY(16px) scale(.98);
-  transition:transform .35s var(--ease-spring);
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
 }
-.modal-backdrop.open .modal{transform:none}
-.modal-bar{
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;
-  padding:14px 20px;border-bottom:1px solid var(--line-dark);background:rgba(0,14,47,.6);
+
+.modal {
+  width: min(980px,100%);
+  height: min(88vh,840px);
+  background: var(--navy-2);
+  color: var(--white);
+  border: 1px solid var(--line-dark);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,.65);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(16px) scale(.98);
+  transition: transform .35s var(--ease-spring);
 }
-.modal-title{font-weight:700;font-size:15px;letter-spacing:-.01em}
-.modal-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.modal-close{
-  font:600 13px/1 var(--sans);padding:9px 14px;border-radius:999px;
-  border:1px solid var(--line-dark);background:rgba(255,255,255,.08);color:var(--white);cursor:pointer;
-  transition:background .2s var(--ease-smooth),transform .25s var(--ease-spring);
+
+.modal-backdrop.open .modal {
+  transform: none;
 }
-.modal-close:hover{background:rgba(255,255,255,.16)}
-.modal-close:active{transform:scale(.95)}
-.modal-desc-box{
-  padding:14px 20px;
-  background:var(--navy-2);
-  border-bottom:1px solid var(--line-dark);
-  display:flex;flex-direction:column;gap:4px;
+
+.modal-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line-dark);
+  background: rgba(0,14,47,.6);
 }
-.modal-desc-label{
-  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--blue-bright);
+
+.modal-title {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -.01em;
 }
-.modal-desc-text{
-  font-size:14px;line-height:1.5;color:var(--white);
+
+.modal-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
-.modal-body{position:relative;flex:1;background:var(--slate-dark);display:flex}
-.modal-frame{width:100%;height:100%;border:0;background:var(--white)}
+
+.modal-close {
+  font: 600 13px/1 var(--sans);
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-dark);
+  background: rgba(255,255,255,.08);
+  color: var(--white);
+  cursor: pointer;
+  transition: background .2s var(--ease-smooth),transform .25s var(--ease-spring);
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,.16);
+}
+
+.modal-close:active {
+  transform: scale(.95);
+}
+
+.modal-desc-box {
+  padding: 14px 20px;
+  background: var(--navy-2);
+  border-bottom: 1px solid var(--line-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-desc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+}
+
+.modal-desc-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--white);
+}
+
+.modal-body {
+  position: relative;
+  flex: 1;
+  background: var(--slate-dark);
+  display: flex;
+}
+
+.modal-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--white);
+}
 
 /* ============ CAD VIEWER ============ */
-.cad{padding:16vh 0}
-.cadgrid{display:grid;grid-template-columns:.82fr 1.38fr;gap:var(--pad);align-items:start}
-#cadTitle{max-width:none;margin-bottom:10px}
-.cad-desc{
-  font-size:clamp(16px,1.15vw,19px);line-height:1.55;
-  color:var(--white);opacity:.88;max-width:42ch;margin-top:4px;
-}
-.cad-controls-head{
-  margin-top:22px;
-  font-size:11.5px;
-  font-weight:700;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--blue-bright);
-}
-.cad-panel{display:flex;flex-direction:column;gap:14px}
-.stage{
-  position:relative;height:min(72vh,640px);border-radius:24px;overflow:hidden;
-  background:radial-gradient(120% 100% at 50% 15%,var(--slate-dark),var(--navy));
-  border:1px solid var(--line-dark);
-  box-shadow:0 24px 60px -26px rgba(0,0,0,.55);
-}
-.light .stage{
-  background:radial-gradient(120% 100% at 50% 15%,var(--white),var(--gray));
-  border:1px solid var(--line);
-  box-shadow:0 24px 60px -26px rgba(0,14,47,.22);
-}
-.stage canvas{display:block;width:100%;height:100%;cursor:grab}
-.stage canvas:active{cursor:grabbing}
-.msg{
-  position:absolute;left:16px;right:16px;bottom:14px;
-  font-size:13px;color:var(--white);background:rgba(0,14,47,.82);
-  backdrop-filter:blur(8px);padding:8px 14px;border-radius:12px;pointer-events:none;
-}
-.light .msg{color:var(--navy);background:rgba(255,255,255,.88)}
-.msg[hidden]{display:none}
 
-.tabs,.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
-.cad-controls-head + .ctl{margin-top:8px}
-.tabs button,.ctl button{
-  font:600 13px var(--sans);padding:8px 15px;border-radius:999px;
-  border:1px solid var(--line);background:var(--white);color:var(--navy);
-  cursor:pointer;display:inline-flex;align-items:center;
-  transition:transform .28s var(--ease-spring),background .25s var(--ease-smooth),color .25s var(--ease-smooth),border-color .25s var(--ease-smooth),box-shadow .25s var(--ease-smooth);
+.cad {
+  padding: 16vh 0;
 }
-.tabs button:hover,.ctl button:hover{transform:translateY(-1.5px);border-color:rgba(0,14,47,.32);background:var(--gray)}
-.tabs button:active,.ctl button:active{transform:scale(.95)}
-.ctl button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-.tabs .on,.ctl [aria-pressed=true]{
-  background:var(--navy);color:var(--white);border-color:var(--navy);
-  box-shadow:0 6px 16px -6px rgba(0,14,47,.5);
+.cadgrid {
+  display: grid;
+  grid-template-columns: .82fr 1.38fr;
+  gap: var(--pad);
+  align-items: start;
 }
-.ctl .primary{
-  background:var(--blue);color:var(--white);border-color:var(--blue);
-  box-shadow:0 8px 20px -6px rgba(29,99,220,.65);
-}
-.ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
 
-.dark .tabs button,.dark .ctl button{
-  background:var(--slate-dark);border-color:var(--line-dark);color:var(--white);
+#cadTitle {
+  max-width: none;
+  margin-bottom: 8px;
+  font-size: clamp(28px,3.2vw,48px);
 }
-.dark .tabs button:hover,.dark .ctl button:hover{background:var(--slate-mid);border-color:rgba(255,255,255,.35)}
-.dark .tabs .on,.dark .ctl [aria-pressed=true]{
-  background:var(--blue);color:var(--white);border-color:var(--blue-bright);
-}
-.dark .ctl .primary{background:var(--blue);color:var(--white);border-color:var(--blue)}
-.dark .ctl .primary:hover{background:var(--blue-bright);border-color:var(--blue-bright)}
 
-.below-dl{display:flex;align-items:center;justify-content:flex-start}
-.file-dl{
-  font:600 13px/1 var(--sans);padding:10px 18px;border-radius:999px;
-  text-decoration:none;display:inline-flex;align-items:center;gap:8px;cursor:pointer;
-  background:transparent;color:var(--navy);border:1px solid rgba(0,14,47,.26);
-  transition:transform .28s var(--ease-spring),background .25s var(--ease-smooth),border-color .25s var(--ease-smooth),color .25s var(--ease-smooth);
+.cad-desc {
+  font-size: clamp(16px,1.15vw,19px);
+  line-height: 1.55;
+  color: var(--white);
+  opacity: .88;
+  max-width: 42ch;
+  margin-top: 4px;
 }
-.file-dl:hover{
-  transform:translateY(-1.5px);background:var(--gray);border-color:var(--navy);
+
+.cad-controls-head {
+  margin-top: 22px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
 }
-.file-dl:active{transform:scale(.96)}
-.dark .file-dl{
-  background:transparent;color:var(--white);border:1px solid var(--line-dark);
+
+.cad-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
-.dark .file-dl:hover{
-  background:rgba(255,255,255,.08);border-color:var(--blue-bright);color:var(--white);
+
+.stage {
+  position: relative;
+  height: min(72vh,640px);
+  border-radius: 24px;
+  overflow: hidden;
+  background: radial-gradient(120% 100% at 50% 15%,var(--slate-dark),var(--navy));
+  border: 1px solid var(--line-dark);
+  box-shadow: 0 24px 60px -26px rgba(0,0,0,.55);
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.stage canvas:active {
+  cursor: grabbing;
+}
+
+.msg {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  font-size: 13px;
+  color: var(--white);
+  background: rgba(0,14,47,.82);
+  backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.msg[hidden] {
+  display: none;
+}
+
+.tabs,
+.ctl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+}
+
+.cad-controls-head + .ctl {
+  margin-top: 8px;
+}
+
+.tabs button,
+.ctl button {
+  font: 600 13px var(--sans);
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--navy);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: transform .28s var(--ease-spring),background .25s var(--ease-smooth),color .25s var(--ease-smooth),border-color .25s var(--ease-smooth),box-shadow .25s var(--ease-smooth);
+}
+
+.tabs button:hover,
+.ctl button:hover {
+  transform: translateY(-1.5px);
+  border-color: rgba(0,14,47,.32);
+  background: var(--gray);
+}
+
+.tabs button:active,
+.ctl button:active {
+  transform: scale(.95);
+}
+
+.ctl button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tabs .on,
+.ctl [aria-pressed=true] {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--navy);
+  box-shadow: 0 6px 16px -6px rgba(0,14,47,.5);
+}
+
+.ctl .primary {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue);
+  box-shadow: 0 8px 20px -6px rgba(29,99,220,.65);
+}
+
+.ctl .primary:hover {
+  background: var(--blue-bright);
+  border-color: var(--blue-bright);
+}
+
+.dark .tabs button,
+.dark .ctl button {
+  background: var(--slate-dark);
+  border-color: var(--line-dark);
+  color: var(--white);
+}
+
+.dark .tabs button:hover,
+.dark .ctl button:hover {
+  background: var(--slate-mid);
+  border-color: rgba(255,255,255,.35);
+}
+
+.dark .tabs .on,
+.dark .ctl [aria-pressed=true] {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue-bright);
+}
+
+.dark .ctl .primary {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue);
+}
+
+.dark .ctl .primary:hover {
+  background: var(--blue-bright);
+  border-color: var(--blue-bright);
+}
+
+.below-dl {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.file-dl {
+  font: 600 13px/1 var(--sans);
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--navy);
+  border: 1px solid rgba(0,14,47,.26);
+  transition: transform .28s var(--ease-spring),background .25s var(--ease-smooth),border-color .25s var(--ease-smooth),color .25s var(--ease-smooth);
+}
+
+.file-dl:hover {
+  transform: translateY(-1.5px);
+  background: var(--gray);
+  border-color: var(--navy);
+}
+
+.file-dl:active {
+  transform: scale(.96);
+}
+
+.dark .file-dl {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--line-dark);
+}
+
+.dark .file-dl:hover {
+  background: rgba(255,255,255,.08);
+  border-color: var(--blue-bright);
+  color: var(--white);
 }
 
 /* ============ PYTHON RUNNER ============ */
-.code{padding:16vh 0}
-.code .lede{margin-top:18px}
-.ide{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px}
-.pane{
-  background:var(--white);color:var(--ink);padding:16px 18px;border-radius:18px;
-  border:1px solid var(--line);display:flex;flex-direction:column;
-  box-shadow:0 16px 40px -24px rgba(0,14,47,.22);
+
+.code {
+  padding: 16vh 0;
 }
-.console-col{display:flex;flex-direction:column;gap:14px}
-.console-col .pane{flex:1}
-.pane:last-child,.console-col .pane{
-  background:var(--navy);color:var(--white);border-color:var(--line-dark);
-  position:relative;
+
+.code .lede {
+  margin-top: 18px;
 }
-.console-col .pane::before{
-  content:"";position:absolute;top:0;left:20px;right:20px;height:2px;border-radius:2px;
-  background:linear-gradient(90deg,var(--blue),var(--blue-bright));opacity:.85;
+
+.ide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 32px;
 }
-.pane label{
-  font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;
-  opacity:.65;margin:6px 0 8px;
+
+.pane {
+  background: var(--white);
+  color: var(--ink);
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 40px -24px rgba(0,14,47,.22);
 }
-textarea,pre{
-  font:13px/1.58 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
-  background:none;border:0;color:inherit;outline:none;overflow:auto;width:100%;
+
+.console-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
-#pyCode{height:330px;resize:vertical;white-space:pre;color:var(--ink)}
-#pyIn{resize:vertical;border-top:1px solid var(--line);padding-top:10px;color:var(--ink)}
-#pyOut{flex:1;min-height:420px;white-space:pre-wrap}
-.err{color:var(--blue-bright);font-weight:600}
-.dim{opacity:.65}
+
+.console-col .pane {
+  flex: 1;
+}
+
+.console-col .pane {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--line-dark);
+  position: relative;
+}
+
+.console-col .pane::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,var(--blue),var(--blue-bright));
+  opacity: .85;
+}
+
+.pane label {
+  font: 600 11px var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .65;
+  margin: 6px 0 8px;
+}
+
+textarea,
+pre {
+  font: 13px/1.58 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  background: none;
+  border: 0;
+  color: inherit;
+  outline: none;
+  overflow: auto;
+  width: 100%;
+}
+
+#pyCode {
+  height: 330px;
+  resize: vertical;
+  white-space: pre;
+  color: var(--ink);
+}
+
+#pyOut {
+  flex: 1;
+  min-height: 420px;
+  max-height: min(70vh,560px);
+  white-space: pre-wrap;
+}
+
+.err {
+  color: var(--blue-bright);
+  font-weight: 600;
+}
+
+.dim {
+  opacity: .65;
+}
+
+/* ============ INTERACTIVE CONSOLE ============ */
+
+.py-prompt {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.py-prompt[hidden],
+.py-quick[hidden] {
+  display: none;
+}
+
+.py-prompt-text {
+  font: 13px/1.4 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  opacity: .8;
+  min-height: 1.4em;
+  white-space: pre-wrap;
+}
+
+.py-prompt-row {
+  display: flex;
+  gap: 8px;
+}
+
+.py-prompt-row input {
+  flex: 1;
+  min-width: 0;
+  font: 16px ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  color: var(--white);
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--line-dark);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.py-prompt-row input:focus-visible {
+  border-color: var(--blue-bright);
+}
+
+.py-prompt-row input:disabled,
+.py-prompt-row .btn-primary:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.py-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.py-quick[data-grid] {
+  display: grid;
+  grid-template-columns: repeat(var(--cols),minmax(0,1fr));
+}
+
+.py-quick button {
+  font: 600 14px/1 var(--sans);
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line-dark);
+  background: rgba(255,255,255,.08);
+  color: var(--white);
+  cursor: pointer;
+  transition: background .2s var(--ease-smooth),transform .25s var(--ease-spring);
+}
+
+.py-quick button:hover:not(:disabled) {
+  background: rgba(255,255,255,.18);
+}
+
+.py-quick button:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+.py-quick button:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
 
 /* ============ SKILLS, JOURNEY & CONTACT ============ */
-@keyframes skillCardIn{
-  0%{opacity:0;transform:translateY(26px) scale(.97)}
-  100%{opacity:1;transform:translateY(0) scale(1)}
-}
-@keyframes skillGlowPulse{
-  0%,100%{box-shadow:0 10px 26px -18px rgba(77,140,255,.22)}
-  50%{box-shadow:0 16px 34px -16px rgba(77,140,255,.45)}
-}
-@keyframes experienceItemIn{
-  0%{opacity:0;transform:translateX(-18px) translateY(14px)}
-  100%{opacity:1;transform:translateX(0) translateY(0)}
-}
-@keyframes contactFloatIn{
-  0%{opacity:0;transform:translateY(28px)}
-  100%{opacity:1;transform:translateY(0)}
-}
-@keyframes mailUnderlineShift{
-  0%,100%{border-bottom-color:var(--blue-bright)}
-  50%{border-bottom-color:var(--white)}
+
+@keyframes skillCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.skills,.exp{padding:14vh 0}
-.cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:32px;align-items:stretch}
-.cols > div{
-  background:var(--white);border:1px solid var(--line);
-  border-radius:18px;padding:18px;display:flex;flex-direction:column;min-width:0;
-  transition:transform .34s var(--ease-spring),box-shadow .34s var(--ease-out),border-color .28s var(--ease-smooth);
-}
-.dark .cols > div{
-  background:var(--slate-dark);border-color:var(--line-dark);color:var(--white);
-}
-.js .skills .cols > div{
-  opacity:0;transform:translateY(26px) scale(.97);animation:none;
-}
-.js .skills.in .cols > div{
-  opacity:1;transform:none;
-  animation:skillCardIn .62s var(--ease-out) backwards;
-}
-.js .skills.in .cols > div:hover{
-  transform:translateY(-6px);
-  box-shadow:0 16px 34px -16px rgba(77,140,255,.45);
-}
-.js .skills.in .cols > div:nth-child(1){animation-delay:0ms}
-.js .skills.in .cols > div:nth-child(2){animation-delay:65ms}
-.js .skills.in .cols > div:nth-child(3){animation-delay:130ms}
-.js .skills.in .cols > div:nth-child(4){animation-delay:195ms}
-.js .skills.in .cols > div:nth-child(5){animation-delay:260ms}
-
-.cols > div:hover{
-  transform:translateY(-6px);
-  box-shadow:0 18px 36px -22px rgba(0,14,47,.28);
-  border-color:rgba(29,99,220,.4);
-}
-.dark .cols > div:hover{
-  transform:translateY(-6px);
-  animation:skillGlowPulse 2.4s var(--ease-smooth) infinite;
-  border-color:var(--blue-bright);
-}
-.cols h3{font-size:17px;margin-bottom:6px;letter-spacing:-.02em}
-.cols p{font-size:14px;line-height:1.45;color:inherit;font-style:normal}
-
-.reports-dl{
-  margin-top:auto;
-  padding-top:12px;
-  border-top:1px solid var(--line-dark);
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-.reports-title{
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--white);
-}
-.report-links{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-}
-.report-link{
-  font:600 12px/1 var(--sans);
-  text-decoration:none;
-  padding:6px 11px;
-  border-radius:999px;
-  border:1px solid var(--white);
-  background:var(--white);
-  color:var(--navy);
-  cursor:pointer;
-  transition:background .2s var(--ease-smooth),border-color .2s var(--ease-smooth),transform .25s var(--ease-spring);
-}
-.report-link:hover{
-  background:var(--gray);
-  border-color:var(--gray);
-  transform:translateY(-1px);
+@keyframes skillGlowPulse {
+  0%,100% {
+    box-shadow: 0 10px 26px -18px rgba(77,140,255,.22);
+  }
+  50% {
+    box-shadow: 0 16px 34px -16px rgba(77,140,255,.45);
+  }
 }
 
-.skill-img{
-  margin-top:auto;padding-top:14px;
-}
-.skill-img-box{
-  width:100%;aspect-ratio:16/10;border-radius:10px;
-  border:1px dashed var(--line);
-  background:
-    var(--skill-img,none) center/cover no-repeat,
-    repeating-linear-gradient(45deg,rgba(29,99,220,.06) 0,rgba(29,99,220,.06) 8px,transparent 8px,transparent 16px);
-  display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;
-  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--slate-mid);overflow:hidden;
-  transition:transform .35s var(--ease-spring),border-color .28s var(--ease-smooth);
-}
-.cols > div:hover .skill-img-box{transform:scale(1.02)}
-.dark .skill-img-box{
-  border-color:var(--line-dark);
-  background:
-    var(--skill-img,none) center/cover no-repeat,
-    repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 8px,transparent 8px,transparent 16px);
-  color:var(--white);
-}
-.cols > div:hover .skill-img-box{border-color:rgba(77,140,255,.55)}
-.skill-img-box img{width:100%;height:100%;object-fit:cover;display:block}
-
-@media(max-width:1100px){
-  .cols{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+@keyframes experienceItemIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
 }
 
-.tl{
-  list-style:none;margin-top:26px;position:relative;
-  padding-left:28px;
-  --track-fill:0;
+@keyframes contactFloatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.tl::before{
-  content:"";position:absolute;left:5px;top:30px;bottom:30px;width:2px;
-  background:rgba(29,99,220,.16);
-  border-radius:2px;
-}
-.tl::after{
-  content:"";position:absolute;left:5px;top:30px;bottom:30px;width:2px;
-  background:linear-gradient(180deg,var(--blue),var(--blue-bright));
-  border-radius:2px;
-  transform-origin:50% 0;
-  transform:scaleY(var(--track-fill));
-  will-change:transform;
-}
-.tl li{
-  position:relative;
-  display:grid;grid-template-columns:235px 1fr;gap:clamp(14px,3vw,44px);
-  padding:22px 16px;margin:0 -16px;
-  border-bottom:1px solid rgba(0,14,47,.08);
-  --node-fill:0;
-}
-.tl li:last-child{border-bottom:0}
-.tl li::before{
-  content:"";position:absolute;left:-28px;top:29px;z-index:1;
-  width:12px;height:12px;border-radius:50%;
-  border:2.5px solid var(--blue);
-  background:
-    radial-gradient(circle,var(--blue) calc(var(--node-fill) * 62%),var(--paper) calc(var(--node-fill) * 62% + .5%));
-  box-shadow:0 0 0 calc(2px + var(--node-fill) * 4px) rgba(29,99,220,calc(.08 + var(--node-fill) * .12));
-  transition:box-shadow .16s var(--ease-out);
-}
-.js .tl li{
-  opacity:0;transform:translateX(-18px) translateY(14px);animation:none;
-}
-.js .tl li.in{
-  animation:experienceItemIn .58s var(--ease-out) both;
-  animation-delay:var(--tl-delay,0ms);
-}
-.tl span{font-weight:700;color:var(--blue);font-size:15px;letter-spacing:-.01em}
-.tl h3{font-size:clamp(20px,2vw,26px);margin-bottom:6px;letter-spacing:-.02em}
-.tl p{max-width:64ch;color:var(--slate-dark)}
-.tl-sub{color:var(--slate-mid);font-weight:600}
-.tl-list{margin-top:6px;padding-left:20px;max-width:64ch;color:var(--slate-dark)}
-.tl-list li{
-  display:list-item;position:static;padding:4px 0;margin:0;border:0;
-  opacity:1 !important;transform:none !important;animation:none !important;
-}
-.tl-list li::before{display:none}
 
-.contact{padding:18vh 0 8vh}
-.js .contact .wrap > *{
-  opacity:0;transform:translateY(28px);animation:none;
+@keyframes mailUnderlineShift {
+  0%,100% {
+    border-bottom-color: var(--blue-bright);
+  }
+  50% {
+    border-bottom-color: var(--white);
+  }
 }
-.js .contact.in .wrap > *{
-  animation:contactFloatIn .65s var(--ease-out) both;
-}
-.js .contact.in .wrap > *:nth-child(2){animation-delay:75ms}
-.js .contact.in .wrap > *:nth-child(3){animation-delay:150ms}
-.js .contact.in .wrap > *:nth-child(4){animation-delay:225ms}
 
-.mail{
-  display:inline-block;font:800 clamp(24px,5.2vw,80px)/1.06 var(--sans);
-  letter-spacing:-.04em;text-decoration:none;
-  border-bottom:2.5px solid var(--blue-bright);padding-bottom:4px;
-  word-break:break-word;
-  animation:mailUnderlineShift 3.2s var(--ease-smooth) infinite;
-  transition:color .25s var(--ease-smooth),transform .32s var(--ease-spring);
+.skills,
+.exp {
+  padding: 14vh 0;
 }
-.mail:hover{color:var(--blue-bright);transform:translateY(-3px)}
-.foot{
-  margin-top:12vh;padding-top:24px;border-top:1px solid var(--line-dark);
-  display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
-  opacity:.78;font-size:14px;
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 16px;
+  margin-top: 32px;
+  align-items: stretch;
 }
-.foot-accent{color:var(--blue-bright);font-weight:600}
+
+.cols > div {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: transform .34s var(--ease-spring),box-shadow .34s var(--ease-out),border-color .28s var(--ease-smooth);
+}
+
+.dark .cols > div {
+  background: var(--slate-dark);
+  border-color: var(--line-dark);
+  color: var(--white);
+}
+
+.js .skills .cols > div {
+  opacity: 0;
+  transform: translateY(26px) scale(.97);
+  animation: none;
+}
+
+.js .skills.in .cols > div {
+  opacity: 1;
+  transform: none;
+  animation: skillCardIn .62s var(--ease-out) backwards;
+}
+
+.js .skills.in .cols > div:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 34px -16px rgba(77,140,255,.45);
+}
+
+.js .skills.in .cols > div:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.js .skills.in .cols > div:nth-child(2) {
+  animation-delay: 65ms;
+}
+
+.js .skills.in .cols > div:nth-child(3) {
+  animation-delay: 130ms;
+}
+
+.js .skills.in .cols > div:nth-child(4) {
+  animation-delay: 195ms;
+}
+
+.js .skills.in .cols > div:nth-child(5) {
+  animation-delay: 260ms;
+}
+
+.cols > div:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px -22px rgba(0,14,47,.28);
+  border-color: rgba(29,99,220,.4);
+}
+
+.dark .cols > div:hover {
+  transform: translateY(-6px);
+  animation: skillGlowPulse 2.4s var(--ease-smooth) infinite;
+  border-color: var(--blue-bright);
+}
+
+.cols h3 {
+  font-size: 17px;
+  margin-bottom: 6px;
+  letter-spacing: -.02em;
+}
+
+.cols p {
+  font-size: 14px;
+  line-height: 1.45;
+  color: inherit;
+  font-style: normal;
+}
+
+.reports-dl {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reports-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.report-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.report-link {
+  font: 600 12px/1 var(--sans);
+  text-decoration: none;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--white);
+  background: var(--white);
+  color: var(--navy);
+  cursor: pointer;
+  transition: background .2s var(--ease-smooth),border-color .2s var(--ease-smooth),transform .25s var(--ease-spring);
+}
+
+.report-link:hover {
+  background: var(--gray);
+  border-color: var(--gray);
+  transform: translateY(-1px);
+}
+
+.skill-img {
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.skill-img-box {
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  border: 1px dashed var(--line);
+  background: var(--skill-img,none) center/cover no-repeat, repeating-linear-gradient(45deg,rgba(29,99,220,.06) 0,rgba(29,99,220,.06) 8px,transparent 8px,transparent 16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--slate-mid);
+  overflow: hidden;
+  transition: transform .35s var(--ease-spring),border-color .28s var(--ease-smooth);
+}
+
+.cols > div:hover .skill-img-box {
+  transform: scale(1.02);
+}
+
+.dark .skill-img-box {
+  border-color: var(--line-dark);
+  background: var(--skill-img,none) center/cover no-repeat, repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 8px,transparent 8px,transparent 16px);
+  color: var(--white);
+}
+
+.cols > div:hover .skill-img-box {
+  border-color: rgba(77,140,255,.55);
+}
+
+.skill-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width:1100px) {
+  .cols {
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 20px;
+  }
+}
+
+.tl {
+  list-style: none;
+  margin-top: 26px;
+  position: relative;
+  padding-left: 28px;
+  --track-fill: 0;
+}
+
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 30px;
+  bottom: 30px;
+  width: 2px;
+  background: rgba(29,99,220,.16);
+  border-radius: 2px;
+}
+
+.tl::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 30px;
+  bottom: 30px;
+  width: 2px;
+  background: linear-gradient(180deg,var(--blue),var(--blue-bright));
+  border-radius: 2px;
+  transform-origin: 50% 0;
+  transform: scaleY(var(--track-fill));
+  will-change: transform;
+}
+
+.tl li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 235px 1fr;
+  gap: clamp(14px,3vw,44px);
+  padding: 22px 16px;
+  margin: 0 -16px;
+  border-bottom: 1px solid rgba(0,14,47,.08);
+  --node-fill: 0;
+}
+
+.tl li:last-child {
+  border-bottom: 0;
+}
+
+.tl li::before {
+  content: "";
+  position: absolute;
+  left: -28px;
+  top: 29px;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2.5px solid var(--blue);
+  background: radial-gradient(circle,var(--blue) calc(var(--node-fill) * 62%),var(--paper) calc(var(--node-fill) * 62% + .5%));
+  box-shadow: 0 0 0 calc(2px + var(--node-fill) * 4px) rgba(29,99,220,calc(.08 + var(--node-fill) * .12));
+  transition: box-shadow .16s var(--ease-out);
+}
+
+.js .tl li {
+  opacity: 0;
+  transform: translateX(-18px) translateY(14px);
+  animation: none;
+}
+
+.js .tl li.in {
+  animation: experienceItemIn .58s var(--ease-out) both;
+  animation-delay: var(--tl-delay,0ms);
+}
+
+.tl span {
+  font-weight: 700;
+  color: var(--blue);
+  font-size: 15px;
+  letter-spacing: -.01em;
+}
+
+.tl h3 {
+  font-size: clamp(20px,2vw,26px);
+  margin-bottom: 6px;
+  letter-spacing: -.02em;
+}
+
+.tl p {
+  max-width: 64ch;
+  color: var(--slate-dark);
+}
+
+.tl-sub {
+  color: var(--slate-mid);
+  font-weight: 600;
+}
+
+.tl-list {
+  margin-top: 6px;
+  padding-left: 20px;
+  max-width: 64ch;
+  color: var(--slate-dark);
+}
+
+.tl-list li {
+  display: list-item;
+  position: static;
+  padding: 4px 0;
+  margin: 0;
+  border: 0;
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.tl-list li::before {
+  display: none;
+}
+
+.contact {
+  padding: 18vh 0 8vh;
+}
+
+.js .contact .wrap > * {
+  opacity: 0;
+  transform: translateY(28px);
+  animation: none;
+}
+
+.js .contact.in .wrap > * {
+  animation: contactFloatIn .65s var(--ease-out) both;
+}
+
+.js .contact.in .wrap > *:nth-child(2) {
+  animation-delay: 75ms;
+}
+
+.js .contact.in .wrap > *:nth-child(3) {
+  animation-delay: 150ms;
+}
+
+.js .contact.in .wrap > *:nth-child(4) {
+  animation-delay: 225ms;
+}
+
+.mail {
+  display: inline-block;
+  font: 800 clamp(24px,5.2vw,80px)/1.06 var(--sans);
+  letter-spacing: -.04em;
+  text-decoration: none;
+  border-bottom: 2.5px solid var(--blue-bright);
+  padding-bottom: 4px;
+  word-break: break-word;
+  animation: mailUnderlineShift 3.2s var(--ease-smooth) infinite;
+  transition: color .25s var(--ease-smooth),transform .32s var(--ease-spring);
+}
+
+.mail:hover {
+  color: var(--blue-bright);
+  transform: translateY(-3px);
+}
+
+.foot {
+  margin-top: 12vh;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-dark);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  opacity: .78;
+  font-size: 14px;
+}
+
+.foot-accent {
+  color: var(--blue-bright);
+  font-weight: 600;
+}
 
 /* ============ RESPONSIVE & MOTION PREFERENCES ============ */
-@media(max-width:820px){
-  .burger{display:inline-flex;align-items:center;z-index:70}
-  .nav nav{
-    position:fixed;inset:0;
-    background:rgba(0,14,47,.96);backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-    color:var(--white);flex-direction:column;justify-content:center;gap:22px;
-    padding:var(--pad);font-size:28px;font-weight:800;
-    opacity:0;pointer-events:none;transform:scale(.97);
-    transition:opacity .32s var(--ease-out),transform .38s var(--ease-spring);
+
+@media (max-width:820px) {
+  .burger {
+    display: inline-flex;
+    align-items: center;
+    z-index: 70;
   }
-  .nav.open nav{opacity:1;pointer-events:auto;transform:none}
-  .nav.open .brand{position:relative;z-index:70;color:var(--white)}
-  .nav.open[data-t]{backdrop-filter:none;-webkit-backdrop-filter:none;background:transparent;box-shadow:none}
-  .cadgrid,.ide{grid-template-columns:1fr}
-  .tl li{grid-template-columns:1fr;gap:6px}
-  .stage{height:56vh}
-  #pyOut{min-height:240px}
+  .nav nav {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,14,47,.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    color: var(--white);
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    padding: var(--pad);
+    font-size: 28px;
+    font-weight: 800;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.97);
+    transition: opacity .32s var(--ease-out),transform .38s var(--ease-spring);
+  }
+  .nav.open nav {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  .nav.open .brand {
+    position: relative;
+    z-index: 70;
+    color: var(--white);
+  }
+  .nav.open[data-t] {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  .cadgrid,
+  .ide {
+    grid-template-columns: 1fr;
+  }
+  .tl li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .stage {
+    height: 56vh;
+  }
+  #pyOut {
+    min-height: 240px;
+  }
 }
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{
-    transition-duration:.01ms!important;
-    animation-duration:.01ms!important;
-    scroll-behavior:auto!important;
+
+@media (prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: .01ms!important;
+    animation-duration: .01ms!important;
+    scroll-behavior: auto!important;
   }
 }
 </style>
@@ -656,6 +1592,277 @@ textarea,pre{
   }
 }
 </script>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><i></i></div>
+<a class="skip" href="#about">Skip to content</a>
+
+<header class="nav" id="nav" data-t="dark">
+  <a class="brand" href="#home"><span class="brand-dot" aria-hidden="true"></span>Tyler Matula</a>
+  <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav id="menu" aria-label="Primary">
+    <a href="#about">About Me</a>
+    <a href="#cad">CAD Work</a>
+    <a href="#code">Programming Projects</a>
+    <a href="#skills">My Current Skills</a>
+    <a href="#journey">My Journey</a>
+    <a href="#contact">Contact Me</a>
+  </nav>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="home" data-theme="dark">
+  <div class="hero-in">
+    <svg id="gears" viewBox="0 0 800 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g id="gA"></g>
+      <g id="gB"></g>
+    </svg>
+    <div class="hero-copy" id="heroCopy">
+      <h1>Tyler Matula</h1>
+      <p class="showcase-tag">Engineering Portfolio</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about light" id="about" data-theme="light">
+  <div class="wrap">
+    <h2 class="rv">About Me</h2>
+    <p class="words" id="words">I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was initially drawn to mechanical engineering because I wanted to better understand the complex systems I interact with every day and, hopefully, innovate them in ways that improve the human condition. I am actively seeking research and internship opportunities, particularly related to aerospace, manufacturing, and medical technologies.</p>
+    <div class="resume-box" aria-label="Résumé">
+      <div class="resume-meta">
+        <div class="resume-top">
+          <span class="resume-label">Tyler Matula - Résumé</span>
+          <span class="resume-tag">PDF File</span>
+        </div>
+        <span class="resume-sub">Preview or download my most recent and up-to-date résumé.</span>
+      </div>
+      <div class="resume-actions">
+        <button type="button" class="btn-primary" id="resumePreview">Preview</button>
+        <a class="btn-ghost" id="resumeDownload" href="resume/Tyler-Matula-Resume.pdf" download>Download</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAD PROJECTS -->
+<section class="cad dark" id="cad" data-theme="dark">
+  <div class="wrap cadgrid">
+    <div>
+      <h2 class="rv">CAD Work</h2>
+      <h3 class="rv" id="cadTitle">Fuel Rail</h3>
+      <p class="cad-desc" id="cadDesc"></p>
+      <div class="tabs" id="cadTabs" aria-label="CAD Models"></div>
+      <div class="cad-controls-head" id="cadControlsHead">View Controls</div>
+      <div class="ctl" aria-labelledby="cadControlsHead">
+        <button type="button" data-v="iso">Iso</button>
+        <button type="button" data-v="front">Front</button>
+        <button type="button" data-v="top">Top</button>
+        <button type="button" data-v="side">Side</button>
+        <button type="button" id="cWire" aria-pressed="false">Wireframe</button>
+        <button type="button" id="cReset">Reset</button>
+      </div>
+    </div>
+    <div class="cad-panel">
+      <div class="stage" id="stage"><p class="msg" id="cadMsg">3D viewer loads when scrolled into view.</p></div>
+      <div class="below-dl">
+        <a class="file-dl" id="cDownload" href="models/fuel-rail.stl" download="fuel-rail.stl">Download .STL File</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMMING PROJECTS -->
+<section class="code light" id="code" data-theme="light">
+  <div class="wrap">
+    <h2 class="rv">Programming Projects</h2>
+    <div class="tabs" id="pyTabs" aria-label="Python Programs"></div>
+    <p id="pyDesc" class="lede"></p>
+    <p id="pyNote" class="py-note"></p>
+    <div class="ide">
+      <div class="pane">
+        <label for="pyCode">Program</label>
+        <textarea id="pyCode" spellcheck="false"></textarea>
+      </div>
+      <div class="console-col">
+        <div class="pane">
+          <label>Console</label>
+          <pre id="pyOut" aria-live="polite"></pre>
+          <form class="py-prompt" id="pyPrompt" autocomplete="off">
+            <span class="py-prompt-text" id="pyPromptText"></span>
+            <div class="py-prompt-row">
+              <input id="pyPromptInput" type="text" aria-labelledby="pyPromptText" placeholder="Type here, then press Enter" enterkeyhint="send" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" disabled>
+              <button type="submit" class="btn-primary" id="pySend" disabled>Send</button>
+            </div>
+            <div class="py-quick" id="pyQuick" role="group" aria-label="Quick input" hidden></div>
+          </form>
+        </div>
+        <div class="below-dl">
+          <button type="button" id="pyDownload" class="file-dl">Download .py File</button>
+        </div>
+      </div>
+    </div>
+    <div class="ctl">
+      <button type="button" id="pyRun" class="primary">Run Program</button>
+      <button type="button" id="pyReset">Reset Program</button>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills dark" id="skills" data-theme="dark">
+  <div class="wrap">
+    <h2 class="rv">My Current Skills</h2>
+    <div class="cols">
+      <div>
+        <h3>Computer-aided Design</h3>
+        <p>I have experience using CAD software, including SolidWorks, and earned my CSWA certificate last February. I am excited to develop my skills as I work with more complex CAD modeling.</p>
+        <div class="skill-img">
+          <div class="skill-img-box" style="--skill-img: url('images/solidWorks-cswa-certificate.png')"></div>
+        </div>
+      </div>
+      <div>
+        <h3>Programming</h3>
+        <p>I am actively learning Python through CSE 1010: Intro to Computing for Engineers. The two projects showcased above (Tic-Tac-Toe and Hangman) highlight my continuous development of this skill.</p>
+      </div>
+      <div>
+        <h3>AI-Driven Development</h3>
+        <p>Through ENGR 2001: AI Literacy, I learned prompt-engineering techniques to have AI break down and assist with unfamiliar technical tasks, especially in programming.</p>
+      </div>
+      <div>
+        <h3>Creative Software</h3>
+        <p>Taking DMD-oriented dual-enrollment classes in high school, I developed skills in Adobe Photoshop, Illustrator, and Premiere Pro. In engineering, this has been especially useful for drafting flowcharts, diagrams, and visual prototypes.</p>
+      </div>
+      <div>
+        <h3>Technical Communication</h3>
+        <p>ME 1100: Technical Communication for Engineers has developed my ability to communicate technical information across diverse audiences. Several assignments from the course can be viewed below and are intended to showcase my skills in structured technical writing.</p>
+        <div class="reports-dl" aria-label="ME 1100 Reports">
+          <span class="reports-title">View Technical Writing Samples</span>
+          <div class="report-links" id="me1100ReportLinks"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MY JOURNEY -->
+<section class="exp light" id="journey" data-theme="light">
+  <div class="wrap">
+    <h2 class="rv">My Journey</h2>
+    <ul class="tl">
+      <li>
+        <span>September 2026 &ndash; Present</span>
+        <div>
+          <h3>UConn Formula SAE Design Team</h3>
+          <p>Newly inducted member within the IC powertrain subsystem; utilized CAD to improve the fuel rail design, reducing weight by 18% and optimizing mounting structural stability ahead of prototype testing.</p>
+        </div>
+      </li>
+      <li>
+        <span>September 2026 &ndash; Present</span>
+        <div>
+          <h3>American Society of Mechanical Engineers (ASME)</h3>
+          <p>Participant in technical workshops and professional development seminars focused on mechanical design and manufacturing.</p>
+        </div>
+      </li>
+      <li>
+        <span>June 2026 &ndash; August 2026</span>
+        <div>
+          <h3>Package Handler &middot; FedEx Corporation <span class="tl-sub">(Willington, CT)</span></h3>
+          <p>Collaborated with team members in a warehouse environment to sort thousands of packages per shift and meet shipping deadlines.</p>
+        </div>
+      </li>
+      <li>
+        <span>May 2026</span>
+        <div>
+          <h3>May 2026 Academic Honors</h3>
+          <p>Recognized for early college coursework, quantitative analysis, and STEM achievement:</p>
+          <ul class="tl-list">
+            <li><strong>UConn ECE Biology:</strong> Recognized for academic excellence in dual-enrollment biology through UConn's Early College Experience program.</li>
+            <li><strong>ECSU Statistics Student Award:</strong> Recognized for academic excellence in dual-enrollment statistics through ECSU's Early College Experience program.</li>
+            <li><strong>UConn Early College Experience STEM Scholarship Recipient:</strong> Selected to receive a scholarship after the completion of a STEM project aimed at bridging together multiple technical disciplines.</li>
+            <li><strong>State of Connecticut General Assembly Official Citation:</strong> Received a State of Connecticut General Assembly Citation honoring academic excellence and top 10 class standing.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span>June 2025 &ndash; August 2025</span>
+        <div>
+          <h3>Aquatic Attendant &middot; Town of Vernon Parks and Recreation <span class="tl-sub">(Vernon, CT)</span></h3>
+          <p>Greeted guests, handled pool admission, and ensured a safe environment for guests to swim.</p>
+        </div>
+      </li>
+      <li>
+        <span>May 2025</span>
+        <div>
+          <h3>RIT Computing Innovation Award</h3>
+          <p>Awarded in conjunction with Rochester Institute of Technology for outstanding performance in AP Computer Science.</p>
+        </div>
+      </li>
+      <li>
+        <span>August 2022 &ndash; Present</span>
+        <div>
+          <h3>Community Volunteer</h3>
+          <p>Contributed 70+ hours of documented volunteer service supporting community events.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact dark" id="contact" data-theme="dark">
+  <div class="wrap">
+    <h2 class="rv">Contact Me</h2>
+    <a class="mail" href="mailto:tyler.matula@uconn.edu">tyler.matula@uconn.edu</a>
+    <p class="cta">
+      <a class="btn-primary" href="https://linkedin.com/in/tyler-matula" target="_blank" rel="noopener">Connect on LinkedIn</a>
+    </p>
+    <footer class="foot">
+      <span>Tyler Matula &middot; University of Connecticut</span>
+      <span class="foot-accent">Class of 2030</span>
+    </footer>
+  </div>
+</section>
+</main>
+
+<!-- RÉSUMÉ PREVIEW MODAL -->
+<div class="modal-backdrop" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-bar">
+      <span class="modal-title" id="resumeModalTitle">Tyler Matula &mdash; Résumé</span>
+      <div class="modal-tools">
+        <a class="btn-ghost" id="resumeNewTab" href="resume/Tyler-Matula-Resume.pdf" target="_blank" rel="noopener">Open in Tab</a>
+        <a class="btn-primary" id="resumeModalDownload" href="resume/Tyler-Matula-Resume.pdf" download>Download</a>
+        <button type="button" class="modal-close" id="resumeClose">Close</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <iframe class="modal-frame" id="resumeFrame" title="Résumé PDF Preview"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ME 1100 REPORT PREVIEW MODAL -->
+<div class="modal-backdrop" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-bar">
+      <span class="modal-title" id="reportModalTitle">ME 1100 Report</span>
+      <div class="modal-tools">
+        <a class="btn-ghost" id="reportNewTab" href="#" target="_blank" rel="noopener">Open in Tab</a>
+        <a class="btn-primary" id="reportModalDownload" href="#" download>Download</a>
+        <button type="button" class="modal-close" id="reportClose">Close</button>
+      </div>
+    </div>
+    <div class="modal-desc-box">
+      <span class="modal-desc-label">Description</span>
+      <p class="modal-desc-text" id="reportModalDesc"></p>
+    </div>
+    <div class="modal-body">
+      <iframe class="modal-frame" id="reportFrame" title="Report PDF Preview"></iframe>
+    </div>
+  </div>
+</div>
 <script type="module">
 /* ================= 1. CONFIGURATION ================= */
 const RESUME_FILE = 'résumé/Tyler Matula - Résumé.pdf';
@@ -708,12 +1915,17 @@ const MODELS = [
   }
 ];
 
+/*
+ * Programming projects. Each entry needs: name, desc, note and code. Optional `quick` adds
+ * tap-to-answer buttons to the console: {values: [...], columns: n}. Omit it and
+ * visitors simply type their answers.
+ */
 const PROGRAMS = [
   {
     name: 'tictactoe.py',
     desc: 'Developed in CSE 1010: Intro to Computing for Engineers, this Tic-Tac-Toe game allowed me to work with Python classes, functions, and nested loops. The game features a CPU opponent that prioritizes making winning moves and blocking the player. The game displays a Tic-Tac-Toe board and takes in user coordinates to make the next move.',
     note: 'Transparency notice: This project was completed as part of a course assignment and was built on top of pre-existing starter code.',
-    stdin: '0,0\n0,1\n0,2\n1,0\n1,1\n1,2\n2,0\n2,1\n2,2',
+    quick: {columns: 3, values: ['0,0', '0,1', '0,2', '1,0', '1,1', '1,2', '2,0', '2,1', '2,2']},
     code: `import random
 
 class TicTacToe:
@@ -848,20 +2060,17 @@ if __name__ == "__main__":
     name: 'hangman.py',
     desc: 'Also developed in CSE 1010: Intro to Computing for Engineers, this Hangman game expanded my skills with Python input logic and functions. The game uses input validation, so repeated or invalid guesses do not deduct lives.',
     note: 'Transparency notice: This project was completed as part of a course assignment and was built on top of pre-existing starter code. The word list was also shortened for improved readability on this portfolio.',
-    stdin: 'e\na\nr\ni\no\nt\nn\ns\nl\nc\nu\nd\np\nm\nh\ng\nb\nf\ny\nw\nk\nv\nx\nz\nj\nq',
+    quick: {values: [...'abcdefghijklmnopqrstuvwxyz']},
     code: `import random
 import string
-
 
 def choose_random_word(word_list):
     """Select a random word from the supplied list."""
     return random.choice(word_list)
 
-
 def valid_guess(g):
     """Return True if g is a single lowercase English letter."""
     return g in string.ascii_lowercase and len(g) == 1
-
 
 def get_user_guess(guessed):
     """Prompt until the user provides a valid, unguessed lowercase letter."""
@@ -874,7 +2083,6 @@ def get_user_guess(guessed):
         else:
             return guess
 
-
 def analyze_guess(secret, display, guess):
     """Reveal matching positions of guess in display and return whether found."""
     letter_found = False
@@ -883,7 +2091,6 @@ def analyze_guess(secret, display, guess):
             display[index] = guess
             letter_found = True
     return letter_found
-
 
 def hangman(secret, lives):
     """Run a Hangman game session with the given secret word and starting lives."""
@@ -911,7 +2118,6 @@ def hangman(secret, lives):
     else:
         print("Too bad, you lose! My word was", secret)
 
-
 if __name__ == "__main__":
     all_words = [
         "bridge", "engine", "bucket", "garden", "hammer", "island",
@@ -938,14 +2144,15 @@ timelineItems.forEach((item, idx) => {
   item.style.setProperty('--tl-delay', `${Math.min(idx, 6) * 55}ms`);
 });
 
-function buildGear(target, cx, cy, teeth, outerRadius, rootRadius, accent = false){
+/** Draws an outlined gear into `target`; `phase` rotates the tooth pattern (radians). */
+function buildGear(target, cx, cy, teeth, outerRadius, rootRadius, phase = 0, accent = false){
   const step = (2 * Math.PI) / teeth;
   const profile = [[0, rootRadius], [.12, outerRadius], [.42, outerRadius], [.54, rootRadius]];
   let pathData = '';
 
   for(let k = 0; k < teeth; k++){
     profile.forEach(([angleOffset, radius], idx) => {
-      const theta = (k + angleOffset) * step;
+      const theta = (k + angleOffset) * step + phase;
       const x = (cx + Math.cos(theta) * radius).toFixed(1);
       const y = (cy + Math.sin(theta) * radius).toFixed(1);
       pathData += (k + idx ? 'L' : 'M') + x + ' ' + y;
@@ -959,8 +2166,21 @@ function buildGear(target, cx, cy, teeth, outerRadius, rootRadius, accent = fals
     `<circle cx="${cx}" cy="${cy}" r="${(rootRadius * .2).toFixed(1)}"/>`;
 }
 
-buildGear($('#gA'), 560, 330, 30, 262, 238, true);
-buildGear($('#gB'), 235, 518, 15, 137, 113, false);
+/*
+ * Gear train. The root radii leave clearance for the opposing tips, and the tooth
+ * phases are aligned along the line of centres so a tooth of A always enters a gap
+ * of B. B turns at A's rate times the tooth ratio, which keeps them meshed.
+ */
+const GEAR_A = {cx: 560, cy: 330, teeth: 30, outer: 262, root: 235};
+const GEAR_B = {cx: 235, cy: 518, teeth: 15, outer: 137, root: 110};
+const GEAR_TURN_DEG = 120;
+const TOOTH_CENTER = .27;  // centre of a tooth within one pitch, from the profile in buildGear()
+const gearAxis = Math.atan2(GEAR_B.cy - GEAR_A.cy, GEAR_B.cx - GEAR_A.cx);
+const gearPhaseA = gearAxis - TOOTH_CENTER * (2 * Math.PI / GEAR_A.teeth);
+const gearPhaseB = gearAxis + Math.PI - (TOOTH_CENTER + .5) * (2 * Math.PI / GEAR_B.teeth);
+
+buildGear($('#gA'), GEAR_A.cx, GEAR_A.cy, GEAR_A.teeth, GEAR_A.outer, GEAR_A.root, gearPhaseA, true);
+buildGear($('#gB'), GEAR_B.cx, GEAR_B.cy, GEAR_B.teeth, GEAR_B.outer, GEAR_B.root, gearPhaseB, false);
 
 const heroSection = $('#home');
 const heroCopy = $('#heroCopy');
@@ -994,8 +2214,9 @@ function updateScrollState(){
     heroCopy.style.transform = `translateY(${-p * 9}vh) scale(${1 - p * .24})`;
     heroCopy.style.opacity = clamp(1.55 - p * 1.55);
     gearsSvg.style.transform = `scale(${1 + p * .55})`;
-    gearA.setAttribute('transform', `translate(560 330) rotate(${p * 120}) translate(-560 -330)`);
-    gearB.setAttribute('transform', `translate(235 518) rotate(${-p * 240}) translate(-235 -518)`);
+    const turn = p * GEAR_TURN_DEG;
+    gearA.setAttribute('transform', `rotate(${turn} ${GEAR_A.cx} ${GEAR_A.cy})`);
+    gearB.setAttribute('transform', `rotate(${-turn * GEAR_A.teeth / GEAR_B.teeth} ${GEAR_B.cx} ${GEAR_B.cy})`);
 
     const wordsRect = aboutWords.getBoundingClientRect();
     const wordProgress = clamp((vh * .82 - wordsRect.top) / Math.max(1, vh * .52 + wordsRect.height * .55));
@@ -1427,20 +2648,61 @@ async function initCadViewer(){
 }
 
 /* ================= 4. PYTHON RUNNER ================= */
-const INPUT_SHIM = `import builtins
-_in = INPUT_TEXT.splitlines()
-def _input(prompt=""):
-    if not _in:
-        raise EOFError("Out of input. Add more lines to the Input box.")
-    v = _in.pop(0)
-    print(prompt + v)
-    return v
-builtins.input = _input
+/*
+ * Programs run in Pyodide. Browsers cannot pause a running script to wait for typing, so
+ * input() works by replay: when a program asks for an answer it does not have yet, that pass
+ * stops, the console asks the visitor, and the program re-runs from the top with the answer
+ * added. `random` gets the same seed on every pass, so replays behave identically.
+ */
+const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+const PY_RUNNER = String.raw`
+import builtins, contextlib, io, json, linecache, random, traceback
+
+class AwaitingInput(BaseException):
+    """Pauses a pass when the program asks for input that has not been supplied yet."""
+
+    def __init__(self, prompt):
+        super().__init__(prompt)
+        self.prompt = prompt
+
+def run_pass(source, answers_json, seed):
+    """Run the program once and return a JSON summary: status, output, prompt, error."""
+    answers = json.loads(answers_json)
+    out = io.StringIO()
+    result = {"status": "done", "prompt": "", "error": ""}
+
+    def fake_input(prompt=""):
+        prompt = str(prompt)
+        if answers:
+            answer = answers.pop(0)
+            print(prompt + answer)
+            return answer
+        raise AwaitingInput(prompt)
+
+    linecache.cache["<program>"] = (len(source), None, source.splitlines(True), "<program>")
+    real_input, builtins.input = builtins.input, fake_input
+    random.seed(seed)
+    try:
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
+            exec(compile(source, "<program>", "exec"), {"__name__": "__main__"})
+    except AwaitingInput as pause:
+        result.update(status="waiting", prompt=pause.prompt)
+    except SystemExit:
+        pass
+    except BaseException as exc:
+        lines = traceback.format_exception(type(exc), exc, exc.__traceback__.tb_next)
+        result.update(status="error", error=chr(10).join("".join(lines).strip().splitlines()[-6:]))
+    finally:
+        builtins.input = real_input
+    result["output"] = out.getvalue()
+    return json.dumps(result)
 `;
 
 let pyodideInstance = null;
 let pyodideLoadingPromise = null;
+let runPass = null;
 
+/** Appends a status line (optionally styled) to the console. */
 function appendConsoleLine(text, styleClass = ''){
   const output = $('#pyOut');
   const span = Object.assign(document.createElement('span'), {
@@ -1451,6 +2713,7 @@ function appendConsoleLine(text, styleClass = ''){
   output.scrollTop = output.scrollHeight;
 }
 
+/** Loads Pyodide once and installs the runner; later calls reuse the same instance. */
 async function loadPythonRuntime(){
   if(pyodideInstance) return pyodideInstance;
   if(pyodideLoadingPromise) return pyodideLoadingPromise;
@@ -1460,13 +2723,15 @@ async function loadPythonRuntime(){
     if(!window.loadPyodide){
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+        script.src = PYODIDE_URL;
         script.onload = resolve;
         script.onerror = reject;
         document.head.append(script);
       });
     }
     pyodideInstance = await loadPyodide();
+    pyodideInstance.runPython(PY_RUNNER);
+    runPass = pyodideInstance.globals.get('run_pass');
     appendConsoleLine('Ready.', 'dim');
     return pyodideInstance;
   })();
@@ -1479,22 +2744,91 @@ async function loadPythonRuntime(){
 }
 
 function initPythonIde(){
-  const tabList = $('#pyTabs');
-  const codeEditor = $('#pyCode');
-  const stdinEditor = $('#pyIn');
-  const runButton = $('#pyRun');
-  const downloadButton = $('#pyDownload');
+  const el = {
+    tabs: $('#pyTabs'), code: $('#pyCode'), out: $('#pyOut'),
+    run: $('#pyRun'), reset: $('#pyReset'), download: $('#pyDownload'),
+    form: $('#pyPrompt'), promptText: $('#pyPromptText'), input: $('#pyPromptInput'),
+    send: $('#pySend'), quick: $('#pyQuick')
+  };
+  const hasFinePointer = matchMedia('(pointer: fine)').matches;
+
+  let programIndex = 0;
+  let session = null;  // the active run: {resolve, used}; replaced or nulled when a run ends
+
+  const setRunButton = running => {
+    el.run.disabled = running;
+    el.run.textContent = running ? 'Running Program...' : 'Run Program';
+  };
+
+  /* --- console prompt (interactive mode) --- */
+  const quickButtons = () => [...el.quick.children];
+
+  const lockPrompt = () => {
+    el.promptText.textContent = '';
+    el.input.value = '';
+    el.input.disabled = el.send.disabled = true;
+    quickButtons().forEach(btn => { btn.disabled = true; });
+  };
+
+  const ask = (run, prompt) => new Promise(resolve => {
+    run.resolve = resolve;
+    el.promptText.textContent = prompt;
+    el.input.disabled = el.send.disabled = false;
+    quickButtons().forEach(btn => { btn.disabled = run.used.has(btn.dataset.value); });
+    if(hasFinePointer) el.input.focus({preventScroll: true});  // keep the keyboard closed on touch devices
+  });
+
+  const submit = value => {
+    if(!session || !session.resolve) return;
+    const {resolve} = session;
+    session.resolve = null;
+    session.used.add(value);
+    lockPrompt();
+    resolve(value);
+  };
+
+  const stopSession = () => {
+    if(session && session.resolve) session.resolve(null);
+    session = null;
+    lockPrompt();
+    setRunButton(false);
+  };
+
+  el.form.addEventListener('submit', event => {
+    event.preventDefault();
+    submit(el.input.value);
+  });
+
+  /* --- program and mode selection --- */
+  const resetConsole = () => {
+    el.out.textContent = '';
+    appendConsoleLine('Click Run Program to execute.', 'dim');
+  };
+
+  const buildQuickButtons = quick => {
+    el.quick.replaceChildren();
+    el.quick.hidden = !quick;
+    el.quick.toggleAttribute('data-grid', Boolean(quick && quick.columns));
+    if(!quick) return;
+    el.quick.style.setProperty('--cols', quick.columns || 1);
+    quick.values.forEach(value => {
+      const btn = Object.assign(document.createElement('button'), {type: 'button', textContent: value});
+      btn.dataset.value = value;
+      btn.addEventListener('click', () => submit(value));
+      el.quick.append(btn);
+    });
+  };
 
   const selectProgram = index => {
     const program = PROGRAMS[index];
-    [...tabList.children].forEach((btn, i) => btn.classList.toggle('on', i === index));
-    codeEditor.value = program.code;
-    stdinEditor.value = program.stdin;
+    programIndex = index;
+    [...el.tabs.children].forEach((btn, i) => btn.classList.toggle('on', i === index));
+    el.code.value = program.code;
     $('#pyDesc').textContent = program.desc || '';
     $('#pyNote').textContent = program.note || '';
-    $('#pyOut').textContent = '';
-    appendConsoleLine('Click Run Program to execute.', 'dim');
-    window.__pyIndex = index;
+    buildQuickButtons(program.quick);
+    stopSession();
+    resetConsole();
   };
 
   PROGRAMS.forEach((program, idx) => {
@@ -1502,27 +2836,28 @@ function initPythonIde(){
     btn.type = 'button';
     btn.textContent = program.name;
     btn.onclick = () => selectProgram(idx);
-    tabList.append(btn);
+    el.tabs.append(btn);
   });
 
   selectProgram(0);
 
-  let tabInsertsSpaces = true;
-  codeEditor.addEventListener('focus', () => { tabInsertsSpaces = true; });
-  codeEditor.addEventListener('keydown', event => {
+  /* --- editor behaviour --- */
+  let tabInsertsSpaces = true;  // Escape releases Tab so keyboard users can leave the editor
+  el.code.addEventListener('focus', () => { tabInsertsSpaces = true; });
+  el.code.addEventListener('keydown', event => {
     if(event.key === 'Escape'){ tabInsertsSpaces = false; return; }
     if(event.key === 'Tab' && tabInsertsSpaces && !event.shiftKey){
       event.preventDefault();
-      const start = codeEditor.selectionStart;
-      codeEditor.setRangeText('    ', start, codeEditor.selectionEnd, 'end');
+      const start = el.code.selectionStart;
+      el.code.setRangeText('    ', start, el.code.selectionEnd, 'end');
     }
   });
 
-  $('#pyReset').onclick = () => selectProgram(window.__pyIndex);
+  el.reset.onclick = () => selectProgram(programIndex);
 
-  downloadButton.onclick = () => {
-    const active = PROGRAMS[window.__pyIndex] || PROGRAMS[0];
-    const blob = new Blob([codeEditor.value], {type:'text/x-python;charset=utf-8'});
+  el.download.onclick = () => {
+    const active = PROGRAMS[programIndex] || PROGRAMS[0];
+    const blob = new Blob([el.code.value], {type: 'text/x-python;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -1533,293 +2868,55 @@ function initPythonIde(){
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    runButton.textContent = 'Running Program...';
-    $('#pyOut').textContent = '';
+  /* --- running --- */
+  el.run.onclick = async () => {
+    stopSession();
+    const run = session = {resolve: null, used: new Set()};
+    const source = el.code.value;
+    const seed = Math.floor(Math.random() * 2 ** 31);
+    const answers = [];
+    let body = null;
+    let shown = '';
+
+    const paint = text => {
+      if(!body){ body = document.createElement('span'); el.out.append(body); }
+      if(text.startsWith(shown)) body.append(text.slice(shown.length));
+      else body.textContent = text;
+      shown = text;
+      el.out.scrollTop = el.out.scrollHeight;
+    };
+
+    setRunButton(true);
+    el.out.textContent = '';
     try{
-      const py = await loadPythonRuntime();
-      py.globals.set('INPUT_TEXT', stdinEditor.value);
-      py.globals.set('__name__', '__main__');
-      py.setStdout({batched: text => appendConsoleLine(text)});
-      py.setStderr({batched: text => appendConsoleLine(text, 'err')});
-      await py.runPythonAsync(INPUT_SHIM + codeEditor.value);
-      appendConsoleLine('Execution finished.', 'dim');
+      await loadPythonRuntime();
+      for(;;){
+        if(session !== run) return;
+        const result = JSON.parse(runPass(source, JSON.stringify(answers), seed));
+        paint(result.output);
+
+        if(result.status === 'error'){
+          appendConsoleLine(result.error, 'err');
+          break;
+        }
+        if(result.status === 'done'){
+          appendConsoleLine('Execution finished.', 'dim');
+          break;
+        }
+
+        setRunButton(false);  // paused for input: Run Program restarts the program
+        const reply = await ask(run, result.prompt);
+        if(reply === null || session !== run) return;
+        setRunButton(true);
+        answers.push(reply);
+      }
     }catch(err){
       console.error('Python execution error:', err);
-      const summary = String(err && err.message || err).trim().split('\n').slice(-6).join('\n');
-      appendConsoleLine(summary, 'err');
-    }finally{
-      runButton.disabled = false;
-      runButton.textContent = 'Run Program';
+      appendConsoleLine(String(err && err.message || err).trim().split('\n').slice(-6).join('\n'), 'err');
     }
+    if(session === run) stopSession();
   };
 }
 </script>
-</head>
-<body>
-<div class="progress" aria-hidden="true"><i></i></div>
-<a class="skip" href="#about">Skip to content</a>
-
-<header class="nav" id="nav" data-t="dark">
-  <a class="brand" href="#home"><span class="brand-dot" aria-hidden="true"></span>Tyler Matula</a>
-  <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
-  <nav id="menu" aria-label="Primary">
-    <a href="#about">About Me</a>
-    <a href="#cad">CAD Work</a>
-    <a href="#code">Programming Projects</a>
-    <a href="#skills">My Current Skills</a>
-    <a href="#journey">My Journey</a>
-    <a href="#contact">Contact Me</a>
-  </nav>
-</header>
-
-<main>
-<!-- HERO -->
-<section class="hero" id="home" data-theme="dark">
-  <div class="hero-in">
-    <svg id="gears" viewBox="0 0 800 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <g id="gA"></g>
-      <g id="gB"></g>
-    </svg>
-    <div class="hero-copy" id="heroCopy">
-      <h1>Tyler Matula</h1>
-      <p class="showcase-tag">Engineering Portfolio</p>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section class="about light" id="about" data-theme="light">
-  <div class="wrap">
-    <h2 class="rv">About Me</h2>
-    <p class="words" id="words">I am a first-year Mechanical Engineering student in the Honors Program at the University of Connecticut. I was initially drawn to mechanical engineering because I wanted to better understand the complex systems I interact with every day and, hopefully, innovate them in ways that improve the human condition. I am actively seeking research and internship opportunities, particularly related to aerospace, manufacturing, and medical technologies.</p>
-    <div class="resume-box" aria-label="Résumé">
-      <div class="resume-meta">
-        <div class="resume-top">
-          <span class="resume-label">Tyler Matula - Résumé</span>
-          <span class="resume-tag">PDF File</span>
-        </div>
-        <span class="resume-sub">Preview or download my most recent and up-to-date résumé.</span>
-      </div>
-      <div class="resume-actions">
-        <button type="button" class="btn-primary" id="resumePreview">Preview</button>
-        <a class="btn-ghost" id="resumeDownload" href="resume/Tyler-Matula-Resume.pdf" download>Download</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CAD PROJECTS -->
-<section class="cad dark" id="cad" data-theme="dark">
-  <div class="wrap cadgrid">
-    <div>
-      <h2 class="rv">CAD Work</h2>
-      <h3 class="rv" id="cadTitle" style="font-size:clamp(28px,3.2vw,48px);margin-bottom:8px">Fuel Rail</h3>
-      <p class="cad-desc" id="cadDesc"></p>
-      <div class="tabs" id="cadTabs" aria-label="CAD Models"></div>
-      <div class="cad-controls-head" id="cadControlsHead">View Controls</div>
-      <div class="ctl" aria-labelledby="cadControlsHead">
-        <button type="button" data-v="iso">Iso</button>
-        <button type="button" data-v="front">Front</button>
-        <button type="button" data-v="top">Top</button>
-        <button type="button" data-v="side">Side</button>
-        <button type="button" id="cWire" aria-pressed="false">Wireframe</button>
-        <button type="button" id="cReset">Reset</button>
-      </div>
-    </div>
-    <div class="cad-panel">
-      <div class="stage" id="stage"><p class="msg" id="cadMsg">3D viewer loads when scrolled into view.</p></div>
-      <div class="below-dl">
-        <a class="file-dl" id="cDownload" href="models/fuel-rail.stl" download="fuel-rail.stl">Download .STL File</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROGRAMMING PROJECTS -->
-<section class="code light" id="code" data-theme="light">
-  <div class="wrap">
-    <h2 class="rv">Programming Projects</h2>
-    <div class="tabs" id="pyTabs" aria-label="Python Programs"></div>
-    <p id="pyDesc" class="lede"></p>
-    <p id="pyNote" class="py-note"></p>
-    <div class="ide">
-      <div class="pane">
-        <label for="pyCode">Program</label>
-        <textarea id="pyCode" spellcheck="false"></textarea>
-        <label for="pyIn">Input</label>
-        <textarea id="pyIn" rows="3" spellcheck="false"></textarea>
-      </div>
-      <div class="console-col">
-        <div class="pane">
-          <label>Console</label>
-          <pre id="pyOut" aria-live="polite"></pre>
-        </div>
-        <div class="below-dl">
-          <button type="button" id="pyDownload" class="file-dl">Download .py File</button>
-        </div>
-      </div>
-    </div>
-    <div class="ctl">
-      <button type="button" id="pyRun" class="primary">Run Program</button>
-      <button type="button" id="pyReset">Reset Program</button>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section class="skills dark" id="skills" data-theme="dark">
-  <div class="wrap">
-    <h2 class="rv">My Current Skills</h2>
-    <div class="cols">
-      <div>
-        <h3>Computer-aided Design</h3>
-        <p>I have experience using CAD software, including SolidWorks, and earned my CSWA certificate last February. I am excited to develop my skills as I work with more complex CAD modeling.</p>
-        <div class="skill-img">
-          <div class="skill-img-box" style="--skill-img: url('images/solidWorks-cswa-certificate.png')"></div>
-        </div>
-      </div>
-      <div>
-        <h3>Programming</h3>
-        <p>I am actively learning Python through CSE 1010: Intro to Computing for Engineers. The two projects showcased above (Tic-Tac-Toe and Hangman) highlight my continuous development of this skill.</p>
-      </div>
-      <div>
-        <h3>AI-Driven Development</h3>
-        <p>Through ENGR 2001: AI Literacy, I learned prompt-engineering techniques to have AI break down and assist with unfamiliar technical tasks, especially in programming.</p>
-      </div>
-      <div>
-        <h3>Creative Software</h3>
-        <p>Taking DMD-oriented dual-enrollment classes in high school, I developed skills in Adobe Photoshop, Illustrator, and Premiere Pro. In engineering, this has been especially useful for drafting flowcharts, diagrams, and visual prototypes.</p>
-      </div>
-      <div>
-        <h3>Technical Communication</h3>
-        <p>ME 1100: Technical Communication for Engineers has developed my ability to communicate technical information across diverse audiences. Several assignments from the course can be viewed below and are intended to showcase my skills in structured technical writing.</p>
-        <div class="reports-dl" aria-label="ME 1100 Reports">
-          <span class="reports-title">View Technical Writing Samples</span>
-          <div class="report-links" id="me1100ReportLinks"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MY JOURNEY -->
-<section class="exp light" id="journey" data-theme="light">
-  <div class="wrap">
-    <h2 class="rv">My Journey</h2>
-    <ul class="tl">
-      <li>
-        <span>September 2026 &ndash; Present</span>
-        <div>
-          <h3>UConn Formula SAE Design Team</h3>
-          <p>Newly inducted member within the IC powertrain subsystem; utilized CAD to improve the fuel rail design, reducing weight by 18% and optimizing mounting structural stability ahead of prototype testing.</p>
-        </div>
-      </li>
-      <li>
-        <span>September 2026 &ndash; Present</span>
-        <div>
-          <h3>American Society of Mechanical Engineers (ASME)</h3>
-          <p>Participant in technical workshops and professional development seminars focused on mechanical design and manufacturing.</p>
-        </div>
-      </li>
-      <li>
-        <span>June 2026 &ndash; August 2026</span>
-        <div>
-          <h3>Package Handler &middot; FedEx Corporation <span class="tl-sub">(Willington, CT)</span></h3>
-          <p>Collaborated with team members in a warehouse environment to sort thousands of packages per shift and meet shipping deadlines.</p>
-        </div>
-      </li>
-      <li>
-        <span>May 2026</span>
-        <div>
-          <h3>May 2026 Academic Honors</h3>
-          <p>Recognized for early college coursework, quantitative analysis, and STEM achievement:</p>
-          <ul class="tl-list">
-            <li><strong>UConn ECE Biology:</strong> Recognized for academic excellence in dual-enrollment biology through UConn's Early College Experience program.</li>
-            <li><strong>ECSU Statistics Student Award:</strong> Recognized for academic excellence in dual-enrollment statistics through ECSU's Early College Experience program.</li>
-            <li><strong>UConn Early College Experience STEM Scholarship Recipient:</strong> Selected to receive a scholarship after the completion of a STEM project aimed at bridging together multiple technical disciplines.</li>
-            <li><strong>State of Connecticut General Assembly Official Citation:</strong> Received a State of Connecticut General Assembly Citation honoring academic excellence and top 10 class standing.</li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <span>June 2025 &ndash; August 2025</span>
-        <div>
-          <h3>Aquatic Attendant &middot; Town of Vernon Parks and Recreation <span class="tl-sub">(Vernon, CT)</span></h3>
-          <p>Greeted guests, handled pool admission, and ensured a safe environment for guests to swim.</p>
-        </div>
-      </li>
-      <li>
-        <span>May 2025</span>
-        <div>
-          <h3>RIT Computing Innovation Award</h3>
-          <p>Awarded in conjunction with Rochester Institute of Technology for outstanding performance in AP Computer Science.</p>
-        </div>
-      </li>
-      <li>
-        <span>August 2022 &ndash; Present</span>
-        <div>
-          <h3>Community Volunteer</h3>
-          <p>Contributed 70+ hours of documented volunteer service supporting community events.</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="contact dark" id="contact" data-theme="dark">
-  <div class="wrap">
-    <h2 class="rv">Contact Me</h2>
-    <a class="mail" href="mailto:tyler.matula@uconn.edu">tyler.matula@uconn.edu</a>
-    <p class="cta">
-      <a class="btn-primary" href="https://linkedin.com/in/tyler-matula" target="_blank" rel="noopener">Connect on LinkedIn</a>
-    </p>
-    <footer class="foot">
-      <span>Tyler Matula &middot; University of Connecticut</span>
-      <span class="foot-accent">Class of 2030</span>
-    </footer>
-  </div>
-</section>
-</main>
-
-<!-- RÉSUMÉ PREVIEW MODAL -->
-<div class="modal-backdrop" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle" aria-hidden="true">
-  <div class="modal">
-    <div class="modal-bar">
-      <span class="modal-title" id="resumeModalTitle">Tyler Matula &mdash; Résumé</span>
-      <div class="modal-tools">
-        <a class="btn-ghost" id="resumeNewTab" href="resume/Tyler-Matula-Resume.pdf" target="_blank" rel="noopener">Open in Tab</a>
-        <a class="btn-primary" id="resumeModalDownload" href="resume/Tyler-Matula-Resume.pdf" download>Download</a>
-        <button type="button" class="modal-close" id="resumeClose">Close</button>
-      </div>
-    </div>
-    <div class="modal-body">
-      <iframe class="modal-frame" id="resumeFrame" title="Résumé PDF Preview"></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- ME 1100 REPORT PREVIEW MODAL -->
-<div class="modal-backdrop" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle" aria-hidden="true">
-  <div class="modal">
-    <div class="modal-bar">
-      <span class="modal-title" id="reportModalTitle">ME 1100 Report</span>
-      <div class="modal-tools">
-        <a class="btn-ghost" id="reportNewTab" href="#" target="_blank" rel="noopener">Open in Tab</a>
-        <a class="btn-primary" id="reportModalDownload" href="#" download>Download</a>
-        <button type="button" class="modal-close" id="reportClose">Close</button>
-      </div>
-    </div>
-    <div class="modal-desc-box">
-      <span class="modal-desc-label">Description</span>
-      <p class="modal-desc-text" id="reportModalDesc"></p>
-    </div>
-    <div class="modal-body">
-      <iframe class="modal-frame" id="reportFrame" title="Report PDF Preview"></iframe>
-    </div>
-  </div>
-</div>
 </body>
 </html>
