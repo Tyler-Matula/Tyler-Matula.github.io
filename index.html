@@ -1719,7 +1719,7 @@ pre {
         <h3>Computer-aided Design</h3>
         <p>I have experience using CAD software, including SolidWorks, and earned my CSWA certificate last February. I am excited to develop my skills as I work with more complex CAD modeling.</p>
         <div class="skill-img">
-          <div class="skill-img-box" style="--skill-img: url('images/solidWorks-cswa-certificate.png')"></div>
+          <div class="skill-img-box" style="--skill-img: url('images/solidworks-cswa-certificate.png')"></div>
         </div>
       </div>
       <div>
@@ -2299,7 +2299,7 @@ function setMobileMenuOpen(isOpen){
 function openResumeModal(){
   if(openPdfInTab()){ window.open(encodedResumeUrl, '_blank', 'noopener'); return; }
   lastFocusedElement = document.activeElement;
-  resumeFrame.src = `${encodedResumeUrl}#view=FitH`;
+  resumeFrame.src = `${encodedResumeUrl}#zoom=100`;
   resumeModal.classList.add('open');
   resumeModal.setAttribute('aria-hidden', 'false');
   document.body.classList.add('locked');
@@ -2325,7 +2325,7 @@ function openReportModal(report){
   reportModalDownload.href = encodedUrl;
   reportModalDownload.setAttribute('download', report.file.split('/').pop() || `${report.title}.pdf`);
   reportNewTab.href = encodedUrl;
-  reportFrame.src = `${encodedUrl}#view=FitH`;
+  reportFrame.src = `${encodedUrl}#zoom=100`;
   reportModal.classList.add('open');
   reportModal.setAttribute('aria-hidden', 'false');
   document.body.classList.add('locked');
